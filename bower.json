@@ -7,6 +7,6 @@
     "build/ol.js",
     "css/ol.css"
   ],
-  "ignore": ["*","!build/*","!css/*"],
+  "ignore": ["*","!build/**","!css/**"],
   "private": true
 }
