@@ -1,0 +1,12 @@
+{
+  "name": "ol3",
+  "version": "3.0.0-beta.4",
+  "homepage": "https://github.com/lindsejs/ol3",
+  "main": [
+    "build/ol.js",
+    "build/ol.css"
+  ],
+  "ignore": "!build/**"
+  "license": "MIT",
+  "private": true
+}
