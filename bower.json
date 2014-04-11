@@ -6,7 +6,6 @@
     "build/ol.js",
     "build/ol.css"
   ],
-  "ignore": "!build/**"
   "license": "MIT",
   "private": true
 }
