@@ -3,10 +3,10 @@
   "version": "3.0.0-beta.4",
   "homepage": "https://github.com/lindsejs/ol3",
   "main": [
+    "build/proj4js/lib/proj4js-combined.js",    
     "build/ol.js",
-    "css/ol.css",
-    "build/proj4js/lib/proj4js-combined.js"
+    "css/ol.css"
   ],
-  "ignore": ["!(build/*)","!(css/*)"],
+  "ignore": ["*","!build","!css"],
   "private": true
 }
