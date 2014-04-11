@@ -4,8 +4,9 @@
   "homepage": "https://github.com/lindsejs/ol3",
   "main": [
     "build/ol.js",
-    "build/ol.css"
+    "css/ol.css",
+    "build/proj4js/lib/proj4js-combined.js"
   ],
-  "license": "MIT",
+  "ignore": ["!(build/*)","!(css/*)"],
   "private": true
 }
