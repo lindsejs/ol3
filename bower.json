@@ -4,7 +4,7 @@
   "homepage": "https://github.com/lindsejs/ol3",
   "main": [
     "build/proj4js/lib/proj4js-combined.js",    
-    "build/ol.js",
+    "build/ol-whitespace.js",
     "css/ol.css"
   ],
   "ignore": ["*","!build/**","!css/**"],
