@@ -4,7 +4,7 @@
   ],
   "src": [
       "src/**/*.js",
-      "buildcfg/geokods.js"
+      "config/geokods.js"
   ],
   "compile": {
     "externs": [
