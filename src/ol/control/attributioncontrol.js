@@ -26,7 +26,7 @@ goog.require('ol.pointer.PointerEventHandler');
  * @constructor
  * @extends {ol.control.Control}
  * @param {olx.control.AttributionOptions=} opt_options Attribution options.
- * @api
+ * @api stable
  */
 ol.control.Attribution = function(opt_options) {
 
@@ -96,7 +96,8 @@ ol.control.Attribution = function(opt_options) {
    */
   this.labelSpan_ = label;
   var button = goog.dom.createDom(goog.dom.TagName.BUTTON, {
-    'class': 'ol-has-tooltip'
+    'class': 'ol-has-tooltip',
+    'type': 'button'
   }, this.labelSpan_);
   goog.dom.appendChild(button, tip);
 
@@ -158,8 +159,7 @@ goog.inherits(ol.control.Attribution, ol.control.Control);
  * @param {?olx.FrameState} frameState Frame state.
  * @return {Array.<Object.<string, ol.Attribution>>} Attributions.
  */
-ol.control.Attribution.prototype.getSourceAttributions =
-    function(frameState) {
+ol.control.Attribution.prototype.getSourceAttributions = function(frameState) {
   var i, ii, j, jj, tileRanges, source, sourceAttribution,
       sourceAttributionKey, sourceAttributions, sourceKey;
   var layerStatesArray = frameState.layerStatesArray;
@@ -273,6 +273,12 @@ ol.control.Attribution.prototype.updateElement_ = function(frameState) {
     goog.style.setElementShown(this.element, renderVisible);
     this.renderedVisible_ = renderVisible;
   }
+  if (renderVisible &&
+      goog.object.isEmpty(this.attributionElementRenderedVisible_)) {
+    goog.dom.classlist.add(this.element, 'ol-logo-only');
+  } else {
+    goog.dom.classlist.remove(this.element, 'ol-logo-only');
+  }
 
   this.insertLogos_(frameState);
 
@@ -355,8 +361,8 @@ ol.control.Attribution.prototype.handleToggle_ = function() {
 
 
 /**
- * @return {boolean} True is the widget is collapsible.
- * @api
+ * @return {boolean} True if the widget is collapsible.
+ * @api stable
  */
 ol.control.Attribution.prototype.getCollapsible = function() {
   return this.collapsible_;
@@ -364,8 +370,8 @@ ol.control.Attribution.prototype.getCollapsible = function() {
 
 
 /**
- * @param {boolean} collapsible True is the widget is collapsible.
- * @api
+ * @param {boolean} collapsible True if the widget is collapsible.
+ * @api stable
  */
 ol.control.Attribution.prototype.setCollapsible = function(collapsible) {
   if (this.collapsible_ === collapsible) {
@@ -380,8 +386,8 @@ ol.control.Attribution.prototype.setCollapsible = function(collapsible) {
 
 
 /**
- * @param {boolean} collapsed True is the widget is collapsed.
- * @api
+ * @param {boolean} collapsed True if the widget is collapsed.
+ * @api stable
  */
 ol.control.Attribution.prototype.setCollapsed = function(collapsed) {
   if (!this.collapsible_ || this.collapsed_ === collapsed) {
@@ -392,8 +398,8 @@ ol.control.Attribution.prototype.setCollapsed = function(collapsed) {
 
 
 /**
- * @return {boolean} True is the widget is collapsed.
- * @api
+ * @return {boolean} True if the widget is collapsed.
+ * @api stable
  */
 ol.control.Attribution.prototype.getCollapsed = function() {
   return this.collapsed_;

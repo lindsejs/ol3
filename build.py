@@ -101,6 +101,10 @@ SPEC = [path
         for path in ifind('test/spec')
         if path.endswith('.js')]
 
+TASKS = [path
+         for path in ifind('tasks')
+         if path.endswith('.js')]
+
 SRC = [path
        for path in ifind('src/ol')
        if path.endswith('.js')
@@ -123,49 +127,34 @@ def report_sizes(t):
 virtual('default', 'build')
 
 
-virtual('ci', 'lint', 'jshint', 'build', 'build-all',
-        'test', 'build/examples/all.combined.js', 'check-examples', 'apidoc')
+virtual('ci', 'lint', 'build', 'test',
+    'build/examples/all.combined.js', 'check-examples', 'apidoc')
 
 
-virtual('build', 'build/ol.css', 'build/ol.js',
-        'build/ol-simple.js', 'build/ol-whitespace.js')
+virtual('build', 'build/ol.css', 'build/ol.js', 'build/ol-debug.js')
 
 
-virtual('check', 'lint', 'jshint', 'build/ol-all.js', 'test')
+virtual('check', 'lint', 'build/ol.js', 'test')
 
 
 virtual('todo', 'fixme')
 
 
-@target('build/ol.css')
+@target('build/ol.css', 'css/ol.css')
 def build_ol_css(t):
     t.output('%(CLEANCSS)s', 'css/ol.css')
 
 
-@target('build/ol.js', SRC, SHADER_SRC, 'buildcfg/ol.json')
+@target('build/ol.js', SRC, SHADER_SRC, 'config/ol.json')
 def build_ol_new_js(t):
-    t.run('node', 'tasks/build.js', 'buildcfg/ol.json', 'build/ol.js')
+    t.run('node', 'tasks/build.js', 'config/ol.json', 'build/ol.js')
     report_sizes(t)
 
 
-@target('build/ol-simple.js', SRC, SHADER_SRC, 'buildcfg/ol-simple.json')
-def build_ol_simple_js(t):
-    t.run('node', 'tasks/build.js', 'buildcfg/ol-simple.json', 'build/ol-simple.js')
+@target('build/ol-debug.js', SRC, SHADER_SRC, 'config/ol-debug.json')
+def build_ol_debug_js(t):
+    t.run('node', 'tasks/build.js', 'config/ol-debug.json', 'build/ol-debug.js')
     report_sizes(t)
-
-
-@target('build/ol-whitespace.js', SRC, SHADER_SRC, 'buildcfg/ol-whitespace.json')
-def build_ol_whitespace_js(t):
-    t.run('node', 'tasks/build.js', 'buildcfg/ol-whitespace.json', 'build/ol-whitespace.js')
-    report_sizes(t)
-
-
-virtual('build-all', 'build/ol-all.js')
-
-
-@target('build/ol-all.js', SRC, SHADER_SRC, 'buildcfg/ol-all.json')
-def build_ol_all_js(t):
-    t.run('node', 'tasks/build.js', 'buildcfg/ol-all.json', 'build/ol-all.js')
 
 
 for glsl_src in GLSL_SRC:
@@ -211,9 +200,9 @@ def examples_examples_list_js(t):
 
 
 @target('build/examples/all.combined.js', 'build/examples/all.js',
-        SRC, SHADER_SRC, 'buildcfg/examples-all.json')
+        SRC, SHADER_SRC, 'config/examples-all.json')
 def build_examples_all_combined_js(t):
-    t.run('node', 'tasks/build.js', 'buildcfg/examples-all.json',
+    t.run('node', 'tasks/build.js', 'config/examples-all.json',
           'build/examples/all.combined.js')
     report_sizes(t)
 
@@ -229,7 +218,7 @@ def examples_star_json(name, match):
         # It would make more sense to use olx.js as an input file here. We use
         # it as an externs file instead to prevent "Cannot read property '*' of
         # undefined" error when running examples in "raw" or "whitespace" mode.
-        # Note that we use the proper way in buildcfg/examples-all.json, which
+        # Note that we use the proper way in config/examples-all.json, which
         # is only used to check the examples code using the compiler.
         content = json.dumps({
           "exports": [],
@@ -251,6 +240,7 @@ def examples_star_json(name, match):
             ],
             "define": [
               "goog.dom.ASSUME_STANDARDS_MODE=true",
+              "goog.json.USE_NATIVE_JSON=true",
               "goog.DEBUG=false"
             ],
             "jscomp_error": [
@@ -269,6 +259,7 @@ def examples_star_json(name, match):
               "duplicate",
               "duplicateMessage",
               "es3",
+              "es5Strict",
               "externsValidation",
               "fileoverviewTags",
               "globalThis",
@@ -290,9 +281,6 @@ def examples_star_json(name, match):
             ],
             "extra_annotation_name": [
               "api", "observable"
-            ],
-            "jscomp_off": [
-              "es5Strict"
             ],
             "compilation_level": "ADVANCED",
             "output_wrapper": "// OpenLayers 3. See http://ol3.js.org/\n(function(){%output%})();",
@@ -323,7 +311,7 @@ def serve(t):
 
 
 virtual('lint', 'build/lint-timestamp', 'build/check-requires-timestamp',
-    'build/check-whitespace-timestamp')
+    'build/check-whitespace-timestamp', 'jshint')
 
 
 @target('build/lint-timestamp', SRC, EXAMPLES_SRC, SPEC, precious=True)
@@ -338,7 +326,7 @@ def build_lint_src_timestamp(t):
 
 virtual('jshint', 'build/jshint-timestamp')
 
-@target('build/jshint-timestamp', SRC, EXAMPLES_SRC, SPEC,
+@target('build/jshint-timestamp', SRC, EXAMPLES_SRC, SPEC, TASKS,
         precious=True)
 def build_jshint_timestamp(t):
     t.run(variables.JSHINT, '--verbose', t.newer(t.dependencies))
@@ -545,9 +533,10 @@ virtual('apidoc', 'build/jsdoc-%(BRANCH)s-timestamp' % vars(variables))
 
 
 @target('build/jsdoc-%(BRANCH)s-timestamp' % vars(variables), 'host-resources',
-        SRC, SHADER_SRC, ifind('apidoc/template'))
+        SRC, SHADER_SRC, ifind('config/jsdoc/api/template'))
 def jsdoc_BRANCH_timestamp(t):
-    t.run('%(JSDOC)s', 'apidoc/index.md', '-c', 'apidoc/conf.json',
+    t.run('%(JSDOC)s', 'config/jsdoc/api/index.md',
+          '-c', 'config/jsdoc/api/conf.json',
           '-d', 'build/hosted/%(BRANCH)s/apidoc')
     t.touch()
 
@@ -609,8 +598,7 @@ def host_examples(t):
         split_example_file(example, examples_dir % vars(variables))
     t.cp_r('examples/data', examples_dir + '/data')
     t.cp('bin/loader_hosted_examples.js', examples_dir + '/loader.js')
-    t.cp('build/ol.js', 'build/ol-simple.js', 'build/ol-whitespace.js',
-         build_dir)
+    t.cp('build/ol.js', 'build/ol-debug.js', build_dir)
     t.cp('build/ol.css', css_dir)
     t.cp('examples/index.html', 'examples/example-list.js',
          'examples/example-list.xml', 'examples/Jugl.js',

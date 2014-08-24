@@ -29,7 +29,7 @@ ol.control.ScaleLineProperty = {
  * Units for the scale line. Supported values are `'degrees'`, `'imperial'`,
  * `'nautical'`, `'metric'`, `'us'`.
  * @enum {string}
- * @api
+ * @api stable
  */
 ol.control.ScaleLineUnits = {
   DEGREES: 'degrees',
@@ -43,14 +43,17 @@ ol.control.ScaleLineUnits = {
 
 /**
  * @classdesc
- * A control displaying rough x-axis distances.
- * By default it will show in the bottom left portion of the map, but this can
- * be changed by using the css selector `.ol-scale-line`.
+ * A control displaying rough x-axis distances, calculated for the center of the
+ * viewport.
+ * No scale line will be shown when the x-axis distance cannot be calculated in
+ * the view projection (e.g. at or beyond the poles in EPSG:4326).
+ * By default the scale line will show in the bottom left portion of the map,
+ * but this can be changed by using the css selector `.ol-scale-line`.
  *
  * @constructor
  * @extends {ol.control.Control}
  * @param {olx.control.ScaleLineOptions=} opt_options Scale line options.
- * @api
+ * @api stable
  */
 ol.control.ScaleLine = function(opt_options) {
 
@@ -138,7 +141,7 @@ ol.control.ScaleLine.LEADING_DIGITS = [1, 2, 5];
  * @return {ol.control.ScaleLineUnits|undefined} The units to use in the scale
  *     line.
  * @observable
- * @api
+ * @api stable
  */
 ol.control.ScaleLine.prototype.getUnits = function() {
   return /** @type {ol.control.ScaleLineUnits|undefined} */ (
@@ -175,7 +178,7 @@ ol.control.ScaleLine.prototype.handleUnitsChanged_ = function() {
 /**
  * @param {ol.control.ScaleLineUnits} units The units to use in the scale line.
  * @observable
- * @api
+ * @api stable
  */
 ol.control.ScaleLine.prototype.setUnits = function(units) {
   this.set(ol.control.ScaleLineProperty.UNITS, units);
@@ -304,7 +307,11 @@ ol.control.ScaleLine.prototype.updateElement_ = function() {
     count = ol.control.ScaleLine.LEADING_DIGITS[i % 3] *
         Math.pow(10, Math.floor(i / 3));
     width = Math.round(count / pointResolution);
-    if (width >= this.minWidth_) {
+    if (isNaN(width)) {
+      goog.style.setElementShown(this.element_, false);
+      this.renderedVisible_ = false;
+      return;
+    } else if (width >= this.minWidth_) {
       break;
     }
     ++i;

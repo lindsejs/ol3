@@ -24,6 +24,30 @@ describe('ol.extent', function() {
 
   });
 
+  describe('getIntersection()', function() {
+    it('returns the intersection of two extents', function() {
+      var world = [-180, -90, 180, 90];
+      var north = [-180, 0, 180, 90];
+      var farNorth = [-180, 45, 180, 90];
+      var east = [0, -90, 180, 90];
+      var farEast = [90, -90, 180, 90];
+      var south = [-180, -90, 180, 0];
+      var farSouth = [-180, -90, 180, -45];
+      var west = [-180, -90, 0, 90];
+      var farWest = [-180, -90, -90, 90];
+      var none = ol.extent.createEmpty();
+      expect(ol.extent.getIntersection(world, none)).to.eql(none);
+      expect(ol.extent.getIntersection(world, north)).to.eql(north);
+      expect(ol.extent.getIntersection(world, east)).to.eql(east);
+      expect(ol.extent.getIntersection(world, south)).to.eql(south);
+      expect(ol.extent.getIntersection(world, west)).to.eql(west);
+      expect(ol.extent.getIntersection(farEast, farWest)).to.eql(none);
+      expect(ol.extent.getIntersection(farNorth, farSouth)).to.eql(none);
+      expect(ol.extent.getIntersection(north, west)).to.eql([-180, 0, 0, 90]);
+      expect(ol.extent.getIntersection(east, south)).to.eql([0, -90, 180, 0]);
+    });
+  });
+
   describe('containsCoordinate', function() {
 
     describe('positive', function() {
@@ -151,6 +175,31 @@ describe('ol.extent', function() {
       expect(center[0]).to.eql(2);
       expect(center[1]).to.eql(3);
     });
+  });
+
+  describe('getCorner', function() {
+    var extent = [1, 2, 3, 4];
+
+    it('gets the bottom left', function() {
+      var corner = ol.extent.Corner.BOTTOM_LEFT;
+      expect(ol.extent.getCorner(extent, corner)).to.eql([1, 2]);
+    });
+
+    it('gets the bottom right', function() {
+      var corner = ol.extent.Corner.BOTTOM_RIGHT;
+      expect(ol.extent.getCorner(extent, corner)).to.eql([3, 2]);
+    });
+
+    it('gets the top left', function() {
+      var corner = ol.extent.Corner.TOP_LEFT;
+      expect(ol.extent.getCorner(extent, corner)).to.eql([1, 4]);
+    });
+
+    it('gets the top right', function() {
+      var corner = ol.extent.Corner.TOP_RIGHT;
+      expect(ol.extent.getCorner(extent, corner)).to.eql([3, 4]);
+    });
+
   });
 
   describe('getForViewAndSize', function() {
@@ -514,5 +563,6 @@ describe('ol.extent', function() {
 
 goog.require('goog.vec.Mat4');
 goog.require('ol.extent');
+goog.require('ol.extent.Corner');
 goog.require('ol.extent.Relationship');
 goog.require('ol.proj');

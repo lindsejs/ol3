@@ -18,15 +18,9 @@ olx.AttributionOptions;
 /**
  * HTML markup for this attribution.
  * @type {string}
+ * @api stable
  */
 olx.AttributionOptions.prototype.html;
-
-
-/**
- * Tile ranges (FOR INTERNAL USE ONLY).
- * @type {Object.<string, Array.<ol.TileRange>>|undefined}
- */
-olx.AttributionOptions.prototype.tileRanges;
 
 
 /**
@@ -41,6 +35,7 @@ olx.DeviceOptions;
  * When set to false, no tiles will be loaded while animating, which improves
  * responsiveness on devices with slow memory. Default is `true`.
  * @type {boolean|undefined}
+ * @api
  */
 olx.DeviceOptions.prototype.loadTilesWhileAnimating;
 
@@ -49,6 +44,7 @@ olx.DeviceOptions.prototype.loadTilesWhileAnimating;
  * When set to false, no tiles will be loaded while interacting, which improves
  * responsiveness on devices with slow memory. Default is `true`.
  * @type {boolean|undefined}
+ * @api
  */
 olx.DeviceOptions.prototype.loadTilesWhileInteracting;
 
@@ -63,6 +59,7 @@ olx.DeviceOrientationOptions;
 /**
  * Start tracking. Default is `false`.
  * @type {boolean|undefined}
+ * @api
  */
 olx.DeviceOrientationOptions.prototype.tracking;
 
@@ -79,6 +76,7 @@ olx.GeolocationOptions;
 /**
  * Start Tracking. Default is `false`.
  * @type {boolean|undefined}
+ * @api
  */
 olx.GeolocationOptions.prototype.tracking;
 
@@ -87,6 +85,7 @@ olx.GeolocationOptions.prototype.tracking;
  * Tracking options. See
  * {@link http://www.w3.org/TR/geolocation-API/#position_options_interface}.
  * @type {GeolocationPositionOptions|undefined}
+ * @api
  */
 olx.GeolocationOptions.prototype.trackingOptions;
 
@@ -94,20 +93,95 @@ olx.GeolocationOptions.prototype.trackingOptions;
 /**
  * Projection.
  * @type {ol.proj.ProjectionLike}
+ * @api
  */
 olx.GeolocationOptions.prototype.projection;
 
 
 /**
+ * Object literal with config options for the map logo.
+ * @typedef {{href: (string), src: (string)}}
+ * @api
+ */
+olx.LogoOptions;
+
+
+/**
+ * Link url for the logo. Will be followed when the logo is clicked.
+ * @type {string}
+ * @api
+ */
+olx.LogoOptions.prototype.href;
+
+
+/**
+ * Image src for the logo
+ * @type {string}
+ * @api
+ */
+olx.LogoOptions.prototype.src;
+
+
+/**
+ * @typedef {{map: (ol.Map|undefined),
+ *     maxLines: (number|undefined),
+ *     strokeStyle: (ol.style.Stroke|undefined),
+ *     targetSize: (number|undefined)}}
+ * @api
+ */
+olx.GraticuleOptions;
+
+
+/**
+ * Reference to an `ol.Map` object.
+ * @type {ol.Map|undefined}
+ * @api
+ */
+olx.GraticuleOptions.prototype.map;
+
+
+/**
+ * The maximum number of meridians and parallels from the center of the
+ * map. The default value is 100, which means that at most 200 meridians
+ * and 200 parallels will be displayed. The default value is appropriate
+ * for conformal projections like Spherical Mercator. If you increase
+ * the value more lines will be drawn and the drawing performance will
+ * decrease.
+ * @type {number|undefined}
+ * @api
+ */
+olx.GraticuleOptions.prototype.maxLines;
+
+
+/**
+ * The stroke style to use for drawing the graticule. If not provided, the
+ * lines will be drawn with `rgba(0,0,0,0.2)`, a not fully opaque black.
+ *
+ * @type {ol.style.Stroke|undefined}
+ * @api
+ */
+olx.GraticuleOptions.prototype.strokeStyle;
+
+
+/**
+ * The target size of the graticule cells, in pixels. Default
+ * value is 100 pixels.
+ * @type {number|undefined}
+ * @api
+ */
+olx.GraticuleOptions.prototype.targetSize;
+
+
+/**
  * Object literal with config options for the map.
- * @typedef {{controls: (ol.Collection|Array.<ol.control.Control>|undefined),
+ * @typedef {{controls: (ol.Collection.<ol.control.Control>|Array.<ol.control.Control>|undefined),
  *     deviceOptions: (olx.DeviceOptions|undefined),
  *     pixelRatio: (number|undefined),
- *     interactions: (ol.Collection|Array.<ol.interaction.Interaction>|undefined),
+ *     interactions: (ol.Collection.<ol.interaction.Interaction>|Array.<ol.interaction.Interaction>|undefined),
  *     keyboardEventTarget: (Element|Document|string|undefined),
- *     layers: (Array.<ol.layer.Base>|ol.Collection|undefined),
- *     ol3Logo: (boolean|undefined),
- *     overlays: (ol.Collection|Array.<ol.Overlay>|undefined),
+ *     layers: (Array.<ol.layer.Base>|ol.Collection.<ol.layer.Base>|undefined),
+ *     logo: (boolean|string|olx.LogoOptions|undefined),
+ *     overlays: (ol.Collection.<ol.Overlay>|Array.<ol.Overlay>|undefined),
  *     renderer: (ol.RendererType|Array.<ol.RendererType|string>|string|undefined),
  *     target: (Element|string|undefined),
  *     view: (ol.View|undefined)}}
@@ -119,7 +193,8 @@ olx.MapOptions;
 /**
  * Controls initially added to the map. If not specified,
  * {@link ol.control.defaults ol.control.defaults()} is used.
- * @type {ol.Collection|Array.<ol.control.Control>|undefined}
+ * @type {ol.Collection.<ol.control.Control>|Array.<ol.control.Control>|undefined}
+ * @api
  */
 olx.MapOptions.prototype.controls;
 
@@ -127,6 +202,7 @@ olx.MapOptions.prototype.controls;
 /**
  * Device options for the map.
  * @type {olx.DeviceOptions|undefined}
+ * @api
  */
 olx.MapOptions.prototype.deviceOptions;
 
@@ -135,6 +211,7 @@ olx.MapOptions.prototype.deviceOptions;
  * The ratio between physical pixels and device-independent pixels (dips) on the
  * device. If `undefined` then it gets set by using `window.devicePixelRatio`.
  * @type {number|undefined}
+ * @api
  */
 olx.MapOptions.prototype.pixelRatio;
 
@@ -142,7 +219,8 @@ olx.MapOptions.prototype.pixelRatio;
 /**
  * Interactions that are initially added to the map. If not specified,
  * {@link ol.interaction.defaults ol.interaction.defaults()} is used.
- * @type {ol.Collection|Array.<ol.interaction.Interaction>|undefined}
+ * @type {ol.Collection.<ol.interaction.Interaction>|Array.<ol.interaction.Interaction>|undefined}
+ * @api
  */
 olx.MapOptions.prototype.interactions;
 
@@ -156,27 +234,35 @@ olx.MapOptions.prototype.interactions;
  * is not `document` the target element needs to be focused for key events to be
  * emitted, requiring that the target element has a `tabindex` attribute.
  * @type {Element|Document|string|undefined}
+ * @api
  */
 olx.MapOptions.prototype.keyboardEventTarget;
 
 
 /**
  * Layers. If this is not defined, a map with no layers will be rendered.
- * @type {Array.<ol.layer.Base>|ol.Collection|undefined}
+ * @type {Array.<ol.layer.Base>|ol.Collection.<ol.layer.Base>|undefined}
+ * @api
  */
 olx.MapOptions.prototype.layers;
 
 
 /**
- * Show ol3 logo. Default is `true`.
- * @type {boolean|undefined}
+ * The map logo. A logo to be displayed on the map at all times. If a string is
+ * provided, it will be set as the image source of the logo. If an object is
+ * provided, the `src` property should be the URL for an image and the `href`
+ * property should be a URL for creating a link. To disable the map logo, set
+ * the option to `false`. By default, the OpenLayers 3 logo is shown.
+ * @type {boolean|string|olx.LogoOptions|undefined}
+ * @api
  */
-olx.MapOptions.prototype.ol3Logo;
+olx.MapOptions.prototype.logo;
 
 
 /**
  * Overlays initially added to the map. By default, no overlays are added.
- * @type {ol.Collection|Array.<ol.Overlay>|undefined}
+ * @type {ol.Collection.<ol.Overlay>|Array.<ol.Overlay>|undefined}
+ * @api
  */
 olx.MapOptions.prototype.overlays;
 
@@ -187,6 +273,7 @@ olx.MapOptions.prototype.overlays;
  * {@link ol.RendererType} here to use a specific renderer.
  * Note that at present only the Canvas renderer supports vector data.
  * @type {ol.RendererType|Array.<ol.RendererType|string>|string|undefined}
+ * @api
  */
 olx.MapOptions.prototype.renderer;
 
@@ -196,6 +283,7 @@ olx.MapOptions.prototype.renderer;
  * element. If not specified at construction time, {@link ol.Map#setTarget}
  * must be called for the map to be rendered.
  * @type {Element|string|undefined}
+ * @api
  */
 olx.MapOptions.prototype.target;
 
@@ -204,6 +292,7 @@ olx.MapOptions.prototype.target;
  * The map's view.  No layer sources will be fetched unless this is specified at
  * construction time or through {@link ol.Map#setView}.
  * @type {ol.View|undefined}
+ * @api
  */
 olx.MapOptions.prototype.view;
 
@@ -216,7 +305,7 @@ olx.MapOptions.prototype.view;
  *     positioning: (ol.OverlayPositioning|string|undefined),
  *     stopEvent: (boolean|undefined),
  *     insertFirst: (boolean|undefined)}}
- * @api
+ * @api stable
  */
 olx.OverlayOptions;
 
@@ -224,6 +313,7 @@ olx.OverlayOptions;
 /**
  * The overlay element.
  * @type {Element|undefined}
+ * @api stable
  */
 olx.OverlayOptions.prototype.element;
 
@@ -234,6 +324,7 @@ olx.OverlayOptions.prototype.element;
  * The second element in the array is the vertical offset. A positive value
  * shifts the overlay down. Default is `[0, 0]`.
  * @type {Array.<number>|undefined}
+ * @api stable
  */
 olx.OverlayOptions.prototype.offset;
 
@@ -241,6 +332,7 @@ olx.OverlayOptions.prototype.offset;
 /**
  * The overlay position in map projection.
  * @type {ol.Coordinate|undefined}
+ * @api stable
  */
 olx.OverlayOptions.prototype.position;
 
@@ -251,6 +343,7 @@ olx.OverlayOptions.prototype.position;
  * `'bottom-right'`, `'center-left'`, `'center-center'`, `'center-right'`,
  * `'top-left'`, `'top-center'`, and `'top-right'`. Default is `'top-left'`.
  * @type {ol.OverlayPositioning|string|undefined}
+ * @api stable
  */
 olx.OverlayOptions.prototype.positioning;
 
@@ -261,6 +354,7 @@ olx.OverlayOptions.prototype.positioning;
  * controls (CSS class name `ol-overlaycontainer-stopevent`); if `false` it is
  * placed in the container with CSS class name `ol-overlaycontainer`.
  * @type {boolean|undefined}
+ * @api stable
  */
 olx.OverlayOptions.prototype.stopEvent;
 
@@ -271,6 +365,7 @@ olx.OverlayOptions.prototype.stopEvent;
  * the controls (see the `stopEvent` option) you will probably set `insertFirst`
  * to `true` so the overlay is displayed below the controls.
  * @type {boolean|undefined}
+ * @api stable
  */
 olx.OverlayOptions.prototype.insertFirst;
 
@@ -281,7 +376,8 @@ olx.OverlayOptions.prototype.insertFirst;
  *     units: (ol.proj.Units|string),
  *     extent: (ol.Extent|undefined),
  *     axisOrientation: (string|undefined),
- *     global: (boolean|undefined)}}
+ *     global: (boolean|undefined),
+ *     worldExtent: (ol.Extent|undefined)}}
  * @api
  */
 olx.ProjectionOptions;
@@ -290,6 +386,7 @@ olx.ProjectionOptions;
 /**
  * The SRS identifier code, e.g. `EPSG:4326`.
  * @type {string}
+ * @api
  */
 olx.ProjectionOptions.prototype.code;
 
@@ -297,6 +394,7 @@ olx.ProjectionOptions.prototype.code;
 /**
  * Units.
  * @type {ol.proj.Units|string}
+ * @api
  */
 olx.ProjectionOptions.prototype.units;
 
@@ -304,6 +402,7 @@ olx.ProjectionOptions.prototype.units;
 /**
  * The validity extent for the SRS.
  * @type {ol.Extent|undefined}
+ * @api
  */
 olx.ProjectionOptions.prototype.extent;
 
@@ -311,6 +410,7 @@ olx.ProjectionOptions.prototype.extent;
 /**
  * The axis orientation as specified in Proj4. The default is `enu`.
  * @type {string|undefined}
+ * @api
  */
 olx.ProjectionOptions.prototype.axisOrientation;
 
@@ -318,8 +418,17 @@ olx.ProjectionOptions.prototype.axisOrientation;
 /**
  * Whether the projection is valid for the whole globe. Default is `false`.
  * @type {boolean|undefined}
+ * @api
  */
 olx.ProjectionOptions.prototype.global;
+
+
+/**
+ * The world extent for the SRS.
+ * @type {ol.Extent|undefined}
+ * @api
+ */
+olx.ProjectionOptions.prototype.worldExtent;
 
 
 /**
@@ -348,16 +457,18 @@ olx.ViewOptions;
  * specified with the `projection` option. Default is `undefined`, and layer
  * sources will not be fetched if this is not set.
  * @type {ol.Coordinate|undefined}
+ * @api
  */
 olx.ViewOptions.prototype.center;
 
 
 /**
  * Rotation constraint. `false` means no constraint. `true` means no constraint,
- * but snap to zero near zero. A number constraints the rotation to that number
+ * but snap to zero near zero. A number constrains the rotation to that number
  * of values. For example, `4` will constrain the rotation to 0, 90, 180, and
  * 270 degrees. The default is `true`.
  * @type {boolean|number|undefined}
+ * @api
  */
 olx.ViewOptions.prototype.constrainRotation;
 
@@ -365,6 +476,7 @@ olx.ViewOptions.prototype.constrainRotation;
 /**
  * Enable rotation. Default is `true`.
  * @type {boolean|undefined}
+ * @api
  */
 olx.ViewOptions.prototype.enableRotation;
 
@@ -373,6 +485,7 @@ olx.ViewOptions.prototype.enableRotation;
  * The extent that constrains the center, in other words, center cannot be set
  * outside this extent. Default is `undefined`.
  * @type {ol.Extent|undefined}
+ * @api
  */
 olx.ViewOptions.prototype.extent;
 
@@ -385,6 +498,7 @@ olx.ViewOptions.prototype.extent;
  * (the default) then `maxResolution` defaults to `40075016.68557849 / 256 =
  * 156543.03392804097`.
  * @type {number|undefined}
+ * @api
  */
 olx.ViewOptions.prototype.maxResolution;
 
@@ -397,6 +511,7 @@ olx.ViewOptions.prototype.maxResolution;
  * defaults to `40075016.68557849 / 256 / Math.pow(2, 28) =
  * 0.0005831682455839253`.
  * @type {number|undefined}
+ * @api
  */
 olx.ViewOptions.prototype.minResolution;
 
@@ -407,6 +522,7 @@ olx.ViewOptions.prototype.minResolution;
  * is `28`.  Note that if `minResolution` is also provided, it is given
  * precedence over `maxZoom`.
  * @type {number|undefined}
+ * @api
  */
 olx.ViewOptions.prototype.maxZoom;
 
@@ -417,6 +533,7 @@ olx.ViewOptions.prototype.maxZoom;
  * is `0`. Note that if `maxResolution` is also provided, it is given
  * precedence over `minZoom`.
  * @type {number|undefined}
+ * @api
  */
 olx.ViewOptions.prototype.minZoom;
 
@@ -424,6 +541,7 @@ olx.ViewOptions.prototype.minZoom;
 /**
  * The projection. Default is `EPSG:3857` (Spherical Mercator).
  * @type {ol.proj.ProjectionLike}
+ * @api
  */
 olx.ViewOptions.prototype.projection;
 
@@ -434,6 +552,7 @@ olx.ViewOptions.prototype.projection;
  * `zoom`. Default is `undefined`, and layer sources will not be fetched if
  * neither this nor `zoom` are defined.
  * @type {number|undefined}
+ * @api
  */
 olx.ViewOptions.prototype.resolution;
 
@@ -443,6 +562,7 @@ olx.ViewOptions.prototype.resolution;
  * `maxResolution`, `minResolution`, `minZoom`, `maxZoom`, and `zoomFactor`
  * options are ignored.
  * @type {Array.<number>|undefined}
+ * @api
  */
 olx.ViewOptions.prototype.resolutions;
 
@@ -451,6 +571,7 @@ olx.ViewOptions.prototype.resolutions;
  * The initial rotation for the view in radians (positive rotation clockwise).
  * Default is `0`.
  * @type {number|undefined}
+ * @api
  */
 olx.ViewOptions.prototype.rotation;
 
@@ -460,6 +581,7 @@ olx.ViewOptions.prototype.rotation;
  * initial resolution for the view. The initial resolution is determined using
  * the `ol.View#constrainResolution` method.
  * @type {number|undefined}
+ * @api
  */
 olx.ViewOptions.prototype.zoom;
 
@@ -467,6 +589,7 @@ olx.ViewOptions.prototype.zoom;
 /**
  * The zoom factor used to determine the resolution constraint.  Default is `2`.
  * @type {number|undefined}
+ * @api
  */
 olx.ViewOptions.prototype.zoomFactor;
 
@@ -485,6 +608,7 @@ olx.animation.BounceOptions;
  * The resolution to start the bounce from, typically
  * `map.getView().getResolution()`.
  * @type {number}
+ * @api
  */
 olx.animation.BounceOptions.prototype.resolution;
 
@@ -492,6 +616,7 @@ olx.animation.BounceOptions.prototype.resolution;
 /**
  * The start time of the animation. Default is immediately.
  * @type {number|undefined}
+ * @api
  */
 olx.animation.BounceOptions.prototype.start;
 
@@ -499,6 +624,7 @@ olx.animation.BounceOptions.prototype.start;
 /**
  * The duration of the animation in milliseconds. Default is `1000`.
  * @type {number|undefined}
+ * @api
  */
 olx.animation.BounceOptions.prototype.duration;
 
@@ -507,6 +633,7 @@ olx.animation.BounceOptions.prototype.duration;
  * The easing function to use. Can be an {@link ol.easing} or a custom function.
  * Default is {@link ol.easing.upAndDown}.
  * @type {function(number):number|undefined}
+ * @api
  */
 olx.animation.BounceOptions.prototype.easing;
 
@@ -524,6 +651,7 @@ olx.animation.PanOptions;
 /**
  * The location to start panning from, typically `map.getView().getCenter()`.
  * @type {ol.Coordinate}
+ * @api
  */
 olx.animation.PanOptions.prototype.source;
 
@@ -531,6 +659,7 @@ olx.animation.PanOptions.prototype.source;
 /**
  * The start time of the animation. Default is immediately.
  * @type {number|undefined}
+ * @api
  */
 olx.animation.PanOptions.prototype.start;
 
@@ -538,6 +667,7 @@ olx.animation.PanOptions.prototype.start;
 /**
  * The duration of the animation in milliseconds. Default is `1000`.
  * @type {number|undefined}
+ * @api
  */
 olx.animation.PanOptions.prototype.duration;
 
@@ -546,6 +676,7 @@ olx.animation.PanOptions.prototype.duration;
  * The easing function to use. Can be an {@link ol.easing} or a custom function.
  * Default is {@link ol.easing.inAndOut}.
  * @type {function(number):number|undefined}
+ * @api
  */
 olx.animation.PanOptions.prototype.easing;
 
@@ -565,6 +696,7 @@ olx.animation.RotateOptions;
  * The rotation value (in radians) to begin rotating from, typically
  * `map.getView().getRotation()`. If `undefined` then `0` is assumed.
  * @type {number|undefined}
+ * @api
  */
 olx.animation.RotateOptions.prototype.rotation;
 
@@ -573,6 +705,7 @@ olx.animation.RotateOptions.prototype.rotation;
  * The rotation center/anchor. The map rotates around the center of the view
  * if unspecified.
  * @type {ol.Coordinate|undefined}
+ * @api
  */
 olx.animation.RotateOptions.prototype.anchor;
 
@@ -580,6 +713,7 @@ olx.animation.RotateOptions.prototype.anchor;
 /**
  * The start time of the animation. Default is immediately.
  * @type {number|undefined}
+ * @api
  */
 olx.animation.RotateOptions.prototype.start;
 
@@ -587,6 +721,7 @@ olx.animation.RotateOptions.prototype.start;
 /**
  * The duration of the animation in milliseconds. Default is `1000`.
  * @type {number|undefined}
+ * @api
  */
 olx.animation.RotateOptions.prototype.duration;
 
@@ -595,6 +730,7 @@ olx.animation.RotateOptions.prototype.duration;
  * The easing function to use. Can be an {@link ol.easing} or a custom function.
  * Default is {@link ol.easing.inAndOut}.
  * @type {function(number):number|undefined}
+ * @api
  */
 olx.animation.RotateOptions.prototype.easing;
 
@@ -613,6 +749,7 @@ olx.animation.ZoomOptions;
  * number The resolution to begin zooming from, typically
  * `map.getView().getResolution()`.
  * @type {number}
+ * @api
  */
 olx.animation.ZoomOptions.prototype.resolution;
 
@@ -620,6 +757,7 @@ olx.animation.ZoomOptions.prototype.resolution;
 /**
  * The start time of the animation. Default is immediately.
  * @type {number|undefined}
+ * @api
  */
 olx.animation.ZoomOptions.prototype.start;
 
@@ -627,6 +765,7 @@ olx.animation.ZoomOptions.prototype.start;
 /**
  * The duration of the animation in milliseconds. Default is `1000`.
  * @type {number|undefined}
+ * @api
  */
 olx.animation.ZoomOptions.prototype.duration;
 
@@ -635,6 +774,7 @@ olx.animation.ZoomOptions.prototype.duration;
  * The easing function to use. Can be an {@link ol.easing} or a custom function.
  * Default is {@link ol.easing.inAndOut}.
  * @type {function(number):number|undefined}
+ * @api
  */
 olx.animation.ZoomOptions.prototype.easing;
 
@@ -650,6 +790,7 @@ olx.control.AttributionOptions;
 /**
  * CSS class name. Default is `ol-attribution`.
  * @type {string|undefined}
+ * @api
  */
 olx.control.AttributionOptions.prototype.className;
 
@@ -657,6 +798,7 @@ olx.control.AttributionOptions.prototype.className;
 /**
  * Target.
  * @type {Element|undefined}
+ * @api
  */
 olx.control.AttributionOptions.prototype.target;
 
@@ -667,6 +809,7 @@ olx.control.AttributionOptions.prototype.target;
  * {@link http://www.openstreetmap.org/copyright OSM Copyright} —
  * Default is `true`.
  * @type {boolean|undefined}
+ * @api
  */
 olx.control.AttributionOptions.prototype.collapsible;
 
@@ -674,6 +817,7 @@ olx.control.AttributionOptions.prototype.collapsible;
 /**
  * Specify if attributions should be collapsed at startup. Default is `true`.
  * @type {boolean|undefined}
+ * @api
  */
 olx.control.AttributionOptions.prototype.collapsed;
 
@@ -681,6 +825,7 @@ olx.control.AttributionOptions.prototype.collapsed;
 /**
  * Text label to use for the button tip. Default is `Attributions`
  * @type {string|undefined}
+ * @api
  */
 olx.control.AttributionOptions.prototype.tipLabel;
 
@@ -688,19 +833,21 @@ olx.control.AttributionOptions.prototype.tipLabel;
 /**
  * Text label to use for the collapsed attributions button. Default is `i`
  * @type {string|undefined}
+ * @api
  */
 olx.control.AttributionOptions.prototype.label;
 
 /**
  * Text label to use for the expanded attributions button. Default is `»`
  * @type {string|undefined}
+ * @api
  */
 olx.control.AttributionOptions.prototype.collapseLabel;
 
 /**
  * @typedef {{element: (Element|undefined),
  *     target: (Element|string|undefined)}}
- * @api
+ * @api stable
  */
 olx.control.ControlOptions;
 
@@ -709,6 +856,7 @@ olx.control.ControlOptions;
  * The element is the control's container element. This only needs to be
  * specified if you're developing a custom control.
  * @type {Element|undefined}
+ * @api stable
  */
 olx.control.ControlOptions.prototype.element;
 
@@ -717,6 +865,7 @@ olx.control.ControlOptions.prototype.element;
  * Specify a target if you want the control to be rendered outside of the map's
  * viewport.
  * @type {Element|string|undefined}
+ * @api stable
  */
 olx.control.ControlOptions.prototype.target;
 
@@ -724,8 +873,9 @@ olx.control.ControlOptions.prototype.target;
 /**
  * @typedef {{attribution: (boolean|undefined),
  *     attributionOptions: (olx.control.AttributionOptions|undefined),
- *     zoom: (boolean|undefined),
+ *     rotate: (boolean|undefined),
  *     rotateOptions: (olx.control.RotateOptions|undefined),
+ *     zoom: (boolean|undefined),
  *     zoomOptions: (olx.control.ZoomOptions|undefined)}}
  * @api
  */
@@ -735,6 +885,7 @@ olx.control.DefaultsOptions;
 /**
  * Attribution. Default is `true`.
  * @type {boolean|undefined}
+ * @api stable
  */
 olx.control.DefaultsOptions.prototype.attribution;
 
@@ -742,6 +893,7 @@ olx.control.DefaultsOptions.prototype.attribution;
 /**
  * Attribution options.
  * @type {olx.control.AttributionOptions|undefined}
+ * @api
  */
 olx.control.DefaultsOptions.prototype.attributionOptions;
 
@@ -749,6 +901,7 @@ olx.control.DefaultsOptions.prototype.attributionOptions;
 /**
  * Rotate. Default is `true`.
  * @type {boolean|undefined}
+ * @api stable
  */
 olx.control.DefaultsOptions.prototype.rotate;
 
@@ -756,6 +909,7 @@ olx.control.DefaultsOptions.prototype.rotate;
 /**
  * Rotate options.
  * @type {olx.control.RotateOptions|undefined}
+ * @api
  */
 olx.control.DefaultsOptions.prototype.rotateOptions;
 
@@ -763,6 +917,7 @@ olx.control.DefaultsOptions.prototype.rotateOptions;
 /**
  * Zoom. Default is `true`.
  * @type {boolean|undefined}
+ * @api stable
  */
 olx.control.DefaultsOptions.prototype.zoom;
 
@@ -770,6 +925,7 @@ olx.control.DefaultsOptions.prototype.zoom;
 /**
  * Zoom options.
  * @type {olx.control.ZoomOptions|undefined}
+ * @api
  */
 olx.control.DefaultsOptions.prototype.zoomOptions;
 
@@ -787,6 +943,7 @@ olx.control.FullScreenOptions;
 /**
  * CSS class name. Default is `ol-full-screen`.
  * @type {string|undefined}
+ * @api
  */
 olx.control.FullScreenOptions.prototype.className;
 
@@ -794,6 +951,7 @@ olx.control.FullScreenOptions.prototype.className;
 /**
  * Text label to use for the button tip. Default is `Toggle full-screen`
  * @type {string|undefined}
+ * @api
  */
 olx.control.FullScreenOptions.prototype.tipLabel;
 
@@ -801,6 +959,7 @@ olx.control.FullScreenOptions.prototype.tipLabel;
 /**
  * Full keyboard access.
  * @type {boolean|undefined}
+ * @api
  */
 olx.control.FullScreenOptions.prototype.keys;
 
@@ -808,6 +967,7 @@ olx.control.FullScreenOptions.prototype.keys;
 /**
  * Target.
  * @type {Element|undefined}
+ * @api
  */
 olx.control.FullScreenOptions.prototype.target;
 
@@ -818,7 +978,7 @@ olx.control.FullScreenOptions.prototype.target;
  *     projection: ol.proj.ProjectionLike,
  *     target: (Element|undefined),
  *     undefinedHTML: (string|undefined)}}
- * @api
+ * @api stable
  */
 olx.control.MousePositionOptions;
 
@@ -826,6 +986,7 @@ olx.control.MousePositionOptions;
 /**
  * CSS class name. Default is `ol-mouse-position`.
  * @type {string|undefined}
+ * @api stable
  */
 olx.control.MousePositionOptions.prototype.className;
 
@@ -833,6 +994,7 @@ olx.control.MousePositionOptions.prototype.className;
 /**
  * Coordinate format.
  * @type {ol.CoordinateFormatType|undefined}
+ * @api stable
  */
 olx.control.MousePositionOptions.prototype.coordinateFormat;
 
@@ -840,6 +1002,7 @@ olx.control.MousePositionOptions.prototype.coordinateFormat;
 /**
  * Projection.
  * @type {ol.proj.ProjectionLike}
+ * @api stable
  */
 olx.control.MousePositionOptions.prototype.projection;
 
@@ -847,6 +1010,7 @@ olx.control.MousePositionOptions.prototype.projection;
 /**
  * Target.
  * @type {Element|undefined}
+ * @api stable
  */
 olx.control.MousePositionOptions.prototype.target;
 
@@ -854,6 +1018,7 @@ olx.control.MousePositionOptions.prototype.target;
 /**
  * Markup for undefined coordinates. Default is `` (empty string).
  * @type {string|undefined}
+ * @api stable
  */
 olx.control.MousePositionOptions.prototype.undefinedHTML;
 
@@ -863,7 +1028,7 @@ olx.control.MousePositionOptions.prototype.undefinedHTML;
  *     minWidth: (number|undefined),
  *     target: (Element|undefined),
  *     units: (ol.control.ScaleLineUnits|string|undefined)}}
- * @api
+ * @api stable
  */
 olx.control.ScaleLineOptions;
 
@@ -871,6 +1036,7 @@ olx.control.ScaleLineOptions;
 /**
  * CSS Class name. Default is `ol-scale-line`.
  * @type {string|undefined}
+ * @api stable
  */
 olx.control.ScaleLineOptions.prototype.className;
 
@@ -878,6 +1044,7 @@ olx.control.ScaleLineOptions.prototype.className;
 /**
  * Minimum width in pixels. Default is `64`.
  * @type {number|undefined}
+ * @api stable
  */
 olx.control.ScaleLineOptions.prototype.minWidth;
 
@@ -885,6 +1052,7 @@ olx.control.ScaleLineOptions.prototype.minWidth;
 /**
  * Target.
  * @type {Element|undefined}
+ * @api stable
  */
 olx.control.ScaleLineOptions.prototype.target;
 
@@ -892,6 +1060,7 @@ olx.control.ScaleLineOptions.prototype.target;
 /**
  * Units. Default is `metric`.
  * @type {ol.control.ScaleLineUnits|string|undefined}
+ * @api stable
  */
 olx.control.ScaleLineOptions.prototype.units;
 
@@ -903,7 +1072,7 @@ olx.control.ScaleLineOptions.prototype.units;
  *     tipLabel: (string|undefined),
  *     target: (Element|undefined),
  *     autoHide: (boolean|undefined)}}
- * @api
+ * @api stable
  */
 olx.control.RotateOptions;
 
@@ -911,6 +1080,7 @@ olx.control.RotateOptions;
 /**
  * CSS class name. Default is `ol-rotate`.
  * @type {string|undefined}
+ * @api stable
  */
 olx.control.RotateOptions.prototype.className;
 
@@ -918,6 +1088,7 @@ olx.control.RotateOptions.prototype.className;
 /**
  * Text label to use for the rotate button. Default is `⇧`
  * @type {string|undefined}
+ * @api stable
  */
 olx.control.RotateOptions.prototype.label;
 
@@ -925,6 +1096,7 @@ olx.control.RotateOptions.prototype.label;
 /**
  * Text label to use for the rotate tip. Default is `Reset rotation`
  * @type {string|undefined}
+ * @api stable
  */
 olx.control.RotateOptions.prototype.tipLabel;
 
@@ -932,6 +1104,7 @@ olx.control.RotateOptions.prototype.tipLabel;
 /**
  * Animation duration in milliseconds. Default is `250`.
  * @type {number|undefined}
+ * @api stable
  */
 olx.control.RotateOptions.prototype.duration;
 
@@ -939,6 +1112,7 @@ olx.control.RotateOptions.prototype.duration;
 /**
  * Hide the control when rotation is 0. Default is `true`.
  * @type {boolean|undefined}
+ * @api stable
  */
 olx.control.RotateOptions.prototype.autoHide;
 
@@ -946,6 +1120,7 @@ olx.control.RotateOptions.prototype.autoHide;
 /**
  * Target.
  * @type {Element|undefined}
+ * @api stable
  */
 olx.control.RotateOptions.prototype.target;
 
@@ -959,7 +1134,7 @@ olx.control.RotateOptions.prototype.target;
  *     zoomOutTipLabel: (string|undefined),
  *     delta: (number|undefined),
  *     target: (Element|undefined)}}
- * @api
+ * @api stable
  */
 olx.control.ZoomOptions;
 
@@ -967,6 +1142,7 @@ olx.control.ZoomOptions;
 /**
  * Animation duration in milliseconds. Default is `250`.
  * @type {number|undefined}
+ * @api stable
  */
 olx.control.ZoomOptions.prototype.duration;
 
@@ -974,6 +1150,7 @@ olx.control.ZoomOptions.prototype.duration;
 /**
  * CSS class name. Default is `ol-zoom`.
  * @type {string|undefined}
+ * @api stable
  */
 olx.control.ZoomOptions.prototype.className;
 
@@ -981,6 +1158,7 @@ olx.control.ZoomOptions.prototype.className;
 /**
  * Text label to use for the zoom-in button. Default is `+`
  * @type {string|undefined}
+ * @api stable
  */
 olx.control.ZoomOptions.prototype.zoomInLabel;
 
@@ -988,6 +1166,7 @@ olx.control.ZoomOptions.prototype.zoomInLabel;
 /**
  * Text label to use for the zoom-out button. Default is `-`
  * @type {string|undefined}
+ * @api stable
  */
 olx.control.ZoomOptions.prototype.zoomOutLabel;
 
@@ -995,6 +1174,7 @@ olx.control.ZoomOptions.prototype.zoomOutLabel;
 /**
  * Text label to use for the button tip. Default is `Zoom in`
  * @type {string|undefined}
+ * @api stable
  */
 olx.control.ZoomOptions.prototype.zoomInTipLabel;
 
@@ -1002,6 +1182,7 @@ olx.control.ZoomOptions.prototype.zoomInTipLabel;
 /**
  * Text label to use for the button tip. Default is `Zoom out`
  * @type {string|undefined}
+ * @api stable
  */
 olx.control.ZoomOptions.prototype.zoomOutTipLabel;
 
@@ -1009,6 +1190,7 @@ olx.control.ZoomOptions.prototype.zoomOutTipLabel;
 /**
  * The zoom delta applied on each click.
  * @type {number|undefined}
+ * @api stable
  */
 olx.control.ZoomOptions.prototype.delta;
 
@@ -1016,6 +1198,7 @@ olx.control.ZoomOptions.prototype.delta;
 /**
  * Target.
  * @type {Element|undefined}
+ * @api stable
  */
 olx.control.ZoomOptions.prototype.target;
 
@@ -1024,7 +1207,7 @@ olx.control.ZoomOptions.prototype.target;
  * @typedef {{className: (string|undefined),
  *     maxResolution: (number|undefined),
  *     minResolution: (number|undefined)}}
- * @api
+ * @api stable
  */
 olx.control.ZoomSliderOptions;
 
@@ -1032,6 +1215,7 @@ olx.control.ZoomSliderOptions;
 /**
  * CSS class name.
  * @type {string|undefined}
+ * @api stable
  */
 olx.control.ZoomSliderOptions.prototype.className;
 
@@ -1039,6 +1223,7 @@ olx.control.ZoomSliderOptions.prototype.className;
 /**
  * Maximum resolution.
  * @type {number|undefined}
+ * @api stable
  */
 olx.control.ZoomSliderOptions.prototype.maxResolution;
 
@@ -1046,6 +1231,7 @@ olx.control.ZoomSliderOptions.prototype.maxResolution;
 /**
  * Minimum resolution.
  * @type {number|undefined}
+ * @api stable
  */
 olx.control.ZoomSliderOptions.prototype.minResolution;
 
@@ -1055,7 +1241,7 @@ olx.control.ZoomSliderOptions.prototype.minResolution;
  *     target: (Element|undefined),
  *     tipLabel: (string|undefined),
  *     extent: (ol.Extent|undefined)}}
- * @api
+ * @api stable
  */
 olx.control.ZoomToExtentOptions;
 
@@ -1063,6 +1249,7 @@ olx.control.ZoomToExtentOptions;
 /**
  * Class name. Default is `ol-zoom-extent`.
  * @type {string|undefined}
+ * @api stable
  */
 olx.control.ZoomToExtentOptions.prototype.className;
 
@@ -1070,6 +1257,7 @@ olx.control.ZoomToExtentOptions.prototype.className;
 /**
  * Target.
  * @type {Element|undefined}
+ * @api stable
  */
 olx.control.ZoomToExtentOptions.prototype.target;
 
@@ -1077,6 +1265,7 @@ olx.control.ZoomToExtentOptions.prototype.target;
 /**
  * Text label to use for the button tip. Default is `Zoom to extent`
  * @type {string|undefined}
+ * @api stable
  */
 olx.control.ZoomToExtentOptions.prototype.tipLabel;
 
@@ -1085,12 +1274,70 @@ olx.control.ZoomToExtentOptions.prototype.tipLabel;
  * The extent to zoom to. If undefined the validity extent of the view
  * projection is used.
  * @type {ol.Extent|undefined}
+ * @api stable
  */
 olx.control.ZoomToExtentOptions.prototype.extent;
 
 
 /**
- * @typedef {{defaultProjection: ol.proj.ProjectionLike,
+ * @typedef {{dataProjection: (ol.proj.ProjectionLike|undefined),
+ *     featureProjection: (ol.proj.ProjectionLike|undefined)}}
+ * @api
+ */
+olx.format.ReadOptions;
+
+
+/**
+ * Projection of the data we are reading. If not provided, the projection will
+ * be derived from the data (where possible) or the `defaultDataProjection` of
+ * the format is assigned (where set). If the projection can not be derived from
+ * the data and if no `defaultDataProjection` is set for a format, the features
+ * will not be reprojected.
+ * @type {ol.proj.ProjectionLike|undefined}
+ * @api
+ */
+olx.format.ReadOptions.prototype.dataProjection;
+
+
+/**
+ * Projection of the feature geometries created by the format reader. If not
+ * provided, features will be returned in the `dataProjection`.
+ * @type {ol.proj.ProjectionLike|undefined}
+ * @api
+ */
+olx.format.ReadOptions.prototype.featureProjection;
+
+
+/**
+ * @typedef {{dataProjection: (ol.proj.ProjectionLike|undefined),
+ *     featureProjection: ol.proj.ProjectionLike}}
+ * @api
+ */
+olx.format.WriteOptions;
+
+
+/**
+ * Projection of the data we are writing. If not provided, the
+ * `defaultDataProjection` of the format is assigned (where set). If no
+ * `defaultDataProjection` is set for a format, the features will be returned
+ * in the `featureProjection`.
+ * @type {ol.proj.ProjectionLike|undefined}
+ * @api
+ */
+olx.format.WriteOptions.prototype.dataProjection;
+
+
+/**
+ * Projection of the feature geometries that will be serialized by the format
+ * writer.
+ * @type {ol.proj.ProjectionLike}
+ * @api
+ */
+olx.format.WriteOptions.prototype.featureProjection;
+
+
+/**
+ * @typedef {{defaultDataProjection: ol.proj.ProjectionLike,
  *     geometryName: (string|undefined)}}
  * @api
  */
@@ -1098,15 +1345,17 @@ olx.format.GeoJSONOptions;
 
 
 /**
- * Default projection.
+ * Default data projection.
  * @type {ol.proj.ProjectionLike}
+ * @api
  */
-olx.format.GeoJSONOptions.prototype.defaultProjection;
+olx.format.GeoJSONOptions.prototype.defaultDataProjection;
 
 
 /**
  * Geometry name to use when creating features.
  * @type {string|undefined}
+ * @api
  */
 olx.format.GeoJSONOptions.prototype.geometryName;
 
@@ -1121,23 +1370,25 @@ olx.format.PolylineOptions;
 /**
  * The factor by which the coordinates values will be scaled.
  * Default is `1e5`.
+ * @type {number}
+ * @api
  */
 olx.format.PolylineOptions.prototype.factor;
 
 
-
 /**
- * @typedef {{defaultProjection: ol.proj.ProjectionLike}}
+ * @typedef {{defaultDataProjection: ol.proj.ProjectionLike}}
  * @api
  */
 olx.format.TopoJSONOptions;
 
 
 /**
- * Default projection.
+ * Default data projection.
  * @type {ol.proj.ProjectionLike}
+ * @api
  */
-olx.format.TopoJSONOptions.prototype.defaultProjection;
+olx.format.TopoJSONOptions.prototype.defaultDataProjection;
 
 
 /**
@@ -1151,20 +1402,31 @@ olx.format.IGCOptions;
  * Altitude mode. Possible values are `barometric`, `gps`, and `none`. Default
  * is `none`.
  * @type {ol.format.IGCZ|undefined}
+ * @api
  */
 olx.format.IGCOptions.prototype.altitudeMode;
 
 
 /**
- * @typedef {{defaultStyle: (Array.<ol.style.Style>|undefined)}}
+ * @typedef {{extractStyles: (boolean|undefined),
+ *     defaultStyle: (Array.<ol.style.Style>|undefined)}}
  * @api
  */
 olx.format.KMLOptions;
 
 
 /**
+ * Extract styles from the KML. Default is `true`.
+ * @type {boolean|undefined}
+ * @api
+ */
+olx.format.KMLOptions.prototype.extractStyles;
+
+
+/**
  * Default style. The default default style is the same as Google Earth.
  * @type {Array.<ol.style.Style>|undefined}
+ * @api
  */
 olx.format.KMLOptions.prototype.defaultStyle;
 
@@ -1186,6 +1448,7 @@ olx.format.GMLOptions;
 /**
  * Feature namespace.
  * @type {string}
+ * @api
  */
 olx.format.GMLOptions.prototype.featureNS;
 
@@ -1193,6 +1456,7 @@ olx.format.GMLOptions.prototype.featureNS;
 /**
  * Feature type to parse.
  * @type {string}
+ * @api
  */
 olx.format.GMLOptions.prototype.featureType;
 
@@ -1200,6 +1464,7 @@ olx.format.GMLOptions.prototype.featureType;
 /**
  * srsName to use when writing geometries.
  * @type {string}
+ * @api
  */
 olx.format.GMLOptions.prototype.srsName;
 
@@ -1208,6 +1473,7 @@ olx.format.GMLOptions.prototype.srsName;
  * Write gml:Surface instead of gml:Polygon elements. This also affects the
  * elements in multi-part geometries. Default is `false`.
  * @type {boolean|undefined}
+ * @api
  */
 olx.format.GMLOptions.prototype.surface;
 
@@ -1216,6 +1482,7 @@ olx.format.GMLOptions.prototype.surface;
  * Write gml:Curve instead of gml:LineString elements. This also affects the
  * elements in multi-part geometries. Default is `false`.
  * @type {boolean|undefined}
+ * @api
  */
 olx.format.GMLOptions.prototype.curve;
 
@@ -1224,6 +1491,7 @@ olx.format.GMLOptions.prototype.curve;
  * Write gml:MultiCurve instead of gml:MultiLineString. Since the latter is
  * deprecated in GML 3, the default is `true`.
  * @type {boolean|undefined}
+ * @api
  */
 olx.format.GMLOptions.prototype.multiCurve;
 
@@ -1232,6 +1500,7 @@ olx.format.GMLOptions.prototype.multiCurve;
  * Write gml:multiSurface instead of gml:MultiPolygon. Since the latter is
  * deprecated in GML 3, the default is `true`.
  * @type {boolean|undefined}
+ * @api
  */
 olx.format.GMLOptions.prototype.multiSurface;
 
@@ -1240,8 +1509,29 @@ olx.format.GMLOptions.prototype.multiSurface;
  * Optional schemaLocation to use when writing out the GML, this will override
  * the default provided.
  * @type {string|undefined}
+ * @api
  */
 olx.format.GMLOptions.prototype.schemaLocation;
+
+
+/**
+ * @typedef {{readExtensions: (function(ol.Feature, Node)|undefined)}}
+ * @api
+ */
+olx.format.GPXOptions;
+
+
+/**
+ * Callback function to process `extensions` nodes.
+ * To prevent memory leaks, this callback function must
+ * not store any references to the node. Note that the `extensions`
+ * node is not allowed in GPX 1.0. Moreover, only `extensions`
+ * nodes from `wpt`, `rte` and `trk` can be processed, as those are
+ * directly mapped to a feature.
+ * @type {function(ol.Feature, Node)}
+ * @api
+ */
+olx.format.GPXOptions.prototype.readExtensions;
 
 
 /**
@@ -1256,6 +1546,7 @@ olx.format.WFSOptions;
 /**
  * The namespace URI used for features.
  * @type {string}
+ * @api
  */
 olx.format.WFSOptions.prototype.featureNS;
 
@@ -1263,6 +1554,7 @@ olx.format.WFSOptions.prototype.featureNS;
 /**
  * The feature type to parse. Only used for read operations.
  * @type {string}
+ * @api
  */
 olx.format.WFSOptions.prototype.featureType;
 
@@ -1271,6 +1563,7 @@ olx.format.WFSOptions.prototype.featureType;
  * Optional schemaLocation to use for serialization, this will override the
  * default.
  * @type {string|undefined}
+ * @api
  */
 olx.format.WFSOptions.prototype.schemaLocation;
 
@@ -1293,6 +1586,7 @@ olx.format.WFSWriteGetFeatureOptions;
 /**
  * The namespace URI used for features.
  * @type {string}
+ * @api
  */
 olx.format.WFSWriteGetFeatureOptions.prototype.featureNS;
 
@@ -1300,6 +1594,7 @@ olx.format.WFSWriteGetFeatureOptions.prototype.featureNS;
 /**
  * The prefix for the feature namespace.
  * @type {string}
+ * @api
  */
 olx.format.WFSWriteGetFeatureOptions.prototype.featurePrefix;
 
@@ -1307,6 +1602,7 @@ olx.format.WFSWriteGetFeatureOptions.prototype.featurePrefix;
 /**
  * The feature type names.
  * @type {Array.<string>}
+ * @api
  */
 olx.format.WFSWriteGetFeatureOptions.prototype.featureTypes;
 
@@ -1315,6 +1611,7 @@ olx.format.WFSWriteGetFeatureOptions.prototype.featureTypes;
  * SRS name. No srsName attribute will be set on geometries when this is not
  * provided.
  * @type {string|undefined}
+ * @api
  */
 olx.format.WFSWriteGetFeatureOptions.prototype.srsName;
 
@@ -1322,6 +1619,7 @@ olx.format.WFSWriteGetFeatureOptions.prototype.srsName;
 /**
  * Handle.
  * @type {string|undefined}
+ * @api
  */
 olx.format.WFSWriteGetFeatureOptions.prototype.handle;
 
@@ -1329,6 +1627,7 @@ olx.format.WFSWriteGetFeatureOptions.prototype.handle;
 /**
  * Output format.
  * @type {string|undefined}
+ * @api
  */
 olx.format.WFSWriteGetFeatureOptions.prototype.outputFormat;
 
@@ -1336,6 +1635,7 @@ olx.format.WFSWriteGetFeatureOptions.prototype.outputFormat;
 /**
  * Maximum number of features to fetch.
  * @type {number|undefined}
+ * @api
  */
 olx.format.WFSWriteGetFeatureOptions.prototype.maxFeatures;
 
@@ -1343,6 +1643,7 @@ olx.format.WFSWriteGetFeatureOptions.prototype.maxFeatures;
 /**
  * Geometry name to use in a BBOX filter.
  * @type {string|undefined}
+ * @api
  */
 olx.format.WFSWriteGetFeatureOptions.prototype.geometryName;
 
@@ -1350,6 +1651,7 @@ olx.format.WFSWriteGetFeatureOptions.prototype.geometryName;
 /**
  * Extent to use for the BBOX filter.
  * @type {ol.Extent|undefined}
+ * @api
  */
 olx.format.WFSWriteGetFeatureOptions.prototype.bbox;
 
@@ -1370,6 +1672,7 @@ olx.format.WFSWriteTransactionOptions;
 /**
  * The namespace URI used for features.
  * @type {string}
+ * @api
  */
 olx.format.WFSWriteTransactionOptions.prototype.featureNS;
 
@@ -1377,6 +1680,7 @@ olx.format.WFSWriteTransactionOptions.prototype.featureNS;
 /**
  * The prefix for the feature namespace.
  * @type {string}
+ * @api
  */
 olx.format.WFSWriteTransactionOptions.prototype.featurePrefix;
 
@@ -1384,6 +1688,7 @@ olx.format.WFSWriteTransactionOptions.prototype.featurePrefix;
 /**
  * The feature type name.
  * @type {string}
+ * @api
  */
 olx.format.WFSWriteTransactionOptions.prototype.featureType;
 
@@ -1392,6 +1697,7 @@ olx.format.WFSWriteTransactionOptions.prototype.featureType;
  * SRS name. No srsName attribute will be set on geometries when this is not
  * provided.
  * @type {string|undefined}
+ * @api
  */
 olx.format.WFSWriteTransactionOptions.prototype.srsName;
 
@@ -1399,6 +1705,7 @@ olx.format.WFSWriteTransactionOptions.prototype.srsName;
 /**
  * Handle.
  * @type {string|undefined}
+ * @api
  */
 olx.format.WFSWriteTransactionOptions.prototype.handle;
 
@@ -1406,6 +1713,7 @@ olx.format.WFSWriteTransactionOptions.prototype.handle;
 /**
  * Native elements. Currently not supported.
  * @type {Array.<Object>}
+ * @api
  */
 olx.format.WFSWriteTransactionOptions.prototype.nativeElements;
 
@@ -1413,6 +1721,7 @@ olx.format.WFSWriteTransactionOptions.prototype.nativeElements;
 /**
  * GML options for the WFS transaction writer.
  * @type {olx.format.GMLOptions|undefined}
+ * @api
  */
 olx.format.WFSWriteTransactionOptions.prototype.gmlOptions;
 
@@ -1428,6 +1737,7 @@ olx.format.WKTOptions;
  * Whether to split GeometryCollections into
  * multiple features on reading. Default is `false`.
  * @type {boolean|undefined}
+ * @api
  */
 olx.format.WKTOptions.prototype.splitCollection;
 
@@ -1452,6 +1762,7 @@ olx.interaction.DefaultsOptions;
 /**
  * Whether Alt-Shift-drag rotate is desired. Default is `true`.
  * @type {boolean|undefined}
+ * @api
  */
 olx.interaction.DefaultsOptions.prototype.altShiftDragRotate;
 
@@ -1459,6 +1770,7 @@ olx.interaction.DefaultsOptions.prototype.altShiftDragRotate;
 /**
  * Whether double click zoom is desired. Default is `true`.
  * @type {boolean|undefined}
+ * @api
  */
 olx.interaction.DefaultsOptions.prototype.doubleClickZoom;
 
@@ -1466,6 +1778,7 @@ olx.interaction.DefaultsOptions.prototype.doubleClickZoom;
 /**
  * Whether keyboard interaction is desired. Default is `true`.
  * @type {boolean|undefined}
+ * @api
  */
 olx.interaction.DefaultsOptions.prototype.keyboard;
 
@@ -1473,6 +1786,7 @@ olx.interaction.DefaultsOptions.prototype.keyboard;
 /**
  * Whether mousewheel zoom is desired. Default is `true`.
  * @type {boolean|undefined}
+ * @api
  */
 olx.interaction.DefaultsOptions.prototype.mouseWheelZoom;
 
@@ -1480,6 +1794,7 @@ olx.interaction.DefaultsOptions.prototype.mouseWheelZoom;
 /**
  * Whether Shift-drag zoom is desired. Default is `true`.
  * @type {boolean|undefined}
+ * @api
  */
 olx.interaction.DefaultsOptions.prototype.shiftDragZoom;
 
@@ -1487,6 +1802,7 @@ olx.interaction.DefaultsOptions.prototype.shiftDragZoom;
 /**
  * Whether drag pan is desired. Default is `true`.
  * @type {boolean|undefined}
+ * @api
  */
 olx.interaction.DefaultsOptions.prototype.dragPan;
 
@@ -1494,6 +1810,7 @@ olx.interaction.DefaultsOptions.prototype.dragPan;
 /**
  * Whether pinch rotate is desired. Default is `true`.
  * @type {boolean|undefined}
+ * @api
  */
 olx.interaction.DefaultsOptions.prototype.pinchRotate;
 
@@ -1501,6 +1818,7 @@ olx.interaction.DefaultsOptions.prototype.pinchRotate;
 /**
  * Whether pinch zoom is desired. Default is `true`.
  * @type {boolean|undefined}
+ * @api
  */
 olx.interaction.DefaultsOptions.prototype.pinchZoom;
 
@@ -1508,6 +1826,7 @@ olx.interaction.DefaultsOptions.prototype.pinchZoom;
 /**
  * Zoom delta.
  * @type {number|undefined}
+ * @api
  */
 olx.interaction.DefaultsOptions.prototype.zoomDelta;
 
@@ -1515,6 +1834,7 @@ olx.interaction.DefaultsOptions.prototype.zoomDelta;
 /**
  * Zoom duration.
  * @type {number|undefined}
+ * @api
  */
 olx.interaction.DefaultsOptions.prototype.zoomDuration;
 
@@ -1530,6 +1850,7 @@ olx.interaction.DoubleClickZoomOptions;
 /**
  * Animation duration in milliseconds. Default is `250`.
  * @type {number|undefined}
+ * @api
  */
 olx.interaction.DoubleClickZoomOptions.prototype.duration;
 
@@ -1537,6 +1858,7 @@ olx.interaction.DoubleClickZoomOptions.prototype.duration;
 /**
  * The zoom delta applied on each double click, default is `1`.
  * @type {number|undefined}
+ * @api
  */
 olx.interaction.DoubleClickZoomOptions.prototype.delta;
 
@@ -1552,6 +1874,7 @@ olx.interaction.DragAndDropOptions;
 /**
  * Format constructors.
  * @type {Array.<function(new: ol.format.Feature)>|undefined}
+ * @api
  */
 olx.interaction.DragAndDropOptions.prototype.formatConstructors;
 
@@ -1559,6 +1882,7 @@ olx.interaction.DragAndDropOptions.prototype.formatConstructors;
 /**
  * Target projection. By default, the map's view's projection is used.
  * @type {ol.proj.ProjectionLike}
+ * @api
  */
 olx.interaction.DragAndDropOptions.prototype.reprojectTo;
 
@@ -1576,6 +1900,7 @@ olx.interaction.DragBoxOptions;
  * to indicate whether that event should be handled.
  * Default is {@link ol.events.condition.always}.
  * @type {ol.events.ConditionType|undefined}
+ * @api
  */
 olx.interaction.DragBoxOptions.prototype.condition;
 
@@ -1583,6 +1908,7 @@ olx.interaction.DragBoxOptions.prototype.condition;
 /**
  * Style for the box.
  * @type {ol.style.Style}
+ * @api
  */
 olx.interaction.DragBoxOptions.prototype.style;
 
@@ -1597,6 +1923,7 @@ olx.interaction.DragPanOptions;
 /**
  * Kinetic inertia to apply to the pan.
  * @type {ol.Kinetic|undefined}
+ * @api
  */
 olx.interaction.DragPanOptions.prototype.kinetic;
 
@@ -1613,6 +1940,7 @@ olx.interaction.DragRotateAndZoomOptions;
  * to indicate whether that event should be handled.
  * Default is {@link ol.events.condition.shiftKeyOnly}.
  * @type {ol.events.ConditionType|undefined}
+ * @api
  */
 olx.interaction.DragRotateAndZoomOptions.prototype.condition;
 
@@ -1629,6 +1957,7 @@ olx.interaction.DragRotateOptions;
  * to indicate whether that event should be handled.
  * Default is {@link ol.events.condition.altShiftKeysOnly}.
  * @type {ol.events.ConditionType|undefined}
+ * @api
  */
 olx.interaction.DragRotateOptions.prototype.condition;
 
@@ -1646,6 +1975,7 @@ olx.interaction.DragZoomOptions;
  * to indicate whether that event should be handled.
  * Default is {@link ol.events.condition.shiftKeyOnly}.
  * @type {ol.events.ConditionType|undefined}
+ * @api
  */
 olx.interaction.DragZoomOptions.prototype.condition;
 
@@ -1653,17 +1983,18 @@ olx.interaction.DragZoomOptions.prototype.condition;
 /**
  * Style for the box.
  * @type {ol.style.Style}
+ * @api
  */
 olx.interaction.DragZoomOptions.prototype.style;
 
 
 /**
- * @typedef {{features: (ol.Collection|undefined),
+ * @typedef {{features: (ol.Collection.<ol.Feature>|undefined),
  *     source: (ol.source.Vector|undefined),
  *     snapTolerance: (number|undefined),
  *     type: ol.geom.GeometryType,
  *     minPointsPerRing: (number|undefined),
- *     style: (ol.style.Style|Array.<ol.style.Style>|ol.feature.StyleFunction|undefined),
+ *     style: (ol.style.Style|Array.<ol.style.Style>|ol.style.StyleFunction|undefined),
  *     geometryName: (string|undefined),
  *     condition: (ol.events.ConditionType|undefined)}}
  * @api
@@ -1673,7 +2004,8 @@ olx.interaction.DrawOptions;
 
 /**
  * Destination collection for the drawn features.
- * @type {ol.Collection|undefined}
+ * @type {ol.Collection.<ol.Feature>|undefined}
+ * @api
  */
 olx.interaction.DrawOptions.prototype.features;
 
@@ -1681,13 +2013,15 @@ olx.interaction.DrawOptions.prototype.features;
 /**
  * Destination source for the drawn features.
  * @type {ol.source.Vector|undefined}
+ * @api
  */
 olx.interaction.DrawOptions.prototype.source;
 
 
 /**
- * Pixel distance for snapping to the drawing finish (default is 12).
+ * Pixel distance for snapping to the drawing finish. Default is `12`.
  * @type {number|undefined}
+ * @api
  */
 olx.interaction.DrawOptions.prototype.snapTolerance;
 
@@ -1696,21 +2030,24 @@ olx.interaction.DrawOptions.prototype.snapTolerance;
  * Drawing type ('Point', 'LineString', 'Polygon', 'MultiPoint',
  * 'MultiLineString', or 'MultiPolygon').
  * @type {ol.geom.GeometryType}
+ * @api
  */
 olx.interaction.DrawOptions.prototype.type;
 
 
 /**
- * The number of points that must be drawn before a polygon ring can be finished
- * (default is 3).
+ * The number of points that must be drawn before a polygon ring can be finished.
+ * Default is `3`.
  * @type {number|undefined}
+ * @api
  */
 olx.interaction.DrawOptions.prototype.minPointsPerRing;
 
 
 /**
  * Style for sketch features.
- * @type {ol.style.Style|Array.<ol.style.Style>|ol.feature.StyleFunction|undefined}
+ * @type {ol.style.Style|Array.<ol.style.Style>|ol.style.StyleFunction|undefined}
+ * @api
  */
 olx.interaction.DrawOptions.prototype.style;
 
@@ -1718,6 +2055,7 @@ olx.interaction.DrawOptions.prototype.style;
 /**
  * Geometry name to use for features created by the draw interaction.
  * @type {string|undefined}
+ * @api
  */
 olx.interaction.DrawOptions.prototype.geometryName;
 
@@ -1727,6 +2065,7 @@ olx.interaction.DrawOptions.prototype.geometryName;
  * to indicate whether that event should be handled.
  * By default {@link ol.events.condition.noModifierKeys} adds a vertex.
  * @type {ol.events.ConditionType|undefined}
+ * @api
  */
 olx.interaction.DrawOptions.prototype.condition;
 
@@ -1745,6 +2084,7 @@ olx.interaction.KeyboardPanOptions;
  * Default is {@link ol.events.condition.noModifierKeys} and
  * {@link ol.events.condition.targetNotEditable}.
  * @type {ol.events.ConditionType|undefined}
+ * @api
  */
 olx.interaction.KeyboardPanOptions.prototype.condition;
 
@@ -1752,6 +2092,7 @@ olx.interaction.KeyboardPanOptions.prototype.condition;
 /**
  * Pixel The amount to pan on each key press. Default is `128` pixels.
  * @type {number|undefined}
+ * @api
  */
 olx.interaction.KeyboardPanOptions.prototype.pixelDelta;
 
@@ -1768,6 +2109,7 @@ olx.interaction.KeyboardZoomOptions;
 /**
  * Animation duration in milliseconds. Default is `100`.
  * @type {number|undefined}
+ * @api
  */
 olx.interaction.KeyboardZoomOptions.prototype.duration;
 
@@ -1777,6 +2119,7 @@ olx.interaction.KeyboardZoomOptions.prototype.duration;
  * to indicate whether that event should be handled.
  * Default is {@link ol.events.condition.targetNotEditable}.
  * @type {ol.events.ConditionType|undefined}
+ * @api
  */
 olx.interaction.KeyboardZoomOptions.prototype.condition;
 
@@ -1784,6 +2127,7 @@ olx.interaction.KeyboardZoomOptions.prototype.condition;
 /**
  * The amount to zoom on each key press. Default is `1`.
  * @type {number|undefined}
+ * @api
  */
 olx.interaction.KeyboardZoomOptions.prototype.delta;
 
@@ -1791,8 +2135,8 @@ olx.interaction.KeyboardZoomOptions.prototype.delta;
 /**
  * @typedef {{deleteCondition: (ol.events.ConditionType|undefined),
  *     pixelTolerance: (number|undefined),
- *     style: (ol.style.Style|Array.<ol.style.Style>|ol.feature.StyleFunction|undefined),
- *     features: ol.Collection}}
+ *     style: (ol.style.Style|Array.<ol.style.Style>|ol.style.StyleFunction|undefined),
+ *     features: ol.Collection.<ol.Feature>}}
  * @api
  */
 olx.interaction.ModifyOptions;
@@ -1804,28 +2148,32 @@ olx.interaction.ModifyOptions;
  * By default, {@link ol.events.condition.singleClick} with
  * {@link ol.events.condition.noModifierKeys} results in a vertex deletion.
  * @type {ol.events.ConditionType|undefined}
+ * @api
  */
 olx.interaction.ModifyOptions.prototype.deleteCondition;
 
 
 /**
  * Pixel tolerance for considering the pointer close enough to a segment or
- * vertex for editing. Default is 10 pixels.
+ * vertex for editing. Default is `10` pixels.
  * @type {number|undefined}
+ * @api
  */
 olx.interaction.ModifyOptions.prototype.pixelTolerance;
 
 
 /**
  * FeatureOverlay style.
- * @type {ol.style.Style|Array.<ol.style.Style>|ol.feature.StyleFunction|undefined}
+ * @type {ol.style.Style|Array.<ol.style.Style>|ol.style.StyleFunction|undefined}
+ * @api
  */
 olx.interaction.ModifyOptions.prototype.style;
 
 
 /**
  * The features the interaction works on.
- * @type {ol.Collection}
+ * @type {ol.Collection.<ol.Feature>}
+ * @api
  */
 olx.interaction.ModifyOptions.prototype.features;
 
@@ -1840,6 +2188,7 @@ olx.interaction.MouseWheelZoomOptions;
 /**
  * Animation duration in milliseconds. Default is `250`.
  * @type {number|undefined}
+ * @api
  */
 olx.interaction.MouseWheelZoomOptions.prototype.duration;
 
@@ -1854,6 +2203,7 @@ olx.interaction.PinchRotateOptions;
 /**
  * Minimal angle in radians to start a rotation. Default is `0.3`.
  * @type {number|undefined}
+ * @api
  */
 olx.interaction.PinchRotateOptions.prototype.threshold;
 
@@ -1868,6 +2218,7 @@ olx.interaction.PinchZoomOptions;
 /**
  * Animation duration in milliseconds. Default is `400`.
  * @type {number|undefined}
+ * @api
  */
 olx.interaction.PinchZoomOptions.prototype.duration;
 
@@ -1876,7 +2227,7 @@ olx.interaction.PinchZoomOptions.prototype.duration;
  * @typedef {{addCondition: (ol.events.ConditionType|undefined),
  *     condition: (ol.events.ConditionType|undefined),
  *     layers: (Array.<ol.layer.Layer>|function(ol.layer.Layer): boolean|undefined),
- *     style: (ol.style.Style|Array.<ol.style.Style>|ol.feature.StyleFunction|undefined),
+ *     style: (ol.style.Style|Array.<ol.style.Style>|ol.style.StyleFunction|undefined),
  *     removeCondition: (ol.events.ConditionType|undefined),
  *     toggleCondition: (ol.events.ConditionType|undefined)}}
  * @api
@@ -1890,6 +2241,7 @@ olx.interaction.SelectOptions;
  * By default, this is {@link ol.events.condition.never}. Use this if you want
  * to use different events for add and remove instead of `toggle`.
  * @type {ol.events.ConditionType|undefined}
+ * @api
  */
 olx.interaction.SelectOptions.prototype.addCondition;
 
@@ -1904,6 +2256,7 @@ olx.interaction.SelectOptions.prototype.addCondition;
  * See `toggle`, `add`, `remove` options for adding/removing extra features to/
  * from the selection.
  * @type {ol.events.ConditionType|undefined}
+ * @api
  */
 olx.interaction.SelectOptions.prototype.condition;
 
@@ -1915,13 +2268,15 @@ olx.interaction.SelectOptions.prototype.condition;
  * `true` for layers that you want to be selectable. If the option is
  * absent, all visible layers will be considered selectable.
  * @type {Array.<ol.layer.Layer>|function(ol.layer.Layer): boolean|undefined}
+ * @api
  */
 olx.interaction.SelectOptions.prototype.layers;
 
 
 /**
  * Style for the selected features (those in the FeatureOverlay).
- * @type {ol.style.Style|Array.<ol.style.Style>|ol.feature.StyleFunction|undefined}
+ * @type {ol.style.Style|Array.<ol.style.Style>|ol.style.StyleFunction|undefined}
+ * @api
  */
 olx.interaction.SelectOptions.prototype.style;
 
@@ -1932,6 +2287,7 @@ olx.interaction.SelectOptions.prototype.style;
  * By default, this is {@link ol.events.condition.never}. Use this if you want
  * to use different events for add and remove instead of `toggle`.
  * @type {ol.events.ConditionType|undefined}
+ * @api
  */
 olx.interaction.SelectOptions.prototype.removeCondition;
 
@@ -1946,6 +2302,7 @@ olx.interaction.SelectOptions.prototype.removeCondition;
  * See `add` and `remove` if you want to use different events instead of a
  * toggle.
  * @type {ol.events.ConditionType|undefined}
+ * @api
  */
 olx.interaction.SelectOptions.prototype.toggleCondition;
 
@@ -1957,6 +2314,7 @@ olx.interaction.SelectOptions.prototype.toggleCondition;
  *     opacity: (number|undefined),
  *     saturation: (number|undefined),
  *     visible: (boolean|undefined),
+ *     extent: (ol.Extent|undefined),
  *     minResolution: (number|undefined),
  *     maxResolution: (number|undefined)}}
  * @api
@@ -1967,6 +2325,7 @@ olx.layer.BaseOptions;
 /**
  * Brightness. Default is `0`.
  * @type {number|undefined}
+ * @api
  */
 olx.layer.BaseOptions.prototype.brightness;
 
@@ -1974,6 +2333,7 @@ olx.layer.BaseOptions.prototype.brightness;
 /**
  * Contrast. Default is `1`.
  * @type {number|undefined}
+ * @api
  */
 olx.layer.BaseOptions.prototype.contrast;
 
@@ -1981,6 +2341,7 @@ olx.layer.BaseOptions.prototype.contrast;
 /**
  * Hue. Default is `0`.
  * @type {number|undefined}
+ * @api
  */
 olx.layer.BaseOptions.prototype.hue;
 
@@ -1988,6 +2349,7 @@ olx.layer.BaseOptions.prototype.hue;
 /**
  * Opacity (0, 1). Default is `1`.
  * @type {number|undefined}
+ * @api stable
  */
 olx.layer.BaseOptions.prototype.opacity;
 
@@ -1995,6 +2357,7 @@ olx.layer.BaseOptions.prototype.opacity;
 /**
  * Saturation. Default is `1`.
  * @type {number|undefined}
+ * @api
  */
 olx.layer.BaseOptions.prototype.saturation;
 
@@ -2002,13 +2365,24 @@ olx.layer.BaseOptions.prototype.saturation;
 /**
  * Visibility. Default is `true`.
  * @type {boolean|undefined}
+ * @api stable
  */
 olx.layer.BaseOptions.prototype.visible;
 
 
 /**
+ * The bounding extent for layer rendering.  The layer will not be rendered
+ * outside of this extent.
+ * @type {ol.Extent|undefined}
+ * @api stable
+ */
+olx.layer.BaseOptions.prototype.extent;
+
+
+/**
  * The minimum resolution (inclusive) at which this layer will be visible.
  * @type {number|undefined}
+ * @api stable
  */
 olx.layer.BaseOptions.prototype.minResolution;
 
@@ -2016,6 +2390,7 @@ olx.layer.BaseOptions.prototype.minResolution;
 /**
  * The maximum resolution (exclusive) below which this layer will be visible.
  * @type {number|undefined}
+ * @api stable
  */
 olx.layer.BaseOptions.prototype.maxResolution;
 
@@ -2028,6 +2403,7 @@ olx.layer.BaseOptions.prototype.maxResolution;
  *     saturation: (number|undefined),
  *     source: ol.source.Source,
  *     visible: (boolean|undefined),
+ *     extent: (ol.Extent|undefined),
  *     minResolution: (number|undefined),
  *     maxResolution: (number|undefined)}}
  * @api
@@ -2038,6 +2414,7 @@ olx.layer.LayerOptions;
 /**
  * Brightness. Default is `0`.
  * @type {number|undefined}
+ * @api
  */
 olx.layer.LayerOptions.prototype.brightness;
 
@@ -2045,6 +2422,7 @@ olx.layer.LayerOptions.prototype.brightness;
 /**
  * Contrast. Default is `1`.
  * @type {number|undefined}
+ * @api
  */
 olx.layer.LayerOptions.prototype.contrast;
 
@@ -2052,6 +2430,7 @@ olx.layer.LayerOptions.prototype.contrast;
 /**
  * Hue. Default is `0`.
  * @type {number|undefined}
+ * @api
  */
 olx.layer.LayerOptions.prototype.hue;
 
@@ -2059,6 +2438,7 @@ olx.layer.LayerOptions.prototype.hue;
 /**
  * Opacity (0, 1). Default is `1`.
  * @type {number|undefined}
+ * @api stable
  */
 olx.layer.LayerOptions.prototype.opacity;
 
@@ -2066,6 +2446,7 @@ olx.layer.LayerOptions.prototype.opacity;
 /**
  * Saturation. Default is `1`.
  * @type {number|undefined}
+ * @api
  */
 olx.layer.LayerOptions.prototype.saturation;
 
@@ -2073,6 +2454,7 @@ olx.layer.LayerOptions.prototype.saturation;
 /**
  * Source for this layer.
  * @type {ol.source.Source}
+ * @api stable
  */
 olx.layer.LayerOptions.prototype.source;
 
@@ -2080,13 +2462,24 @@ olx.layer.LayerOptions.prototype.source;
 /**
  * Visibility. Default is `true` (visible).
  * @type {boolean|undefined}
+ * @api stable
  */
 olx.layer.LayerOptions.prototype.visible;
 
 
 /**
+ * The bounding extent for layer rendering.  The layer will not be rendered
+ * outside of this extent.
+ * @type {ol.Extent|undefined}
+ * @api stable
+ */
+olx.layer.LayerOptions.prototype.extent;
+
+
+/**
  * The minimum resolution (inclusive) at which this layer will be visible.
  * @type {number|undefined}
+ * @api stable
  */
 olx.layer.LayerOptions.prototype.minResolution;
 
@@ -2094,6 +2487,7 @@ olx.layer.LayerOptions.prototype.minResolution;
 /**
  * The maximum resolution (exclusive) below which this layer will be visible.
  * @type {number|undefined}
+ * @api stable
  */
 olx.layer.LayerOptions.prototype.maxResolution;
 
@@ -2105,9 +2499,10 @@ olx.layer.LayerOptions.prototype.maxResolution;
  *     opacity: (number|undefined),
  *     saturation: (number|undefined),
  *     visible: (boolean|undefined),
+ *     extent: (ol.Extent|undefined),
  *     minResolution: (number|undefined),
  *     maxResolution: (number|undefined),
- *     layers: (Array.<ol.layer.Base>|ol.Collection|undefined)}}
+ *     layers: (Array.<ol.layer.Base>|ol.Collection.<ol.layer.Base>|undefined)}}
  * @api
  */
 olx.layer.GroupOptions;
@@ -2116,6 +2511,7 @@ olx.layer.GroupOptions;
 /**
  * Brightness. Default is `0`.
  * @type {number|undefined}
+ * @api
  */
 olx.layer.GroupOptions.prototype.brightness;
 
@@ -2123,6 +2519,7 @@ olx.layer.GroupOptions.prototype.brightness;
 /**
  * Contrast. Default is `1`.
  * @type {number|undefined}
+ * @api
  */
 olx.layer.GroupOptions.prototype.contrast;
 
@@ -2130,6 +2527,7 @@ olx.layer.GroupOptions.prototype.contrast;
 /**
  * Hue. Default is `0`.
  * @type {number|undefined}
+ * @api
  */
 olx.layer.GroupOptions.prototype.hue;
 
@@ -2137,6 +2535,7 @@ olx.layer.GroupOptions.prototype.hue;
 /**
  * Opacity (0, 1). Default is `1`.
  * @type {number|undefined}
+ * @api stable
  */
 olx.layer.GroupOptions.prototype.opacity;
 
@@ -2144,6 +2543,7 @@ olx.layer.GroupOptions.prototype.opacity;
 /**
  * Saturation. Default is `1`.
  * @type {number|undefined}
+ * @api
  */
 olx.layer.GroupOptions.prototype.saturation;
 
@@ -2151,13 +2551,24 @@ olx.layer.GroupOptions.prototype.saturation;
 /**
  * Visibility. Default is `true`.
  * @type {boolean|undefined}
+ * @api stable
  */
 olx.layer.GroupOptions.prototype.visible;
 
 
 /**
+ * The bounding extent for layer rendering.  The layer will not be rendered
+ * outside of this extent.
+ * @type {ol.Extent|undefined}
+ * @api stable
+ */
+olx.layer.GroupOptions.prototype.extent;
+
+
+/**
  * The minimum resolution (inclusive) at which this layer will be visible.
  * @type {number|undefined}
+ * @api stable
  */
 olx.layer.GroupOptions.prototype.minResolution;
 
@@ -2165,13 +2576,15 @@ olx.layer.GroupOptions.prototype.minResolution;
 /**
  * The maximum resolution (exclusive) below which this layer will be visible.
  * @type {number|undefined}
+ * @api stable
  */
 olx.layer.GroupOptions.prototype.maxResolution;
 
 
 /**
  * Child layers.
- * @type {Array.<ol.layer.Base>|ol.Collection|undefined}
+ * @type {Array.<ol.layer.Base>|ol.Collection.<ol.layer.Base>|undefined}
+ * @api stable
  */
 olx.layer.GroupOptions.prototype.layers;
 
@@ -2185,6 +2598,7 @@ olx.layer.GroupOptions.prototype.layers;
  *     blur: (number|undefined),
  *     shadow: (number|undefined),
  *     weight: (string|function(ol.Feature):number|undefined),
+ *     extent: (ol.Extent|undefined),
  *     minResolution: (number|undefined),
  *     maxResolution: (number|undefined),
  *     opacity: (number|undefined),
@@ -2199,6 +2613,7 @@ olx.layer.HeatmapOptions;
 /**
  * Brightness.
  * @type {number|undefined}
+ * @api
  */
 olx.layer.HeatmapOptions.prototype.brightness;
 
@@ -2206,6 +2621,7 @@ olx.layer.HeatmapOptions.prototype.brightness;
 /**
  * Contrast.
  * @type {number|undefined}
+ * @api
  */
 olx.layer.HeatmapOptions.prototype.contrast;
 
@@ -2213,6 +2629,7 @@ olx.layer.HeatmapOptions.prototype.contrast;
 /**
  * Hue.
  * @type {number|undefined}
+ * @api
  */
 olx.layer.HeatmapOptions.prototype.hue;
 
@@ -2221,6 +2638,7 @@ olx.layer.HeatmapOptions.prototype.hue;
  * The color gradient of the heatmap, specified as an array of CSS color
  * strings. Default is `['#00f', '#0ff', '#0f0', '#ff0', '#f00']`.
  * @type {Array.<string>|undefined}
+ * @api
  */
 olx.layer.HeatmapOptions.prototype.gradient;
 
@@ -2228,6 +2646,7 @@ olx.layer.HeatmapOptions.prototype.gradient;
 /**
  * Radius size in pixels. Default is `8`.
  * @type {number|undefined}
+ * @api
  */
 olx.layer.HeatmapOptions.prototype.radius;
 
@@ -2235,6 +2654,7 @@ olx.layer.HeatmapOptions.prototype.radius;
 /**
  * Blur size in pixels. Default is `15`.
  * @type {number|undefined}
+ * @api
  */
 olx.layer.HeatmapOptions.prototype.blur;
 
@@ -2242,6 +2662,7 @@ olx.layer.HeatmapOptions.prototype.blur;
 /**
  * Shadow size in pixels. Default is `250`.
  * @type {number|undefined}
+ * @api
  */
 olx.layer.HeatmapOptions.prototype.shadow;
 
@@ -2251,13 +2672,24 @@ olx.layer.HeatmapOptions.prototype.shadow;
  * weight from a feature. Weight values should range from 0 to 1 (and values
  * outside will be clamped to that range). Default is `weight`.
  * @type {string|function(ol.Feature):number|undefined}
+ * @api
  */
 olx.layer.HeatmapOptions.prototype.weight;
 
 
 /**
+ * The bounding extent for layer rendering.  The layer will not be rendered
+ * outside of this extent.
+ * @type {ol.Extent|undefined}
+ * @api
+ */
+olx.layer.HeatmapOptions.prototype.extent;
+
+
+/**
  * The minimum resolution (inclusive) at which this layer will be visible.
  * @type {number|undefined}
+ * @api
  */
 olx.layer.HeatmapOptions.prototype.minResolution;
 
@@ -2265,6 +2697,7 @@ olx.layer.HeatmapOptions.prototype.minResolution;
 /**
  * The maximum resolution (exclusive) below which this layer will be visible.
  * @type {number|undefined}
+ * @api
  */
 olx.layer.HeatmapOptions.prototype.maxResolution;
 
@@ -2272,6 +2705,7 @@ olx.layer.HeatmapOptions.prototype.maxResolution;
 /**
  * Opacity. 0-1. Default is `1`.
  * @type {number|undefined}
+ * @api
  */
 olx.layer.HeatmapOptions.prototype.opacity;
 
@@ -2279,6 +2713,7 @@ olx.layer.HeatmapOptions.prototype.opacity;
 /**
  * Saturation.
  * @type {number|undefined}
+ * @api
  */
 olx.layer.HeatmapOptions.prototype.saturation;
 
@@ -2286,6 +2721,7 @@ olx.layer.HeatmapOptions.prototype.saturation;
 /**
  * Source.
  * @type {ol.source.Vector}
+ * @api
  */
 olx.layer.HeatmapOptions.prototype.source;
 
@@ -2293,6 +2729,7 @@ olx.layer.HeatmapOptions.prototype.source;
 /**
  * Visibility. Default is `true` (visible).
  * @type {boolean|undefined}
+ * @api
  */
 olx.layer.HeatmapOptions.prototype.visible;
 
@@ -2306,6 +2743,7 @@ olx.layer.HeatmapOptions.prototype.visible;
  *     saturation: (number|undefined),
  *     source: ol.source.Source,
  *     visible: (boolean|undefined),
+ *     extent: (ol.Extent|undefined),
  *     minResolution: (number|undefined),
  *     maxResolution: (number|undefined),
  *     useInterimTilesOnError: (boolean|undefined)}}
@@ -2317,6 +2755,7 @@ olx.layer.TileOptions;
 /**
  * Brightness. Default is `0`.
  * @type {number|undefined}
+ * @api
  */
 olx.layer.TileOptions.prototype.brightness;
 
@@ -2324,6 +2763,7 @@ olx.layer.TileOptions.prototype.brightness;
 /**
  * Contrast. Default is `1`.
  * @type {number|undefined}
+ * @api
  */
 olx.layer.TileOptions.prototype.contrast;
 
@@ -2331,6 +2771,7 @@ olx.layer.TileOptions.prototype.contrast;
 /**
  * Hue. Default is `0`.
  * @type {number|undefined}
+ * @api
  */
 olx.layer.TileOptions.prototype.hue;
 
@@ -2338,13 +2779,16 @@ olx.layer.TileOptions.prototype.hue;
 /**
  * Opacity (0, 1). Default is `1`.
  * @type {number|undefined}
+ * @api stable
  */
 olx.layer.TileOptions.prototype.opacity;
 
 
 /**
- * Preload.
+ * Preload. Load low-resolution tiles up to `preload` levels. By default
+ * `preload` is `0`, which means no preloading.
  * @type {number|undefined}
+ * @api stable
  */
 olx.layer.TileOptions.prototype.preload;
 
@@ -2352,6 +2796,7 @@ olx.layer.TileOptions.prototype.preload;
 /**
  * Saturation. Default is `1`.
  * @type {number|undefined}
+ * @api
  */
 olx.layer.TileOptions.prototype.saturation;
 
@@ -2359,6 +2804,7 @@ olx.layer.TileOptions.prototype.saturation;
 /**
  * Source for this layer.
  * @type {ol.source.Source}
+ * @api stable
  */
 olx.layer.TileOptions.prototype.source;
 
@@ -2366,13 +2812,24 @@ olx.layer.TileOptions.prototype.source;
 /**
  * Visibility. Default is `true` (visible).
  * @type {boolean|undefined}
+ * @api stable
  */
 olx.layer.TileOptions.prototype.visible;
 
 
 /**
+ * The bounding extent for layer rendering.  The layer will not be rendered
+ * outside of this extent.
+ * @type {ol.Extent|undefined}
+ * @api stable
+ */
+olx.layer.TileOptions.prototype.extent;
+
+
+/**
  * The minimum resolution (inclusive) at which this layer will be visible.
  * @type {number|undefined}
+ * @api stable
  */
 olx.layer.TileOptions.prototype.minResolution;
 
@@ -2380,6 +2837,7 @@ olx.layer.TileOptions.prototype.minResolution;
 /**
  * The maximum resolution (exclusive) below which this layer will be visible.
  * @type {number|undefined}
+ * @api stable
  */
 olx.layer.TileOptions.prototype.maxResolution;
 
@@ -2387,6 +2845,7 @@ olx.layer.TileOptions.prototype.maxResolution;
 /**
  * Use interim tiles on error. Default is `true`.
  * @type {boolean|undefined}
+ * @api stable
  */
 olx.layer.TileOptions.prototype.useInterimTilesOnError;
 
@@ -2401,7 +2860,7 @@ olx.layer.TileOptions.prototype.useInterimTilesOnError;
  *     opacity: (number|undefined),
  *     saturation: (number|undefined),
  *     source: ol.source.Vector,
- *     style: (ol.style.Style|Array.<ol.style.Style>|ol.feature.StyleFunction|undefined),
+ *     style: (ol.style.Style|Array.<ol.style.Style>|ol.style.StyleFunction|undefined),
  *     visible: (boolean|undefined)}}
  * @api
  */
@@ -2411,6 +2870,7 @@ olx.layer.VectorOptions;
 /**
  * Brightness.
  * @type {number|undefined}
+ * @api
  */
 olx.layer.VectorOptions.prototype.brightness;
 
@@ -2418,6 +2878,7 @@ olx.layer.VectorOptions.prototype.brightness;
 /**
  * Contrast.
  * @type {number|undefined}
+ * @api
  */
 olx.layer.VectorOptions.prototype.contrast;
 
@@ -2427,6 +2888,7 @@ olx.layer.VectorOptions.prototype.contrast;
  * default features are drawn in the order that they are created. Use `null` to
  * avoid the sort, but get an undefined draw order.
  * @type {function(ol.Feature, ol.Feature):number|null|undefined}
+ * @api
  */
 olx.layer.VectorOptions.prototype.renderOrder;
 
@@ -2434,13 +2896,24 @@ olx.layer.VectorOptions.prototype.renderOrder;
 /**
  * Hue.
  * @type {number|undefined}
+ * @api
  */
 olx.layer.VectorOptions.prototype.hue;
 
 
 /**
+ * The bounding extent for layer rendering.  The layer will not be rendered
+ * outside of this extent.
+ * @type {ol.Extent|undefined}
+ * @api stable
+ */
+olx.layer.VectorOptions.prototype.extent;
+
+
+/**
  * The minimum resolution (inclusive) at which this layer will be visible.
  * @type {number|undefined}
+ * @api stable
  */
 olx.layer.VectorOptions.prototype.minResolution;
 
@@ -2448,6 +2921,7 @@ olx.layer.VectorOptions.prototype.minResolution;
 /**
  * The maximum resolution (exclusive) below which this layer will be visible.
  * @type {number|undefined}
+ * @api stable
  */
 olx.layer.VectorOptions.prototype.maxResolution;
 
@@ -2455,6 +2929,7 @@ olx.layer.VectorOptions.prototype.maxResolution;
 /**
  * Opacity. 0-1. Default is `1`.
  * @type {number|undefined}
+ * @api stable
  */
 olx.layer.VectorOptions.prototype.opacity;
 
@@ -2462,6 +2937,7 @@ olx.layer.VectorOptions.prototype.opacity;
 /**
  * Saturation.
  * @type {number|undefined}
+ * @api
  */
 olx.layer.VectorOptions.prototype.saturation;
 
@@ -2469,13 +2945,16 @@ olx.layer.VectorOptions.prototype.saturation;
 /**
  * Source.
  * @type {ol.source.Vector}
+ * @api stable
  */
 olx.layer.VectorOptions.prototype.source;
 
 
 /**
- * Layer style.
- * @type {ol.style.Style|Array.<ol.style.Style>|ol.feature.StyleFunction|undefined}
+ * Layer style. See {@link ol.style} for default style which will be used if
+ * this is not defined.
+ * @type {ol.style.Style|Array.<ol.style.Style>|ol.style.StyleFunction|undefined}
+ * @api stable
  */
 olx.layer.VectorOptions.prototype.style;
 
@@ -2483,14 +2962,15 @@ olx.layer.VectorOptions.prototype.style;
 /**
  * Visibility. Default is `true` (visible).
  * @type {boolean|undefined}
+ * @api stable
  */
 olx.layer.VectorOptions.prototype.visible;
 
 
 /**
- * @typedef {{features: (Array.<ol.Feature>|ol.Collection|undefined),
+ * @typedef {{features: (Array.<ol.Feature>|ol.Collection.<ol.Feature>|undefined),
  *     map: (ol.Map|undefined),
- *     style: (ol.style.Style|Array.<ol.style.Style>|ol.feature.StyleFunction|undefined)}}
+ *     style: (ol.style.Style|Array.<ol.style.Style>|ol.style.StyleFunction|undefined)}}
  * @api
  */
 olx.FeatureOverlayOptions;
@@ -2498,7 +2978,8 @@ olx.FeatureOverlayOptions;
 
 /**
  * Features.
- * @type {Array.<ol.Feature>|ol.Collection|undefined}
+ * @type {Array.<ol.Feature>|ol.Collection.<ol.Feature>|undefined}
+ * @api
  */
 olx.FeatureOverlayOptions.prototype.features;
 
@@ -2506,13 +2987,15 @@ olx.FeatureOverlayOptions.prototype.features;
 /**
  * Map.
  * @type {ol.Map|undefined}
+ * @api
  */
 olx.FeatureOverlayOptions.prototype.map;
 
 
 /**
  * Feature style.
- * @type {ol.style.Style|Array.<ol.style.Style>|ol.feature.StyleFunction|undefined}
+ * @type {ol.style.Style|Array.<ol.style.Style>|ol.style.StyleFunction|undefined}
+ * @api
  */
 olx.FeatureOverlayOptions.prototype.style;
 
@@ -2530,6 +3013,7 @@ olx.source.BingMapsOptions;
 /**
  * Culture code. Default is `en-us`.
  * @type {string|undefined}
+ * @api stable
  */
 olx.source.BingMapsOptions.prototype.culture;
 
@@ -2537,6 +3021,7 @@ olx.source.BingMapsOptions.prototype.culture;
 /**
  * Bing Maps API key. Get yours at http://bingmapsportal.com/.
  * @type {string}
+ * @api stable
  */
 olx.source.BingMapsOptions.prototype.key;
 
@@ -2544,6 +3029,7 @@ olx.source.BingMapsOptions.prototype.key;
 /**
  * Type of imagery.
  * @type {string}
+ * @api stable
  */
 olx.source.BingMapsOptions.prototype.imagerySet;
 
@@ -2551,15 +3037,83 @@ olx.source.BingMapsOptions.prototype.imagerySet;
 /**
  * Optional function to load a tile given a URL.
  * @type {ol.TileLoadFunctionType|undefined}
+ * @api
  */
 olx.source.BingMapsOptions.prototype.tileLoadFunction;
+
+/**
+ * @typedef {{attributions: (Array.<ol.Attribution>|undefined),
+ *     distance: (number|undefined),
+ *     extent: (ol.Extent|undefined),
+ *     format: (ol.format.Feature|undefined),
+ *     logo: (string|undefined),
+ *     projection: ol.proj.ProjectionLike,
+ *     source: ol.source.Vector}}
+ * @api
+ */
+olx.source.ClusterOptions;
+
+
+/**
+ * Attributions.
+ * @type {Array.<ol.Attribution>|undefined}
+ * @api
+ */
+olx.source.ClusterOptions.prototype.attributions;
+
+
+/**
+ * Minimum distance in pixels between clusters. Default is `20`.
+ * @type {number|undefined}
+ * @api
+ */
+olx.source.ClusterOptions.prototype.distance;
+
+
+/**
+ * Extent.
+ * @type {ol.Extent|undefined}
+ * @api
+ */
+olx.source.ClusterOptions.prototype.extent;
+
+
+/**
+ * Format.
+ * @type {ol.format.Feature|undefined}
+ * @api
+ */
+olx.source.ClusterOptions.prototype.format;
+
+
+/**
+ * Logo.
+ * @type {string|undefined}
+ * @api
+ */
+olx.source.ClusterOptions.prototype.logo;
+
+
+/**
+ * Projection.
+ * @type {ol.proj.ProjectionLike}
+ * @api
+ */
+olx.source.ClusterOptions.prototype.projection;
+
+
+/**
+ * Source.
+ * @type {ol.source.Vector}
+ * @api
+ */
+olx.source.ClusterOptions.prototype.source;
 
 
 /**
  * @typedef {{attributions: (Array.<ol.Attribution>|undefined),
- *     extent: (ol.Extent|undefined),
  *     format: ol.format.Feature,
- *     logo: (string|undefined),
+ *     logo: (string|olx.LogoOptions|undefined),
  *     projection: ol.proj.ProjectionLike}}
  * @api
  */
@@ -2569,27 +3123,23 @@ olx.source.FormatVectorOptions;
 /**
  * Attributions.
  * @type {Array.<ol.Attribution>|undefined}
+ * @api
  */
 olx.source.FormatVectorOptions.prototype.attributions;
 
 
 /**
- * Extent.
- * @type {ol.Extent|undefined}
- */
-olx.source.FormatVectorOptions.prototype.extent;
-
-
-/**
  * Format.
  * @type {ol.format.Feature}
+ * @api
  */
 olx.source.FormatVectorOptions.prototype.format;
 
 
 /**
  * Logo.
- * @type {string|undefined}
+ * @type {string|olx.LogoOptions|undefined}
+ * @api
  */
 olx.source.FormatVectorOptions.prototype.logo;
 
@@ -2597,6 +3147,7 @@ olx.source.FormatVectorOptions.prototype.logo;
 /**
  * Projection.
  * @type {ol.proj.ProjectionLike}
+ * @api
  */
 olx.source.FormatVectorOptions.prototype.projection;
 
@@ -2604,8 +3155,7 @@ olx.source.FormatVectorOptions.prototype.projection;
 /**
  * @typedef {{attributions: (Array.<ol.Attribution>|undefined),
  *     defaultProjection: ol.proj.ProjectionLike,
- *     extent: (ol.Extent|undefined),
- *     logo: (string|undefined),
+ *     logo: (string|olx.LogoOptions|undefined),
  *     object: (GeoJSONObject|undefined),
  *     projection: ol.proj.ProjectionLike,
  *     text: (string|undefined),
@@ -2619,6 +3169,7 @@ olx.source.GeoJSONOptions;
 /**
  * Attributions.
  * @type {Array.<ol.Attribution>|undefined}
+ * @api
  */
 olx.source.GeoJSONOptions.prototype.attributions;
 
@@ -2626,20 +3177,15 @@ olx.source.GeoJSONOptions.prototype.attributions;
 /**
  * Default projection.
  * @type {ol.proj.ProjectionLike}
+ * @api
  */
 olx.source.GeoJSONOptions.prototype.defaultProjection;
 
 
 /**
- * Extent.
- * @type {ol.Extent|undefined}
- */
-olx.source.GeoJSONOptions.prototype.extent;
-
-
-/**
  * Logo.
- * @type {string|undefined}
+ * @type {string|olx.LogoOptions|undefined}
+ * @api
  */
 olx.source.GeoJSONOptions.prototype.logo;
 
@@ -2647,6 +3193,7 @@ olx.source.GeoJSONOptions.prototype.logo;
 /**
  * Object.
  * @type {GeoJSONObject|undefined}
+ * @api
  */
 olx.source.GeoJSONOptions.prototype.object;
 
@@ -2655,6 +3202,7 @@ olx.source.GeoJSONOptions.prototype.object;
  * Destination projection. If provided, features will be transformed to this
  * projection. If not provided, features will not be transformed.
  * @type {ol.proj.ProjectionLike}
+ * @api
  */
 olx.source.GeoJSONOptions.prototype.projection;
 
@@ -2662,6 +3210,7 @@ olx.source.GeoJSONOptions.prototype.projection;
 /**
  * Text.
  * @type {string|undefined}
+ * @api
  */
 olx.source.GeoJSONOptions.prototype.text;
 
@@ -2669,6 +3218,7 @@ olx.source.GeoJSONOptions.prototype.text;
 /**
  * URL.
  * @type {string|undefined}
+ * @api
  */
 olx.source.GeoJSONOptions.prototype.url;
 
@@ -2676,6 +3226,7 @@ olx.source.GeoJSONOptions.prototype.url;
 /**
  * URLs.
  * @type {Array.<string>|undefined}
+ * @api
  */
 olx.source.GeoJSONOptions.prototype.urls;
 
@@ -2683,8 +3234,7 @@ olx.source.GeoJSONOptions.prototype.urls;
 /**
  * @typedef {{attributions: (Array.<ol.Attribution>|undefined),
  *     doc: (Document|undefined),
- *     extent: (ol.Extent|undefined),
- *     logo: (string|undefined),
+ *     logo: (string|olx.LogoOptions|undefined),
  *     node: (Node|undefined),
  *     projection: ol.proj.ProjectionLike,
  *     text: (string|undefined),
@@ -2698,6 +3248,7 @@ olx.source.GPXOptions;
 /**
  * Attributions.
  * @type {Array.<ol.Attribution>|undefined}
+ * @api
  */
 olx.source.GPXOptions.prototype.attributions;
 
@@ -2705,20 +3256,15 @@ olx.source.GPXOptions.prototype.attributions;
 /**
  * Document.
  * @type {Document|undefined}
+ * @api
  */
 olx.source.GPXOptions.prototype.doc;
 
 
 /**
- * Extent.
- * @type {ol.Extent|undefined}
- */
-olx.source.GPXOptions.prototype.extent;
-
-
-/**
  * Logo.
- * @type {string|undefined}
+ * @type {string|olx.LogoOptions|undefined}
+ * @api
  */
 olx.source.GPXOptions.prototype.logo;
 
@@ -2726,6 +3272,7 @@ olx.source.GPXOptions.prototype.logo;
 /**
  * Node.
  * @type {Node|undefined}
+ * @api
  */
 olx.source.GPXOptions.prototype.node;
 
@@ -2734,6 +3281,7 @@ olx.source.GPXOptions.prototype.node;
  * Destination projection. If provided, features will be transformed to this
  * projection. If not provided, features will not be transformed.
  * @type {ol.proj.ProjectionLike}
+ * @api
  */
 olx.source.GPXOptions.prototype.projection;
 
@@ -2741,6 +3289,7 @@ olx.source.GPXOptions.prototype.projection;
 /**
  * Text.
  * @type {string|undefined}
+ * @api
  */
 olx.source.GPXOptions.prototype.text;
 
@@ -2748,6 +3297,7 @@ olx.source.GPXOptions.prototype.text;
 /**
  * URL.
  * @type {string|undefined}
+ * @api
  */
 olx.source.GPXOptions.prototype.url;
 
@@ -2755,6 +3305,7 @@ olx.source.GPXOptions.prototype.url;
 /**
  * URLs.
  * @type {Array.<string>|undefined}
+ * @api
  */
 olx.source.GPXOptions.prototype.urls;
 
@@ -2762,10 +3313,10 @@ olx.source.GPXOptions.prototype.urls;
 /**
  * @typedef {{attributions: (Array.<ol.Attribution>|undefined),
  *            crossOrigin: (null|string|undefined),
- *            extent: (ol.Extent|undefined),
- *            logo: (string|undefined),
+ *            logo: (string|olx.LogoOptions|undefined),
  *            opaque: (boolean|undefined),
  *            projection: ol.proj.ProjectionLike,
+ *            state: (ol.source.State|string|undefined),
  *            tileClass: (function(new: ol.ImageTile, ol.TileCoord,
  *                                 ol.TileState, string, ?string,
  *                                 ol.TileLoadFunctionType)|undefined),
@@ -2781,6 +3332,7 @@ olx.source.TileImageOptions;
 /**
  * Attributions.
  * @type {Array.<ol.Attribution>|undefined}
+ * @api
  */
 olx.source.TileImageOptions.prototype.attributions;
 
@@ -2788,20 +3340,15 @@ olx.source.TileImageOptions.prototype.attributions;
 /**
  * crossOrigin setting for image requests. Default is `null`.
  * @type {null|string|undefined}
+ * @api
  */
 olx.source.TileImageOptions.prototype.crossOrigin;
 
 
 /**
- * Extent.
- * @type {ol.Extent|undefined}
- */
-olx.source.TileImageOptions.prototype.extent;
-
-
-/**
  * Logo.
- * @type {string|undefined}
+ * @type {string|olx.LogoOptions|undefined}
+ * @api
  */
 olx.source.TileImageOptions.prototype.logo;
 
@@ -2809,6 +3356,7 @@ olx.source.TileImageOptions.prototype.logo;
 /**
  * Whether the layer is opaque.
  * @type {boolean|undefined}
+ * @api
  */
 olx.source.TileImageOptions.prototype.opaque;
 
@@ -2816,8 +3364,17 @@ olx.source.TileImageOptions.prototype.opaque;
 /**
  * Projection.
  * @type {ol.proj.ProjectionLike}
+ * @api
  */
 olx.source.TileImageOptions.prototype.projection;
+
+
+/**
+ * Source state.
+ * @type {ol.source.State|string|undefined}
+ * @api
+ */
+olx.source.TileImageOptions.prototype.state;
 
 
 /**
@@ -2825,6 +3382,7 @@ olx.source.TileImageOptions.prototype.projection;
  * @type {function(new: ol.ImageTile, ol.TileCoord,
  *                 ol.TileState, string, ?string,
  *                 ol.TileLoadFunctionType)|undefined}
+ * @api
  */
 olx.source.TileImageOptions.prototype.tileClass;
 
@@ -2832,6 +3390,7 @@ olx.source.TileImageOptions.prototype.tileClass;
 /**
  * Tile grid.
  * @type {ol.tilegrid.TileGrid|undefined}
+ * @api
  */
 olx.source.TileImageOptions.prototype.tileGrid;
 
@@ -2839,6 +3398,7 @@ olx.source.TileImageOptions.prototype.tileGrid;
 /**
  * Optional function to load a tile given a URL.
  * @type {ol.TileLoadFunctionType|undefined}
+ * @api
  */
 olx.source.TileImageOptions.prototype.tileLoadFunction;
 
@@ -2849,6 +3409,7 @@ olx.source.TileImageOptions.prototype.tileLoadFunction;
  * by 512px images (for retina/hidpi devices) then `tilePixelRatio`
  * should be set to `2`. Default is `1`.
  * @type {number|undefined}
+ * @api
  */
 olx.source.TileImageOptions.prototype.tilePixelRatio;
 
@@ -2856,6 +3417,7 @@ olx.source.TileImageOptions.prototype.tilePixelRatio;
 /**
  * Optional function to get tile URL given a tile coordinate and the projection.
  * @type {ol.TileUrlFunctionType|undefined}
+ * @api
  */
 olx.source.TileImageOptions.prototype.tileUrlFunction;
 
@@ -2863,9 +3425,8 @@ olx.source.TileImageOptions.prototype.tileUrlFunction;
 /**
  * @typedef {{attributions: (Array.<ol.Attribution>|undefined),
  *     defaultProjection: ol.proj.ProjectionLike,
- *     extent: (ol.Extent|undefined),
  *     format: ol.format.Feature,
- *     logo: (string|undefined),
+ *     logo: (string|olx.LogoOptions|undefined),
  *     object: (GeoJSONObject|undefined),
  *     projection: ol.proj.ProjectionLike,
  *     tileGrid: ol.tilegrid.TileGrid,
@@ -2880,6 +3441,7 @@ olx.source.TileVectorOptions;
 /**
  * Attributions.
  * @type {Array.<ol.Attribution>|undefined}
+ * @api
  */
 olx.source.TileVectorOptions.prototype.attributions;
 
@@ -2887,27 +3449,23 @@ olx.source.TileVectorOptions.prototype.attributions;
 /**
  * Default projection.
  * @type {ol.proj.ProjectionLike}
+ * @api
  */
 olx.source.TileVectorOptions.prototype.defaultProjection;
 
 
 /**
- * Extent.
- * @type {ol.Extent|undefined}
- */
-olx.source.TileVectorOptions.prototype.extent;
-
-
-/**
  * Format.
  * @type {ol.format.Feature}
+ * @api
  */
 olx.source.TileVectorOptions.prototype.format;
 
 
 /**
  * Logo.
- * @type {string|undefined}
+ * @type {string|olx.LogoOptions|undefined}
+ * @api
  */
 olx.source.TileVectorOptions.prototype.logo;
 
@@ -2915,6 +3473,7 @@ olx.source.TileVectorOptions.prototype.logo;
 /**
  * Object.
  * @type {GeoJSONObject|undefined}
+ * @api
  */
 olx.source.TileVectorOptions.prototype.object;
 
@@ -2923,6 +3482,7 @@ olx.source.TileVectorOptions.prototype.object;
  * Destination projection. If provided, features will be transformed to this
  * projection. If not provided, features will not be transformed.
  * @type {ol.proj.ProjectionLike}
+ * @api
  */
 olx.source.TileVectorOptions.prototype.projection;
 
@@ -2930,6 +3490,7 @@ olx.source.TileVectorOptions.prototype.projection;
 /**
  * Tile grid.
  * @type {ol.tilegrid.TileGrid}
+ * @api
  */
 olx.source.TileVectorOptions.prototype.tileGrid;
 
@@ -2938,6 +3499,7 @@ olx.source.TileVectorOptions.prototype.tileGrid;
  * Optional function to get tile URL given a tile coordinate and the projection.
  * Required if url or urls are not provided.
  * @type {ol.TileUrlFunctionType|undefined}
+ * @api
  */
 olx.source.TileVectorOptions.prototype.tileUrlFunction;
 
@@ -2945,6 +3507,7 @@ olx.source.TileVectorOptions.prototype.tileUrlFunction;
 /**
  * URL template. Must include `{x}`, `{y}` or `{-y}`, and `{z}` placeholders.
  * @type {string|undefined}
+ * @api
  */
 olx.source.TileVectorOptions.prototype.url;
 
@@ -2952,6 +3515,7 @@ olx.source.TileVectorOptions.prototype.url;
 /**
  * An array of URL templates.
  * @type {Array.<string>|undefined}
+ * @api
  */
 olx.source.TileVectorOptions.prototype.urls;
 
@@ -2959,8 +3523,7 @@ olx.source.TileVectorOptions.prototype.urls;
 /**
  * @typedef {{attributions: (Array.<ol.Attribution>|undefined),
  *     defaultProjection: ol.proj.ProjectionLike,
- *     extent: (ol.Extent|undefined),
- *     logo: (string|undefined),
+ *     logo: (string|olx.LogoOptions|undefined),
  *     object: (GeoJSONObject|undefined),
  *     projection: ol.proj.ProjectionLike,
  *     text: (string|undefined),
@@ -2973,6 +3536,7 @@ olx.source.TopoJSONOptions;
 /**
  * Attributions.
  * @type {Array.<ol.Attribution>|undefined}
+ * @api
  */
 olx.source.TopoJSONOptions.prototype.attributions;
 
@@ -2980,20 +3544,15 @@ olx.source.TopoJSONOptions.prototype.attributions;
 /**
  * Default projection.
  * @type {ol.proj.ProjectionLike}
+ * @api
  */
 olx.source.TopoJSONOptions.prototype.defaultProjection;
 
 
 /**
- * Extent.
- * @type {ol.Extent|undefined}
- */
-olx.source.TopoJSONOptions.prototype.extent;
-
-
-/**
  * Logo.
- * @type {string|undefined}
+ * @type {string|olx.LogoOptions|undefined}
+ * @api
  */
 olx.source.TopoJSONOptions.prototype.logo;
 
@@ -3001,6 +3560,7 @@ olx.source.TopoJSONOptions.prototype.logo;
 /**
  * Object.
  * @type {GeoJSONObject|undefined}
+ * @api
  */
 olx.source.TopoJSONOptions.prototype.object;
 
@@ -3009,6 +3569,7 @@ olx.source.TopoJSONOptions.prototype.object;
  * Destination projection. If provided, features will be transformed to this
  * projection. If not provided, features will not be transformed.
  * @type {ol.proj.ProjectionLike}
+ * @api
  */
 olx.source.TopoJSONOptions.prototype.projection;
 
@@ -3016,6 +3577,7 @@ olx.source.TopoJSONOptions.prototype.projection;
 /**
  * Text.
  * @type {string|undefined}
+ * @api
  */
 olx.source.TopoJSONOptions.prototype.text;
 
@@ -3023,6 +3585,7 @@ olx.source.TopoJSONOptions.prototype.text;
 /**
  * URL.
  * @type {string|undefined}
+ * @api
  */
 olx.source.TopoJSONOptions.prototype.url;
 
@@ -3042,6 +3605,7 @@ olx.source.IGCOptions;
  * Altitude mode. Possible values are `barometric`, `gps`, and `none`. Default
  * is `none`.
  * @type {ol.format.IGCZ|undefined}
+ * @api
  */
 olx.source.IGCOptions.prototype.altitudeMode;
 
@@ -3050,6 +3614,7 @@ olx.source.IGCOptions.prototype.altitudeMode;
  * Destination projection. If provided, features will be transformed to this
  * projection. If not provided, features will not be transformed.
  * @type {ol.proj.ProjectionLike}
+ * @api
  */
 olx.source.IGCOptions.prototype.projection;
 
@@ -3057,6 +3622,7 @@ olx.source.IGCOptions.prototype.projection;
 /**
  * Text.
  * @type {string|undefined}
+ * @api
  */
 olx.source.IGCOptions.prototype.text;
 
@@ -3064,6 +3630,7 @@ olx.source.IGCOptions.prototype.text;
 /**
  * URL.
  * @type {string|undefined}
+ * @api
  */
 olx.source.IGCOptions.prototype.url;
 
@@ -3071,6 +3638,7 @@ olx.source.IGCOptions.prototype.url;
 /**
  * URLs.
  * @type {Array.<string>|undefined}
+ * @api
  */
 olx.source.IGCOptions.prototype.urls;
 
@@ -3079,7 +3647,6 @@ olx.source.IGCOptions.prototype.urls;
  * @typedef {{url: (string|undefined),
  *     displayDpi: (number|undefined),
  *     metersPerUnit: (number|undefined),
- *     extent: (ol.Extent|undefined),
  *     hidpi: (boolean|undefined),
  *     useOverlay: (boolean|undefined),
  *     projection: ol.proj.ProjectionLike,
@@ -3088,87 +3655,89 @@ olx.source.IGCOptions.prototype.urls;
  *     params: (Object|undefined)}}
  * @api
  */
-olx.source.MapGuideOptions;
+olx.source.ImageMapGuideOptions;
 
 
 /**
  * The mapagent url.
  * @type {string|undefined}
+ * @api stable
  */
-olx.source.MapGuideOptions.prototype.url;
+olx.source.ImageMapGuideOptions.prototype.url;
 
 
 /**
  * The display resolution. Default is `96`.
  * @type {number|undefined}
+ * @api stable
  */
-olx.source.MapGuideOptions.prototype.displayDpi;
+olx.source.ImageMapGuideOptions.prototype.displayDpi;
 
 
 /**
  * The meters-per-unit value. Default is `1`.
  * @type {number|undefined}
+ * @api stable
  */
-olx.source.MapGuideOptions.prototype.metersPerUnit;
-
-
-/**
- * Extent.
- * @type {ol.Extent|undefined}
- */
-olx.source.MapGuideOptions.prototype.extent;
+olx.source.ImageMapGuideOptions.prototype.metersPerUnit;
 
 
 /**
  * Use the `ol.Map#pixelRatio` value when requesting the image from the remote
  * server. Default is `true`.
  * @type {boolean|undefined}
+ * @api
  */
-olx.source.MapGuideOptions.prototype.hidpi;
+olx.source.ImageMapGuideOptions.prototype.hidpi;
 
 
 /**
  * If `true`, will use `GETDYNAMICMAPOVERLAYIMAGE`.
  * @type {boolean|undefined}
+ * @api stable
  */
-olx.source.MapGuideOptions.prototype.useOverlay;
+olx.source.ImageMapGuideOptions.prototype.useOverlay;
 
 
 /**
  * Projection.
  * @type {ol.proj.ProjectionLike}
+ * @api
  */
-olx.source.MapGuideOptions.prototype.projection;
+olx.source.ImageMapGuideOptions.prototype.projection;
 
 
 /**
  * Ratio. `1` means image requests are the size of the map viewport, `2` means
  * twice the size of the map viewport, and so on. Default is `1`.
  * @type {number|undefined}
+ * @api stable
  */
-olx.source.MapGuideOptions.prototype.ratio;
+olx.source.ImageMapGuideOptions.prototype.ratio;
 
 
 /**
  * Resolutions. If specified, requests will be made for these resolutions only.
  * @type {Array.<number>|undefined}
+ * @api stable
  */
-olx.source.MapGuideOptions.prototype.resolutions;
+olx.source.ImageMapGuideOptions.prototype.resolutions;
 
 
 /**
  * Additional parameters.
  * @type {Object|undefined}
+ * @api stable
  */
-olx.source.MapGuideOptions.prototype.params;
+olx.source.ImageMapGuideOptions.prototype.params;
 
 
 /**
  * @typedef {{attributions: (Array.<ol.Attribution>|undefined),
  *     defaultStyle: (Array.<ol.style.Style>|undefined),
  *     doc: (Document|undefined),
- *     extent: (ol.Extent|undefined),
- *     logo: (string|undefined),
+ *     extractStyles: (boolean|undefined),
+ *     logo: (string|olx.LogoOptions|undefined),
  *     node: (Node|undefined),
  *     projection: ol.proj.ProjectionLike,
  *     text: (string|undefined),
@@ -3182,6 +3751,7 @@ olx.source.KMLOptions;
 /**
  * Attributions.
  * @type {Array.<ol.Attribution>|undefined}
+ * @api
  */
 olx.source.KMLOptions.prototype.attributions;
 
@@ -3189,6 +3759,7 @@ olx.source.KMLOptions.prototype.attributions;
 /**
  * Default style.
  * @type {Array.<ol.style.Style>|undefined}
+ * @api
  */
 olx.source.KMLOptions.prototype.defaultStyle;
 
@@ -3196,20 +3767,23 @@ olx.source.KMLOptions.prototype.defaultStyle;
 /**
  * Document.
  * @type {Document|undefined}
+ * @api
  */
 olx.source.KMLOptions.prototype.doc;
 
 
 /**
- * Extent.
- * @type {ol.Extent|undefined}
+ * Extract styles from the KML document. Default is `true`.
+ * @type {boolean|undefined}
+ * @api
  */
-olx.source.KMLOptions.prototype.extent;
+olx.source.KMLOptions.prototype.extractStyles;
 
 
 /**
  * Logo.
- * @type {string|undefined}
+ * @type {string|olx.LogoOptions|undefined}
+ * @api
  */
 olx.source.KMLOptions.prototype.logo;
 
@@ -3217,6 +3791,7 @@ olx.source.KMLOptions.prototype.logo;
 /**
  * Node.
  * @type {Node|undefined}
+ * @api
  */
 olx.source.KMLOptions.prototype.node;
 
@@ -3225,6 +3800,7 @@ olx.source.KMLOptions.prototype.node;
  * Destination projection. If provided, features will be transformed to this
  * projection. If not provided, features will not be transformed.
  * @type {ol.proj.ProjectionLike}
+ * @api
  */
 olx.source.KMLOptions.prototype.projection;
 
@@ -3232,6 +3808,7 @@ olx.source.KMLOptions.prototype.projection;
 /**
  * Text.
  * @type {string|undefined}
+ * @api
  */
 olx.source.KMLOptions.prototype.text;
 
@@ -3239,6 +3816,7 @@ olx.source.KMLOptions.prototype.text;
 /**
  * URL.
  * @type {string|undefined}
+ * @api
  */
 olx.source.KMLOptions.prototype.url;
 
@@ -3246,6 +3824,7 @@ olx.source.KMLOptions.prototype.url;
 /**
  * URLs.
  * @type {Array.<string>|undefined}
+ * @api
  */
 olx.source.KMLOptions.prototype.urls;
 
@@ -3261,6 +3840,7 @@ olx.source.MapQuestOptions;
 /**
  * Layer. Possible values are `osm`, `sat`, and `hyb`.
  * @type {string}
+ * @api stable
  */
 olx.source.MapQuestOptions.prototype.layer;
 
@@ -3268,13 +3848,13 @@ olx.source.MapQuestOptions.prototype.layer;
 /**
  * Optional function to load a tile given a URL.
  * @type {ol.TileLoadFunctionType|undefined}
+ * @api
  */
 olx.source.MapQuestOptions.prototype.tileLoadFunction;
 
 
 /**
- * @typedef {{extent: (ol.Extent|undefined),
- *     projection: ol.proj.ProjectionLike,
+ * @typedef {{projection: ol.proj.ProjectionLike,
  *     tileGrid: (ol.tilegrid.TileGrid|undefined)}}
  * @api
  */
@@ -3282,15 +3862,9 @@ olx.source.TileDebugOptions;
 
 
 /**
- * Extent.
- * @type {ol.Extent|undefined}
- */
-olx.source.TileDebugOptions.prototype.extent;
-
-
-/**
  * Projection.
  * @type {ol.proj.ProjectionLike}
+ * @api
  */
 olx.source.TileDebugOptions.prototype.projection;
 
@@ -3298,6 +3872,7 @@ olx.source.TileDebugOptions.prototype.projection;
 /**
  * Tile grid.
  * @type {ol.tilegrid.TileGrid|undefined}
+ * @api
  */
 olx.source.TileDebugOptions.prototype.tileGrid;
 
@@ -3316,6 +3891,7 @@ olx.source.OSMOptions;
 /**
  * Attributions.
  * @type {Array.<ol.Attribution>|undefined}
+ * @api stable
  */
 olx.source.OSMOptions.prototype.attributions;
 
@@ -3323,6 +3899,7 @@ olx.source.OSMOptions.prototype.attributions;
 /**
  * crossOrigin setting for image requests. Default is `anonymous`.
  * @type {null|string|undefined}
+ * @api stable
  */
 olx.source.OSMOptions.prototype.crossOrigin;
 
@@ -3330,6 +3907,7 @@ olx.source.OSMOptions.prototype.crossOrigin;
 /**
  * Max zoom.
  * @type {number|undefined}
+ * @api
  */
 olx.source.OSMOptions.prototype.maxZoom;
 
@@ -3337,6 +3915,7 @@ olx.source.OSMOptions.prototype.maxZoom;
 /**
  * Optional function to load a tile given a URL.
  * @type {ol.TileLoadFunctionType|undefined}
+ * @api
  */
 olx.source.OSMOptions.prototype.tileLoadFunction;
 
@@ -3345,6 +3924,7 @@ olx.source.OSMOptions.prototype.tileLoadFunction;
  * URL template. Must include `{x}`, `{y}` or `{-y}`, and `{z}` placeholders.
  * Default is `//{a-c}.tile.openstreetmap.org/{z}/{x}/{y}.png`.
  * @type {string|undefined}
+ * @api stable
  */
 olx.source.OSMOptions.prototype.url;
 
@@ -3353,8 +3933,7 @@ olx.source.OSMOptions.prototype.url;
  * @typedef {{attributions: (Array.<ol.Attribution>|undefined),
  *     defaultStyle: (Array.<ol.style.Style>|undefined),
  *     doc: (Document|undefined),
- *     extent: (ol.Extent|undefined),
- *     logo: (string|undefined),
+ *     logo: (string|olx.LogoOptions|undefined),
  *     node: (Node|undefined),
  *     projection: ol.proj.ProjectionLike,
  *     reprojectTo: ol.proj.ProjectionLike,
@@ -3369,6 +3948,7 @@ olx.source.OSMXMLOptions;
 /**
  * Attributions.
  * @type {Array.<ol.Attribution>|undefined}
+ * @api
  */
 olx.source.OSMXMLOptions.prototype.attributions;
 
@@ -3376,6 +3956,7 @@ olx.source.OSMXMLOptions.prototype.attributions;
 /**
  * Default style.
  * @type {Array.<ol.style.Style>|undefined}
+ * @api
  */
 olx.source.OSMXMLOptions.prototype.defaultStyle;
 
@@ -3383,20 +3964,15 @@ olx.source.OSMXMLOptions.prototype.defaultStyle;
 /**
  * Document.
  * @type {Document|undefined}
+ * @api
  */
 olx.source.OSMXMLOptions.prototype.doc;
 
 
 /**
- * Extent.
- * @type {ol.Extent|undefined}
- */
-olx.source.OSMXMLOptions.prototype.extent;
-
-
-/**
  * Logo.
- * @type {string|undefined}
+ * @type {string|olx.LogoOptions|undefined}
+ * @api
  */
 olx.source.OSMXMLOptions.prototype.logo;
 
@@ -3404,6 +3980,7 @@ olx.source.OSMXMLOptions.prototype.logo;
 /**
  * Node.
  * @type {Node|undefined}
+ * @api
  */
 olx.source.OSMXMLOptions.prototype.node;
 
@@ -3411,6 +3988,7 @@ olx.source.OSMXMLOptions.prototype.node;
 /**
  * Projection.
  * @type {ol.proj.ProjectionLike}
+ * @api
  */
 olx.source.OSMXMLOptions.prototype.projection;
 
@@ -3418,6 +3996,7 @@ olx.source.OSMXMLOptions.prototype.projection;
 /**
  * Re-project to.
  * @type {ol.proj.ProjectionLike}
+ * @api
  */
 olx.source.OSMXMLOptions.prototype.reprojectTo;
 
@@ -3425,6 +4004,7 @@ olx.source.OSMXMLOptions.prototype.reprojectTo;
 /**
  * Text.
  * @type {string|undefined}
+ * @api
  */
 olx.source.OSMXMLOptions.prototype.text;
 
@@ -3432,6 +4012,7 @@ olx.source.OSMXMLOptions.prototype.text;
 /**
  * URL.
  * @type {string|undefined}
+ * @api
  */
 olx.source.OSMXMLOptions.prototype.url;
 
@@ -3439,6 +4020,7 @@ olx.source.OSMXMLOptions.prototype.url;
 /**
  * URLs.
  * @type {Array.<string>|undefined}
+ * @api
  */
 olx.source.OSMXMLOptions.prototype.urls;
 
@@ -3446,8 +4028,7 @@ olx.source.OSMXMLOptions.prototype.urls;
 /**
  * @typedef {{attributions: (Array.<ol.Attribution>|undefined),
  *     canvasFunction: ol.CanvasFunctionType,
- *     extent: (ol.Extent|undefined),
- *     logo: (string|undefined),
+ *     logo: (string|olx.LogoOptions|undefined),
  *     projection: ol.proj.ProjectionLike,
  *     ratio: (number|undefined),
  *     resolutions: (Array.<number>|undefined),
@@ -3460,6 +4041,7 @@ olx.source.ImageCanvasOptions;
 /**
  * Attributions.
  * @type {Array.<ol.Attribution>|undefined}
+ * @api
  */
 olx.source.ImageCanvasOptions.prototype.attributions;
 
@@ -3474,20 +4056,15 @@ olx.source.ImageCanvasOptions.prototype.attributions;
  * `dispatchChangeEvent` should be called on the source for the source to
  * invalidate the current cached image.
  * @type {ol.CanvasFunctionType}
+ * @api
  */
 olx.source.ImageCanvasOptions.prototype.canvasFunction;
 
 
 /**
- * Extent.
- * @type {ol.Extent|undefined}
- */
-olx.source.ImageCanvasOptions.prototype.extent;
-
-
-/**
  * Logo.
- * @type {string|undefined}
+ * @type {string|olx.LogoOptions|undefined}
+ * @api
  */
 olx.source.ImageCanvasOptions.prototype.logo;
 
@@ -3495,6 +4072,7 @@ olx.source.ImageCanvasOptions.prototype.logo;
 /**
  * Projection.
  * @type {ol.proj.ProjectionLike}
+ * @api
  */
 olx.source.ImageCanvasOptions.prototype.projection;
 
@@ -3503,6 +4081,7 @@ olx.source.ImageCanvasOptions.prototype.projection;
  * Ratio. 1 means canvases are the size of the map viewport, 2 means twice the
  * size of the map viewport, and so on. Default is `1.5`.
  * @type {number|undefined}
+ * @api
  */
 olx.source.ImageCanvasOptions.prototype.ratio;
 
@@ -3511,6 +4090,7 @@ olx.source.ImageCanvasOptions.prototype.ratio;
  * Resolutions. If specified, new canvases will be created for these resolutions
  * only.
  * @type {Array.<number>|undefined}
+ * @api
  */
 olx.source.ImageCanvasOptions.prototype.resolutions;
 
@@ -3518,19 +4098,19 @@ olx.source.ImageCanvasOptions.prototype.resolutions;
 /**
  * Source state.
  * @type {ol.source.State|string|undefined}
+ * @api
  */
 olx.source.ImageCanvasOptions.prototype.state;
 
 
 /**
  * @typedef {{attributions: (Array.<ol.Attribution>|undefined),
- *     extent: (ol.Extent|undefined),
- *     logo: (string|undefined),
+ *     logo: (string|olx.LogoOptions|undefined),
  *     projection: ol.proj.ProjectionLike,
  *     ratio: (number|undefined),
  *     resolutions: (Array.<number>|undefined),
  *     source: ol.source.Vector,
- *     style: (ol.style.Style|Array.<ol.style.Style>|ol.feature.StyleFunction|undefined)}}
+ *     style: (ol.style.Style|Array.<ol.style.Style>|ol.style.StyleFunction|undefined)}}
  * @api
  */
 olx.source.ImageVectorOptions;
@@ -3539,20 +4119,15 @@ olx.source.ImageVectorOptions;
 /**
  * Attributions.
  * @type {Array.<ol.Attribution>|undefined}
+ * @api
  */
 olx.source.ImageVectorOptions.prototype.attributions;
 
 
 /**
- * Extent.
- * @type {ol.Extent|undefined}
- */
-olx.source.ImageVectorOptions.prototype.extent;
-
-
-/**
  * Logo.
- * @type {string|undefined}
+ * @type {string|olx.LogoOptions|undefined}
+ * @api
  */
 olx.source.ImageVectorOptions.prototype.logo;
 
@@ -3560,6 +4135,7 @@ olx.source.ImageVectorOptions.prototype.logo;
 /**
  * Projection.
  * @type {ol.proj.ProjectionLike}
+ * @api
  */
 olx.source.ImageVectorOptions.prototype.projection;
 
@@ -3568,6 +4144,7 @@ olx.source.ImageVectorOptions.prototype.projection;
  * Ratio. 1 means canvases are the size of the map viewport, 2 means twice the
  * size of the map viewport, and so on. Default is `1.5`.
  * @type {number|undefined}
+ * @api
  */
 olx.source.ImageVectorOptions.prototype.ratio;
 
@@ -3576,6 +4153,7 @@ olx.source.ImageVectorOptions.prototype.ratio;
  * Resolutions. If specified, new canvases will be created for these resolutions
  * only.
  * @type {Array.<number>|undefined}
+ * @api
  */
 olx.source.ImageVectorOptions.prototype.resolutions;
 
@@ -3584,13 +4162,15 @@ olx.source.ImageVectorOptions.prototype.resolutions;
  * The vector source from which the vector features drawn in canvas elements are
  * read.
  * @type {ol.source.Vector}
+ * @api
  */
 olx.source.ImageVectorOptions.prototype.source;
 
 
 /**
  * Style to use when rendering features to the canvas.
- * @type {ol.style.Style|Array.<ol.style.Style>|ol.feature.StyleFunction|undefined}
+ * @type {ol.style.Style|Array.<ol.style.Style>|ol.style.StyleFunction|undefined}
+ * @api
  */
 olx.source.ImageVectorOptions.prototype.style;
 
@@ -3598,10 +4178,9 @@ olx.source.ImageVectorOptions.prototype.style;
 /**
  * @typedef {{attributions: (Array.<ol.Attribution>|undefined),
  *     crossOrigin: (null|string|undefined),
- *     extent: (ol.Extent|undefined),
  *     hidpi: (boolean|undefined),
  *     serverType: (ol.source.wms.ServerType|string|undefined),
- *     logo: (string|undefined),
+ *     logo: (string|olx.LogoOptions|undefined),
  *     params: Object.<string,*>,
  *     projection: ol.proj.ProjectionLike,
  *     ratio: (number|undefined),
@@ -3615,6 +4194,7 @@ olx.source.ImageWMSOptions;
 /**
  * Attributions.
  * @type {Array.<ol.Attribution>|undefined}
+ * @api stable
  */
 olx.source.ImageWMSOptions.prototype.attributions;
 
@@ -3622,21 +4202,16 @@ olx.source.ImageWMSOptions.prototype.attributions;
 /**
  * crossOrigin setting for image requests.
  * @type {null|string|undefined}
+ * @api stable
  */
 olx.source.ImageWMSOptions.prototype.crossOrigin;
-
-
-/**
- * Extent.
- * @type {ol.Extent|undefined}
- */
-olx.source.ImageWMSOptions.prototype.extent;
 
 
 /**
  * Use the `ol.Map#pixelRatio` value when requesting the image from the remote
  * server. Default is `true`.
  * @type {boolean|undefined}
+ * @api
  */
 olx.source.ImageWMSOptions.prototype.hidpi;
 
@@ -3645,13 +4220,15 @@ olx.source.ImageWMSOptions.prototype.hidpi;
  * The type of the remote WMS server: `mapserver`, `geoserver` or `qgis`. Only
  * needed if `hidpi` is `true`. Default is `undefined`.
  * @type {ol.source.wms.ServerType|string|undefined}
+ * @api
  */
 olx.source.ImageWMSOptions.prototype.serverType;
 
 
 /**
  * Logo.
- * @type {string|undefined}
+ * @type {string|olx.LogoOptions|undefined}
+ * @api stable
  */
 olx.source.ImageWMSOptions.prototype.logo;
 
@@ -3661,6 +4238,7 @@ olx.source.ImageWMSOptions.prototype.logo;
  * `''` by default. `VERSION` is `1.3.0` by default. `WIDTH`, `HEIGHT`, `BBOX`
  * and `CRS` (`SRS` for WMS version < 1.3.0) will be set dynamically.
  * @type {Object.<string,*>}
+ * @api stable
  */
 olx.source.ImageWMSOptions.prototype.params;
 
@@ -3668,6 +4246,7 @@ olx.source.ImageWMSOptions.prototype.params;
 /**
  * Projection.
  * @type {ol.proj.ProjectionLike}
+ * @api
  */
 olx.source.ImageWMSOptions.prototype.projection;
 
@@ -3676,6 +4255,7 @@ olx.source.ImageWMSOptions.prototype.projection;
  * Ratio. `1` means image requests are the size of the map viewport, `2` means
  * twice the size of the map viewport, and so on. Default is `1.5`.
  * @type {number|undefined}
+ * @api stable
  */
 olx.source.ImageWMSOptions.prototype.ratio;
 
@@ -3683,6 +4263,7 @@ olx.source.ImageWMSOptions.prototype.ratio;
 /**
  * Resolutions. If specified, requests will be made for these resolutions only.
  * @type {Array.<number>|undefined}
+ * @api stable
  */
 olx.source.ImageWMSOptions.prototype.resolutions;
 
@@ -3690,6 +4271,7 @@ olx.source.ImageWMSOptions.prototype.resolutions;
 /**
  * WMS service URL.
  * @type {string|undefined}
+ * @api stable
  */
 olx.source.ImageWMSOptions.prototype.url;
 
@@ -3709,6 +4291,7 @@ olx.source.StamenOptions;
 /**
  * Layer.
  * @type {string}
+ * @api stable
  */
 olx.source.StamenOptions.prototype.layer;
 
@@ -3716,6 +4299,7 @@ olx.source.StamenOptions.prototype.layer;
 /**
  * Minimum zoom.
  * @type {number|undefined}
+ * @api
  */
 olx.source.StamenOptions.prototype.minZoom;
 
@@ -3723,6 +4307,7 @@ olx.source.StamenOptions.prototype.minZoom;
 /**
  * Maximum zoom.
  * @type {number|undefined}
+ * @api
  */
 olx.source.StamenOptions.prototype.maxZoom;
 
@@ -3730,6 +4315,7 @@ olx.source.StamenOptions.prototype.maxZoom;
 /**
  * Whether the layer is opaque.
  * @type {boolean|undefined}
+ * @api
  */
 olx.source.StamenOptions.prototype.opaque;
 
@@ -3737,6 +4323,7 @@ olx.source.StamenOptions.prototype.opaque;
 /**
  * Optional function to load a tile given a URL.
  * @type {ol.TileLoadFunctionType|undefined}
+ * @api
  */
 olx.source.StamenOptions.prototype.tileLoadFunction;
 
@@ -3744,6 +4331,7 @@ olx.source.StamenOptions.prototype.tileLoadFunction;
 /**
  * URL template. Must include `{x}`, `{y}` or `{-y}`, and `{z}` placeholders.
  * @type {string|undefined}
+ * @api stable
  */
 olx.source.StamenOptions.prototype.url;
 
@@ -3751,10 +4339,9 @@ olx.source.StamenOptions.prototype.url;
 /**
  * @typedef {{attributions: (Array.<ol.Attribution>|undefined),
  *     crossOrigin: (null|string|undefined),
- *     extent: (ol.Extent|undefined),
  *     imageExtent: (ol.Extent|undefined),
  *     imageSize: (ol.Size|undefined),
- *     logo: (string|undefined),
+ *     logo: (string|olx.LogoOptions|undefined),
  *     projection: ol.proj.ProjectionLike,
  *     url: string}}
  * @api
@@ -3765,6 +4352,7 @@ olx.source.ImageStaticOptions;
 /**
  * Attributions.
  * @type {Array.<ol.Attribution>|undefined}
+ * @api stable
  */
 olx.source.ImageStaticOptions.prototype.attributions;
 
@@ -3772,20 +4360,15 @@ olx.source.ImageStaticOptions.prototype.attributions;
 /**
  * crossOrigin setting for image requests.
  * @type {null|string|undefined}
+ * @api stable
  */
 olx.source.ImageStaticOptions.prototype.crossOrigin;
 
 
 /**
- * Extent.
- * @type {ol.Extent|undefined}
- */
-olx.source.ImageStaticOptions.prototype.extent;
-
-
-/**
  * Extent of the image.
  * @type {ol.Extent|undefined}
+ * @api stable
  */
 olx.source.ImageStaticOptions.prototype.imageExtent;
 
@@ -3793,13 +4376,15 @@ olx.source.ImageStaticOptions.prototype.imageExtent;
 /**
  * Size of the image.
  * @type {ol.Size|undefined}
+ * @api stable
  */
 olx.source.ImageStaticOptions.prototype.imageSize;
 
 
 /**
  * Logo.
- * @type {string|undefined}
+ * @type {string|olx.LogoOptions|undefined}
+ * @api stable
  */
 olx.source.ImageStaticOptions.prototype.logo;
 
@@ -3807,6 +4392,7 @@ olx.source.ImageStaticOptions.prototype.logo;
 /**
  * Projection.
  * @type {ol.proj.ProjectionLike}
+ * @api
  */
 olx.source.ImageStaticOptions.prototype.projection;
 
@@ -3814,17 +4400,17 @@ olx.source.ImageStaticOptions.prototype.projection;
 /**
  * Url.
  * @type {string}
+ * @api stable
  */
 olx.source.ImageStaticOptions.prototype.url;
 
 
 /**
  * @typedef {{attributions: (Array.<ol.Attribution>|undefined),
- *     extent: (ol.Extent|undefined),
  *     format: ol.format.Feature,
  *     loader: function(this: ol.source.ServerVector, ol.Extent, number, ol.proj.Projection),
  *     strategy: (function(ol.Extent, number): Array.<ol.Extent>|undefined),
- *     logo: (string|undefined),
+ *     logo: (string|olx.LogoOptions|undefined),
  *     projection: ol.proj.ProjectionLike}}
  * @api
  */
@@ -3834,20 +4420,15 @@ olx.source.ServerVectorOptions;
 /**
  * Attributions.
  * @type {Array.<ol.Attribution>|undefined}
+ * @api
  */
 olx.source.ServerVectorOptions.prototype.attributions;
 
 
 /**
- * Extent.
- * @type {ol.Extent|undefined}
- */
-olx.source.ServerVectorOptions.prototype.extent;
-
-
-/**
  * Format.
  * @type {ol.format.Feature}
+ * @api
  */
 olx.source.ServerVectorOptions.prototype.format;
 
@@ -3855,6 +4436,7 @@ olx.source.ServerVectorOptions.prototype.format;
 /**
  * Loading function.
  * @type {function(this: ol.source.ServerVector, ol.Extent, number, ol.proj.Projection)}
+ * @api
  */
 olx.source.ServerVectorOptions.prototype.loader;
 
@@ -3863,13 +4445,15 @@ olx.source.ServerVectorOptions.prototype.loader;
  * Loading strategy. An {@link ol.loadingstrategy} or a custom function.
  * Default is {@link ol.loadingstrategy.bbox}.
  * @type {function(ol.Extent, number): Array.<ol.Extent>|undefined}
+ * @api
  */
 olx.source.ServerVectorOptions.prototype.strategy;
 
 
 /**
  * Logo.
- * @type {string|undefined}
+ * @type {string|olx.LogoOptions|undefined}
+ * @api
  */
 olx.source.ServerVectorOptions.prototype.logo;
 
@@ -3877,6 +4461,7 @@ olx.source.ServerVectorOptions.prototype.logo;
 /**
  * Projection.
  * @type {ol.proj.ProjectionLike}
+ * @api
  */
 olx.source.ServerVectorOptions.prototype.projection;
 
@@ -3893,6 +4478,7 @@ olx.source.TileJSONOptions;
 /**
  * crossOrigin setting for image requests.
  * @type {null|string|undefined}
+ * @api stable
  */
 olx.source.TileJSONOptions.prototype.crossOrigin;
 
@@ -3900,6 +4486,7 @@ olx.source.TileJSONOptions.prototype.crossOrigin;
 /**
  * Optional function to load a tile given a URL.
  * @type {ol.TileLoadFunctionType|undefined}
+ * @api
  */
 olx.source.TileJSONOptions.prototype.tileLoadFunction;
 
@@ -3907,6 +4494,7 @@ olx.source.TileJSONOptions.prototype.tileLoadFunction;
 /**
  * URL to the TileJSON file.
  * @type {string}
+ * @api stable
  */
 olx.source.TileJSONOptions.prototype.url;
 
@@ -3915,10 +4503,9 @@ olx.source.TileJSONOptions.prototype.url;
  * @typedef {{attributions: (Array.<ol.Attribution>|undefined),
  *     params: Object.<string,*>,
  *     crossOrigin: (null|string|undefined),
- *     extent: (ol.Extent|undefined),
  *     gutter: (number|undefined),
  *     hidpi: (boolean|undefined),
- *     logo: (string|undefined),
+ *     logo: (string|olx.LogoOptions|undefined),
  *     tileGrid: (ol.tilegrid.TileGrid|undefined),
  *     maxZoom: (number|undefined),
  *     projection: ol.proj.ProjectionLike,
@@ -3934,6 +4521,7 @@ olx.source.TileWMSOptions;
 /**
  * Attributions.
  * @type {Array.<ol.Attribution>|undefined}
+ * @api stable
  */
 olx.source.TileWMSOptions.prototype.attributions;
 
@@ -3943,6 +4531,7 @@ olx.source.TileWMSOptions.prototype.attributions;
  * `''` by default. `VERSION` is `1.3.0` by default. `WIDTH`, `HEIGHT`, `BBOX`
  * and `CRS` (`SRS` for WMS version < 1.3.0) will be set dynamically.
  * @type {Object.<string,*>}
+ * @api stable
  */
 olx.source.TileWMSOptions.prototype.params;
 
@@ -3950,15 +4539,9 @@ olx.source.TileWMSOptions.prototype.params;
 /**
  * crossOrigin setting for image requests.
  * @type {null|string|undefined}
+ * @api stable
  */
 olx.source.TileWMSOptions.prototype.crossOrigin;
-
-
-/**
- * Extent.
- * @type {ol.Extent|undefined}
- */
-olx.source.TileWMSOptions.prototype.extent;
 
 
 /**
@@ -3971,6 +4554,7 @@ olx.source.TileWMSOptions.prototype.extent;
  * example, MapServer has a `tile_map_edge_buffer` configuration parameter for
  * this. See http://mapserver.org/output/tile_mode.html.
  * @type {number|undefined}
+ * @api stable
  */
 olx.source.TileWMSOptions.prototype.gutter;
 
@@ -3979,13 +4563,15 @@ olx.source.TileWMSOptions.prototype.gutter;
  * Use the `ol.Map#pixelRatio` value when requesting the image from the remote
  * server. Default is `true`.
  * @type {boolean|undefined}
+ * @api
  */
 olx.source.TileWMSOptions.prototype.hidpi;
 
 
 /**
  * Logo.
- * @type {string|undefined}
+ * @type {string|olx.LogoOptions|undefined}
+ * @api stable
  */
 olx.source.TileWMSOptions.prototype.logo;
 
@@ -3997,6 +4583,7 @@ olx.source.TileWMSOptions.prototype.logo;
  * extent, the grid will be based on that; if not, a grid based on a global
  * extent with origin at 0,0 will be used.
  * @type {ol.tilegrid.TileGrid|undefined}
+ * @api stable
  */
 olx.source.TileWMSOptions.prototype.tileGrid;
 
@@ -4004,6 +4591,7 @@ olx.source.TileWMSOptions.prototype.tileGrid;
 /**
  * Maximum zoom.
  * @type {number|undefined}
+ * @api
  */
 olx.source.TileWMSOptions.prototype.maxZoom;
 
@@ -4011,6 +4599,7 @@ olx.source.TileWMSOptions.prototype.maxZoom;
 /**
  * Projection.
  * @type {ol.proj.ProjectionLike}
+ * @api
  */
 olx.source.TileWMSOptions.prototype.projection;
 
@@ -4019,6 +4608,7 @@ olx.source.TileWMSOptions.prototype.projection;
  * The type of the remote WMS server. Currently only used when `hidpi` is
  * `true`. Default is `undefined`.
  * @type {ol.source.wms.ServerType|string|undefined}
+ * @api
  */
 olx.source.TileWMSOptions.prototype.serverType;
 
@@ -4026,6 +4616,7 @@ olx.source.TileWMSOptions.prototype.serverType;
 /**
  * Optional function to load a tile given a URL.
  * @type {ol.TileLoadFunctionType|undefined}
+ * @api
  */
 olx.source.TileWMSOptions.prototype.tileLoadFunction;
 
@@ -4033,6 +4624,7 @@ olx.source.TileWMSOptions.prototype.tileLoadFunction;
 /**
  * WMS service URL.
  * @type {string|undefined}
+ * @api stable
  */
 olx.source.TileWMSOptions.prototype.url;
 
@@ -4041,15 +4633,15 @@ olx.source.TileWMSOptions.prototype.url;
  * WMS service urls. Use this instead of `url` when the WMS supports multiple
  * urls for GetMap requests.
  * @type {Array.<string>|undefined}
+ * @api stable
  */
 olx.source.TileWMSOptions.prototype.urls;
 
 
 /**
  * @typedef {{attributions: (Array.<ol.Attribution>|undefined),
- *     extent: (ol.Extent|undefined),
  *     features: (Array.<ol.Feature>|undefined),
- *     logo: (string|undefined),
+ *     logo: (string|olx.LogoOptions|undefined),
  *     projection: ol.proj.ProjectionLike,
  *     state: (ol.source.State|string|undefined)}}
  * @api
@@ -4060,27 +4652,23 @@ olx.source.VectorOptions;
 /**
  * Attributions.
  * @type {Array.<ol.Attribution>|undefined}
+ * @api stable
  */
 olx.source.VectorOptions.prototype.attributions;
 
 
 /**
- * Extent.
- * @type {ol.Extent|undefined}
- */
-olx.source.VectorOptions.prototype.extent;
-
-
-/**
  * Features.
  * @type {Array.<ol.Feature>|undefined}
+ * @api stable
  */
 olx.source.VectorOptions.prototype.features;
 
 
 /**
  * Logo.
- * @type {string|undefined}
+ * @type {string|olx.LogoOptions|undefined}
+ * @api stable
  */
 olx.source.VectorOptions.prototype.logo;
 
@@ -4088,6 +4676,7 @@ olx.source.VectorOptions.prototype.logo;
 /**
  * Projection.
  * @type {ol.proj.ProjectionLike}
+ * @api
  */
 olx.source.VectorOptions.prototype.projection;
 
@@ -4095,6 +4684,7 @@ olx.source.VectorOptions.prototype.projection;
 /**
  * State.
  * @type {ol.source.State|string|undefined}
+ * @api
  */
 olx.source.VectorOptions.prototype.state;
 
@@ -4103,9 +4693,8 @@ olx.source.VectorOptions.prototype.state;
  * @typedef {{arrayBuffer: (ArrayBuffer|undefined),
  *     attributions: (Array.<ol.Attribution>|undefined),
  *     doc: (Document|undefined),
- *     extent: (ol.Extent|undefined),
  *     format: ol.format.Feature,
- *     logo: (string|undefined),
+ *     logo: (string|olx.LogoOptions|undefined),
  *     node: (Node|undefined),
  *     object: (Object|undefined),
  *     projection: ol.proj.ProjectionLike,
@@ -4120,6 +4709,7 @@ olx.source.StaticVectorOptions;
 /**
  * Array buffer.
  * @type {ArrayBuffer|undefined}
+ * @api
  */
 olx.source.StaticVectorOptions.prototype.arrayBuffer;
 
@@ -4127,6 +4717,7 @@ olx.source.StaticVectorOptions.prototype.arrayBuffer;
 /**
  * Attributions.
  * @type {Array.<ol.Attribution>|undefined}
+ * @api
  */
 olx.source.StaticVectorOptions.prototype.attributions;
 
@@ -4134,27 +4725,23 @@ olx.source.StaticVectorOptions.prototype.attributions;
 /**
  * Document.
  * @type {Document|undefined}
+ * @api
  */
 olx.source.StaticVectorOptions.prototype.doc;
 
 
 /**
- * Extent.
- * @type {ol.Extent|undefined}
- */
-olx.source.StaticVectorOptions.prototype.extent;
-
-
-/**
  * Format.
  * @type {ol.format.Feature}
+ * @api
  */
 olx.source.StaticVectorOptions.prototype.format;
 
 
 /**
  * Logo.
- * @type {string|undefined}
+ * @type {string|olx.LogoOptions|undefined}
+ * @api
  */
 olx.source.StaticVectorOptions.prototype.logo;
 
@@ -4162,6 +4749,7 @@ olx.source.StaticVectorOptions.prototype.logo;
 /**
  * Node.
  * @type {Node|undefined}
+ * @api
  */
 olx.source.StaticVectorOptions.prototype.node;
 
@@ -4169,6 +4757,7 @@ olx.source.StaticVectorOptions.prototype.node;
 /**
  * Object.
  * @type {Object|undefined}
+ * @api
  */
 olx.source.StaticVectorOptions.prototype.object;
 
@@ -4176,6 +4765,7 @@ olx.source.StaticVectorOptions.prototype.object;
 /**
  * Projection.
  * @type {ol.proj.ProjectionLike}
+ * @api
  */
 olx.source.StaticVectorOptions.prototype.projection;
 
@@ -4183,6 +4773,7 @@ olx.source.StaticVectorOptions.prototype.projection;
 /**
  * Text.
  * @type {string|undefined}
+ * @api
  */
 olx.source.StaticVectorOptions.prototype.text;
 
@@ -4190,6 +4781,7 @@ olx.source.StaticVectorOptions.prototype.text;
 /**
  * URL.
  * @type {string|undefined}
+ * @api
  */
 olx.source.StaticVectorOptions.prototype.url;
 
@@ -4197,6 +4789,7 @@ olx.source.StaticVectorOptions.prototype.url;
 /**
  * URLs.
  * @type {Array.<string>|undefined}
+ * @api
  */
 olx.source.StaticVectorOptions.prototype.urls;
 
@@ -4204,8 +4797,7 @@ olx.source.StaticVectorOptions.prototype.urls;
 /**
  * @typedef {{attributions: (Array.<ol.Attribution>|undefined),
  *     crossOrigin: (string|null|undefined),
- *     extent: (ol.Extent|undefined),
- *     logo: (string|undefined),
+ *     logo: (string|olx.LogoOptions|undefined),
  *     tileGrid: ol.tilegrid.WMTS,
  *     projection: ol.proj.ProjectionLike,
  *     requestEncoding: (ol.source.WMTSRequestEncoding|undefined),
@@ -4228,6 +4820,7 @@ olx.source.WMTSOptions;
 /**
  * Attributions.
  * @type {Array.<ol.Attribution>|undefined}
+ * @api stable
  */
 olx.source.WMTSOptions.prototype.attributions;
 
@@ -4235,20 +4828,15 @@ olx.source.WMTSOptions.prototype.attributions;
 /**
  * crossOrigin setting for image requests.
  * @type {string|null|undefined}
+ * @api stable
  */
 olx.source.WMTSOptions.prototype.crossOrigin;
 
 
 /**
- * Extent.
- * @type {ol.Extent|undefined}
- */
-olx.source.WMTSOptions.prototype.extent;
-
-
-/**
  * Logo.
- * @type {string|undefined}
+ * @type {string|olx.LogoOptions|undefined}
+ * @api stable
  */
 olx.source.WMTSOptions.prototype.logo;
 
@@ -4256,6 +4844,7 @@ olx.source.WMTSOptions.prototype.logo;
 /**
  * Tile grid.
  * @type {ol.tilegrid.WMTS}
+ * @api stable
  */
 olx.source.WMTSOptions.prototype.tileGrid;
 
@@ -4263,6 +4852,7 @@ olx.source.WMTSOptions.prototype.tileGrid;
 /**
  * Projection.
  * @type {ol.proj.ProjectionLike}
+ * @api
  */
 olx.source.WMTSOptions.prototype.projection;
 
@@ -4270,6 +4860,7 @@ olx.source.WMTSOptions.prototype.projection;
 /**
  * Request encoding.
  * @type {ol.source.WMTSRequestEncoding|undefined}
+ * @api stable
  */
 olx.source.WMTSOptions.prototype.requestEncoding;
 
@@ -4277,6 +4868,7 @@ olx.source.WMTSOptions.prototype.requestEncoding;
 /**
  * Layer.
  * @type {string}
+ * @api stable
  */
 olx.source.WMTSOptions.prototype.layer;
 
@@ -4284,6 +4876,7 @@ olx.source.WMTSOptions.prototype.layer;
 /**
  * Style.
  * @type {string}
+ * @api stable
  */
 olx.source.WMTSOptions.prototype.style;
 
@@ -4294,20 +4887,23 @@ olx.source.WMTSOptions.prototype.style;
  * by 512px images (for retina/hidpi devices) then `tilePixelRatio`
  * should be set to `2`. Default is `1`.
  * @type {number|undefined}
+ * @api
  */
 olx.source.WMTSOptions.prototype.tilePixelRatio;
 
 
 /**
- * WMTS version. Default to `1.0.0`.
+ * WMTS version. Default is `1.0.0`.
  * @type {string|undefined}
+ * @api stable
  */
 olx.source.WMTSOptions.prototype.version;
 
 
 /**
- * Format.
+ * Image format. Default is `image/jpeg`.
  * @type {string|undefined}
+ * @api stable
  */
 olx.source.WMTSOptions.prototype.format;
 
@@ -4315,6 +4911,7 @@ olx.source.WMTSOptions.prototype.format;
 /**
  * Matrix set.
  * @type {string}
+ * @api stable
  */
 olx.source.WMTSOptions.prototype.matrixSet;
 
@@ -4322,6 +4919,7 @@ olx.source.WMTSOptions.prototype.matrixSet;
 /**
  * Dimensions.
  * @type {Object|undefined}
+ * @api stable
  */
 olx.source.WMTSOptions.prototype.dimensions;
 
@@ -4329,6 +4927,7 @@ olx.source.WMTSOptions.prototype.dimensions;
 /**
  * URL.
  * @type {string|undefined}
+ * @api stable
  */
 olx.source.WMTSOptions.prototype.url;
 
@@ -4336,6 +4935,7 @@ olx.source.WMTSOptions.prototype.url;
 /**
  * Maximum zoom.
  * @type {number|undefined}
+ * @api
  */
 olx.source.WMTSOptions.prototype.maxZoom;
 
@@ -4343,6 +4943,7 @@ olx.source.WMTSOptions.prototype.maxZoom;
 /**
  * Optional function to load a tile given a URL.
  * @type {ol.TileLoadFunctionType|undefined}
+ * @api
  */
 olx.source.WMTSOptions.prototype.tileLoadFunction;
 
@@ -4350,6 +4951,7 @@ olx.source.WMTSOptions.prototype.tileLoadFunction;
 /**
  * Urls.
  * @type {Array.<string>|undefined}
+ * @api stable
  */
 olx.source.WMTSOptions.prototype.urls;
 
@@ -4357,8 +4959,7 @@ olx.source.WMTSOptions.prototype.urls;
 /**
  * @typedef {{attributions: (Array.<ol.Attribution>|undefined),
  *     crossOrigin: (null|string|undefined),
- *     extent: (ol.Extent|undefined),
- *     logo: (string|undefined),
+ *     logo: (string|olx.LogoOptions|undefined),
  *     projection: ol.proj.ProjectionLike,
  *     maxZoom: (number|undefined),
  *     minZoom: (number|undefined),
@@ -4376,6 +4977,7 @@ olx.source.XYZOptions;
 /**
  * Attributions.
  * @type {Array.<ol.Attribution>|undefined}
+ * @api stable
  */
 olx.source.XYZOptions.prototype.attributions;
 
@@ -4383,20 +4985,15 @@ olx.source.XYZOptions.prototype.attributions;
 /**
  * Cross origin setting for image requests.
  * @type {null|string|undefined}
+ * @api stable
  */
 olx.source.XYZOptions.prototype.crossOrigin;
 
 
 /**
- * Extent.
- * @type {ol.Extent|undefined}
- */
-olx.source.XYZOptions.prototype.extent;
-
-
-/**
  * Logo.
- * @type {string|undefined}
+ * @type {string|olx.LogoOptions|undefined}
+ * @api stable
  */
 olx.source.XYZOptions.prototype.logo;
 
@@ -4404,6 +5001,7 @@ olx.source.XYZOptions.prototype.logo;
 /**
  * Projection. Default is `EPSG:3857`.
  * @type {ol.proj.ProjectionLike}
+ * @api
  */
 olx.source.XYZOptions.prototype.projection;
 
@@ -4411,6 +5009,7 @@ olx.source.XYZOptions.prototype.projection;
 /**
  * Optional max zoom level. Default is `18`.
  * @type {number|undefined}
+ * @api
  */
 olx.source.XYZOptions.prototype.maxZoom;
 
@@ -4418,6 +5017,7 @@ olx.source.XYZOptions.prototype.maxZoom;
 /**
  * Unsupported (TODO: remove this).
  * @type {number|undefined}
+ * @api
  */
 olx.source.XYZOptions.prototype.minZoom;
 
@@ -4425,6 +5025,7 @@ olx.source.XYZOptions.prototype.minZoom;
 /**
  * Optional function to load a tile given a URL.
  * @type {ol.TileLoadFunctionType|undefined}
+ * @api
  */
 olx.source.XYZOptions.prototype.tileLoadFunction;
 
@@ -4435,6 +5036,7 @@ olx.source.XYZOptions.prototype.tileLoadFunction;
  * by 512px images (for retina/hidpi devices) then `tilePixelRatio`
  * should be set to `2`. Default is `1`.
  * @type {number|undefined}
+ * @api
  */
 olx.source.XYZOptions.prototype.tilePixelRatio;
 
@@ -4443,6 +5045,7 @@ olx.source.XYZOptions.prototype.tilePixelRatio;
  * Optional function to get tile URL given a tile coordinate and the projection.
  * Required if url or urls are not provided.
  * @type {ol.TileUrlFunctionType|undefined}
+ * @api
  */
 olx.source.XYZOptions.prototype.tileUrlFunction;
 
@@ -4450,6 +5053,7 @@ olx.source.XYZOptions.prototype.tileUrlFunction;
 /**
  * URL template. Must include `{x}`, `{y}` or `{-y}`, and `{z}` placeholders.
  * @type {string|undefined}
+ * @api stable
  */
 olx.source.XYZOptions.prototype.url;
 
@@ -4457,6 +5061,7 @@ olx.source.XYZOptions.prototype.url;
 /**
  * An array of URL templates.
  * @type {Array.<string>|undefined}
+ * @api stable
  */
 olx.source.XYZOptions.prototype.urls;
 
@@ -4464,6 +5069,7 @@ olx.source.XYZOptions.prototype.urls;
 /**
  * Whether to wrap the world horizontally. Default is `true`.
  * @type {boolean|undefined}
+ * @api
  */
 olx.source.XYZOptions.prototype.wrapX;
 
@@ -4471,7 +5077,7 @@ olx.source.XYZOptions.prototype.wrapX;
 /**
  * @typedef {{attributions: (Array.<ol.Attribution>|undefined),
  *     crossOrigin: (null|string|undefined),
- *     logo: (string|undefined),
+ *     logo: (string|olx.LogoOptions|undefined),
  *     url: !string,
  *     tierSizeCalculation: (string|undefined),
  *     size: ol.Size}}
@@ -4483,6 +5089,7 @@ olx.source.ZoomifyOptions;
 /**
  * Attributions.
  * @type {Array.<ol.Attribution>|undefined}
+ * @api stable
  */
 olx.source.ZoomifyOptions.prototype.attributions;
 
@@ -4490,13 +5097,15 @@ olx.source.ZoomifyOptions.prototype.attributions;
 /**
  * Cross origin setting for image requests.
  * @type {null|string|undefined}
+ * @api stable
  */
 olx.source.ZoomifyOptions.prototype.crossOrigin;
 
 
 /**
  * Logo.
- * @type {string|undefined}
+ * @type {string|olx.LogoOptions|undefined}
+ * @api stable
  */
 olx.source.ZoomifyOptions.prototype.logo;
 
@@ -4504,6 +5113,7 @@ olx.source.ZoomifyOptions.prototype.logo;
 /**
  * Prefix of URL template.
  * @type {!string}
+ * @api stable
  */
 olx.source.ZoomifyOptions.prototype.url;
 
@@ -4511,6 +5121,7 @@ olx.source.ZoomifyOptions.prototype.url;
 /**
  * Tier size calculation method: `default` or `truncated`.
  * @type {string|undefined}
+ * @api stable
  */
 olx.source.ZoomifyOptions.prototype.tierSizeCalculation;
 
@@ -4518,6 +5129,7 @@ olx.source.ZoomifyOptions.prototype.tierSizeCalculation;
 /**
  * Size of the image.
  * @type {ol.Size}
+ * @api stable
  */
 olx.source.ZoomifyOptions.prototype.size;
 
@@ -4535,6 +5147,7 @@ olx.style.CircleOptions;
 /**
  * Fill style.
  * @type {ol.style.Fill|undefined}
+ * @api
  */
 olx.style.CircleOptions.prototype.fill;
 
@@ -4542,6 +5155,7 @@ olx.style.CircleOptions.prototype.fill;
 /**
  * Circle radius.
  * @type {number}
+ * @api
  */
 olx.style.CircleOptions.prototype.radius;
 
@@ -4555,6 +5169,7 @@ olx.style.CircleOptions.prototype.radius;
  * position is animated. Without it, the circle may jitter noticeably.
  * Default value is `true`.
  * @type {boolean|undefined}
+ * @api
  */
 olx.style.CircleOptions.prototype.snapToPixel;
 
@@ -4562,6 +5177,7 @@ olx.style.CircleOptions.prototype.snapToPixel;
 /**
  * Stroke style.
  * @type {ol.style.Stroke|undefined}
+ * @api
  */
 olx.style.CircleOptions.prototype.stroke;
 
@@ -4574,8 +5190,10 @@ olx.style.FillOptions;
 
 
 /**
- * Color.
+ * Color. See {@link ol.color} for possible formats. Default null; if null,
+ * the Canvas/renderer default black will be used.
  * @type {ol.Color|string|undefined}
+ * @api
  */
 olx.style.FillOptions.prototype.color;
 
@@ -4603,6 +5221,7 @@ olx.style.IconOptions;
 /**
  * Anchor. Default value is `[0.5, 0.5]` (icon center).
  * @type {Array.<number>|undefined}
+ * @api
  */
 olx.style.IconOptions.prototype.anchor;
 
@@ -4611,6 +5230,7 @@ olx.style.IconOptions.prototype.anchor;
  * Origin of the anchor: `bottom-left`, `bottom-right`, `top-left` or
  * `top-right`. Default is `top-left`.
  * @type {ol.style.IconOrigin|undefined}
+ * @api
  */
 olx.style.IconOptions.prototype.anchorOrigin;
 
@@ -4620,6 +5240,7 @@ olx.style.IconOptions.prototype.anchorOrigin;
  * indicates the x value is a fraction of the icon. A value of `'pixels'`
  * indicates the x value in pixels. Default is `'fraction'`.
  * @type {ol.style.IconAnchorUnits|undefined}
+ * @api
  */
 olx.style.IconOptions.prototype.anchorXUnits;
 
@@ -4629,6 +5250,7 @@ olx.style.IconOptions.prototype.anchorXUnits;
  * indicates the y value is a fraction of the icon. A value of `'pixels'`
  * indicates the y value in pixels. Default is `'fraction'`.
  * @type {ol.style.IconAnchorUnits|undefined}
+ * @api
  */
 olx.style.IconOptions.prototype.anchorYUnits;
 
@@ -4636,6 +5258,7 @@ olx.style.IconOptions.prototype.anchorYUnits;
 /**
  * crossOrigin setting for image.
  * @type {null|string|undefined}
+ * @api
  */
 olx.style.IconOptions.prototype.crossOrigin;
 
@@ -4644,6 +5267,7 @@ olx.style.IconOptions.prototype.crossOrigin;
  * Image object for the icon. If the `src` option is not provided then the
  * provided image must already be loaded.
  * @type {Image|undefined}
+ * @api
  */
 olx.style.IconOptions.prototype.img;
 
@@ -4653,6 +5277,7 @@ olx.style.IconOptions.prototype.img;
  * define the sub-rectangle to use from the original icon image. Default value
  * is `[0, 0]`.
  * @type {Array.<number>|undefined}
+ * @api
  */
 olx.style.IconOptions.prototype.offset;
 
@@ -4661,6 +5286,7 @@ olx.style.IconOptions.prototype.offset;
  * Origin of the offset: `bottom-left`, `bottom-right`, `top-left` or
  * `top-right`. Default is `top-left`.
  * @type {ol.style.IconOrigin|undefined}
+ * @api
  */
 olx.style.IconOptions.prototype.offsetOrigin;
 
@@ -4668,6 +5294,7 @@ olx.style.IconOptions.prototype.offsetOrigin;
 /**
  * Scale.
  * @type {number|undefined}
+ * @api
  */
 olx.style.IconOptions.prototype.scale;
 
@@ -4681,6 +5308,7 @@ olx.style.IconOptions.prototype.scale;
  * is animated. Without it, the icon may jitter noticeably. Default
  * value is `true`.
  * @type {boolean|undefined}
+ * @api
  */
 olx.style.IconOptions.prototype.snapToPixel;
 
@@ -4688,6 +5316,7 @@ olx.style.IconOptions.prototype.snapToPixel;
 /**
  * Whether to rotate the icon with the view. Default is `false`.
  * @type {boolean|undefined}
+ * @api
  */
 olx.style.IconOptions.prototype.rotateWithView;
 
@@ -4695,6 +5324,7 @@ olx.style.IconOptions.prototype.rotateWithView;
 /**
  * Rotation.
  * @type {number|undefined}
+ * @api
  */
 olx.style.IconOptions.prototype.rotation;
 
@@ -4702,6 +5332,7 @@ olx.style.IconOptions.prototype.rotation;
 /**
  * Icon size in pixel.
  * @type {ol.Size|undefined}
+ * @api
  */
 olx.style.IconOptions.prototype.size;
 
@@ -4709,6 +5340,7 @@ olx.style.IconOptions.prototype.size;
 /**
  * Image source URI.
  * @type {string}
+ * @api
  */
 olx.style.IconOptions.prototype.src;
 
@@ -4726,8 +5358,10 @@ olx.style.StrokeOptions;
 
 
 /**
- * Color.
+ * Color. See {@link ol.color} for possible formats. Default null; if null,
+ * the Canvas/renderer default black will be used.
  * @type {ol.Color|string|undefined}
+ * @api
  */
 olx.style.StrokeOptions.prototype.color;
 
@@ -4735,6 +5369,7 @@ olx.style.StrokeOptions.prototype.color;
 /**
  * Line cap style: `butt`, `round`, or `square`. Default is `round`.
  * @type {string|undefined}
+ * @api
  */
 olx.style.StrokeOptions.prototype.lineCap;
 
@@ -4742,6 +5377,7 @@ olx.style.StrokeOptions.prototype.lineCap;
 /**
  * Line join style: `bevel`, `round`, or `miter`. Default is `round`.
  * @type {string|undefined}
+ * @api
  */
 olx.style.StrokeOptions.prototype.lineJoin;
 
@@ -4749,6 +5385,7 @@ olx.style.StrokeOptions.prototype.lineJoin;
 /**
  * Line dash pattern. Default is `undefined` (no dash).
  * @type {Array.<number>|undefined}
+ * @api
  */
 olx.style.StrokeOptions.prototype.lineDash;
 
@@ -4756,6 +5393,7 @@ olx.style.StrokeOptions.prototype.lineDash;
 /**
  * Miter limit. Default is `10`.
  * @type {number|undefined}
+ * @api
  */
 olx.style.StrokeOptions.prototype.miterLimit;
 
@@ -4763,6 +5401,7 @@ olx.style.StrokeOptions.prototype.miterLimit;
 /**
  * Width.
  * @type {number|undefined}
+ * @api
  */
 olx.style.StrokeOptions.prototype.width;
 
@@ -4786,6 +5425,7 @@ olx.style.TextOptions;
 /**
  * Font.
  * @type {string|undefined}
+ * @api
  */
 olx.style.TextOptions.prototype.font;
 
@@ -4794,6 +5434,7 @@ olx.style.TextOptions.prototype.font;
  * Horizontal text offset in pixels. A positive will shift the text right.
  * Default is `0`.
  * @type {number|undefined}
+ * @api
  */
 olx.style.TextOptions.prototype.offsetX;
 
@@ -4802,6 +5443,7 @@ olx.style.TextOptions.prototype.offsetX;
  * Vertical text offset in pixels. A positive will shift the text down. Default
  * is `0`.
  * @type {number|undefined}
+ * @api
  */
 olx.style.TextOptions.prototype.offsetY;
 
@@ -4809,6 +5451,7 @@ olx.style.TextOptions.prototype.offsetY;
 /**
  * Scale.
  * @type {number|undefined}
+ * @api
  */
 olx.style.TextOptions.prototype.scale;
 
@@ -4816,6 +5459,7 @@ olx.style.TextOptions.prototype.scale;
 /**
  * Rotation.
  * @type {number|undefined}
+ * @api
  */
 olx.style.TextOptions.prototype.rotation;
 
@@ -4823,6 +5467,7 @@ olx.style.TextOptions.prototype.rotation;
 /**
  * Text.
  * @type {string|undefined}
+ * @api
  */
 olx.style.TextOptions.prototype.text;
 
@@ -4830,6 +5475,7 @@ olx.style.TextOptions.prototype.text;
 /**
  * Text alignment.
  * @type {string|undefined}
+ * @api
  */
 olx.style.TextOptions.prototype.textAlign;
 
@@ -4837,6 +5483,7 @@ olx.style.TextOptions.prototype.textAlign;
 /**
  * Text base line.
  * @type {string|undefined}
+ * @api
  */
 olx.style.TextOptions.prototype.textBaseline;
 
@@ -4844,6 +5491,7 @@ olx.style.TextOptions.prototype.textBaseline;
 /**
  * Fill style.
  * @type {ol.style.Fill|undefined}
+ * @api
  */
 olx.style.TextOptions.prototype.fill;
 
@@ -4851,6 +5499,7 @@ olx.style.TextOptions.prototype.fill;
 /**
  * Stroke style.
  * @type {ol.style.Stroke|undefined}
+ * @api
  */
 olx.style.TextOptions.prototype.stroke;
 
@@ -4869,6 +5518,7 @@ olx.style.StyleOptions;
 /**
  * Fill style.
  * @type {ol.style.Fill|undefined}
+ * @api
  */
 olx.style.StyleOptions.prototype.fill;
 
@@ -4876,6 +5526,7 @@ olx.style.StyleOptions.prototype.fill;
 /**
  * Image style.
  * @type {ol.style.Image|undefined}
+ * @api
  */
 olx.style.StyleOptions.prototype.image;
 
@@ -4883,6 +5534,7 @@ olx.style.StyleOptions.prototype.image;
 /**
  * Stroke style.
  * @type {ol.style.Stroke|undefined}
+ * @api
  */
 olx.style.StyleOptions.prototype.stroke;
 
@@ -4890,6 +5542,7 @@ olx.style.StyleOptions.prototype.stroke;
 /**
  * Text style.
  * @type {ol.style.Text|undefined}
+ * @api
  */
 olx.style.StyleOptions.prototype.text;
 
@@ -4897,6 +5550,7 @@ olx.style.StyleOptions.prototype.text;
 /**
  * Z index.
  * @type {number|undefined}
+ * @api
  */
 olx.style.StyleOptions.prototype.zIndex;
 
@@ -4916,6 +5570,7 @@ olx.tilegrid.TileGridOptions;
 /**
  * Minimum zoom. Default is 0.
  * @type {number|undefined}
+ * @api
  */
 olx.tilegrid.TileGridOptions.prototype.minZoom;
 
@@ -4923,6 +5578,7 @@ olx.tilegrid.TileGridOptions.prototype.minZoom;
 /**
  * Origin. Default is null.
  * @type {ol.Coordinate|undefined}
+ * @api
  */
 olx.tilegrid.TileGridOptions.prototype.origin;
 
@@ -4931,6 +5587,7 @@ olx.tilegrid.TileGridOptions.prototype.origin;
  * Origins. If given, the array should match the `resolutions` array, i.e.
  * each resolution can have a different origin.
  * @type {Array.<ol.Coordinate>|undefined}
+ * @api
  */
 olx.tilegrid.TileGridOptions.prototype.origins;
 
@@ -4938,6 +5595,7 @@ olx.tilegrid.TileGridOptions.prototype.origins;
 /**
  * Resolutions.
  * @type {!Array.<number>}
+ * @api
  */
 olx.tilegrid.TileGridOptions.prototype.resolutions;
 
@@ -4945,6 +5603,7 @@ olx.tilegrid.TileGridOptions.prototype.resolutions;
 /**
  * Tile size. Default is 256. (Only square tiles are supported.)
  * @type {number|undefined}
+ * @api
  */
 olx.tilegrid.TileGridOptions.prototype.tileSize;
 
@@ -4953,6 +5612,7 @@ olx.tilegrid.TileGridOptions.prototype.tileSize;
  * Tile sizes. If given, the array should match the `resolutions` array, i.e.
  * each resolution can have a different tile size.
  * @type {Array.<number>|undefined}
+ * @api
  */
 olx.tilegrid.TileGridOptions.prototype.tileSizes;
 
@@ -4972,6 +5632,7 @@ olx.tilegrid.WMTSOptions;
 /**
  * Origin.
  * @type {ol.Coordinate|undefined}
+ * @api
  */
 olx.tilegrid.WMTSOptions.prototype.origin;
 
@@ -4979,6 +5640,7 @@ olx.tilegrid.WMTSOptions.prototype.origin;
 /**
  * Origins.
  * @type {Array.<ol.Coordinate>|undefined}
+ * @api
  */
 olx.tilegrid.WMTSOptions.prototype.origins;
 
@@ -4986,6 +5648,7 @@ olx.tilegrid.WMTSOptions.prototype.origins;
 /**
  * Resolutions.
  * @type {!Array.<number>}
+ * @api
  */
 olx.tilegrid.WMTSOptions.prototype.resolutions;
 
@@ -4993,6 +5656,7 @@ olx.tilegrid.WMTSOptions.prototype.resolutions;
 /**
  * matrix IDs.
  * @type {!Array.<string>}
+ * @api
  */
 olx.tilegrid.WMTSOptions.prototype.matrixIds;
 
@@ -5000,6 +5664,7 @@ olx.tilegrid.WMTSOptions.prototype.matrixIds;
 /**
  * Tile size.
  * @type {number|undefined}
+ * @api
  */
 olx.tilegrid.WMTSOptions.prototype.tileSize;
 
@@ -5007,26 +5672,61 @@ olx.tilegrid.WMTSOptions.prototype.tileSize;
 /**
  * Tile sizes.
  * @type {Array.<number>|undefined}
+ * @api
  */
 olx.tilegrid.WMTSOptions.prototype.tileSizes;
 
 
 /**
- * @typedef {{maxZoom: number}}
+ * @typedef {{extent: (ol.Extent|undefined),
+ *     maxZoom: (number|undefined),
+ *     minZoom: (number|undefined),
+ *     tileSize: (number|undefined)}}
  * @api
  */
 olx.tilegrid.XYZOptions;
 
 
 /**
- * Maximum zoom.
- * @type {number}
+ * Extent for the tile grid.  The origin for an XYZ tile grid is the top-left
+ * corner of the extent.  The zero level of the grid is defined by the
+ * resolution at which one tile fits in the provided extent.  If not provided,
+ * the extent of the EPSG:3857 projection is used.
+ * @type {ol.Extent|undefined}
+ * @api
+ */
+olx.tilegrid.XYZOptions.prototype.extent;
+
+
+/**
+ * Maximum zoom.  The default is `ol.DEFAULT_MAX_ZOOM`.  This determines the
+ * number of levels in the grid set.  For example, a `maxZoom` of 21 means there
+ * are 22 levels in the grid set.
+ * @type {number|undefined}
+ * @api
  */
 olx.tilegrid.XYZOptions.prototype.maxZoom;
 
 
 /**
+ * Minimum zoom. Default is 0.
+ * @type {number|undefined}
+ * @api
+ */
+olx.tilegrid.XYZOptions.prototype.minZoom;
+
+
+/**
+ * Tile size in pixels. Default is 256. (Only square tiles are supported.)
+ * @type {number|undefined}
+ * @api
+ */
+olx.tilegrid.XYZOptions.prototype.tileSize;
+
+
+/**
  * @typedef {{resolutions: !Array.<number>}}
+ * @api
  * @api
  */
 olx.tilegrid.ZoomifyOptions;
@@ -5035,6 +5735,7 @@ olx.tilegrid.ZoomifyOptions;
 /**
  * Resolutions.
  * @type {!Array.<number>}
+ * @api
  */
 olx.tilegrid.ZoomifyOptions.prototype.resolutions;
 
@@ -5053,6 +5754,7 @@ olx.View.fitGeometryOptions;
  * Padding (in pixels) to be cleared inside the view. Values in the array are
  * top, right, bottom and left padding. Default is `[0, 0, 0, 0]`.
  * @type {!Array.<number>}
+ * @api
  */
 olx.View.fitGeometryOptions.prototype.padding;
 
@@ -5060,6 +5762,7 @@ olx.View.fitGeometryOptions.prototype.padding;
 /**
  * Constrain the resolution. Default is `true`.
  * @type {boolean|undefined}
+ * @api
  */
 olx.View.fitGeometryOptions.prototype.constrainResolution;
 
@@ -5067,6 +5770,7 @@ olx.View.fitGeometryOptions.prototype.constrainResolution;
 /**
  * Get the nearest extent. Default is `false`.
  * @type {boolean|undefined}
+ * @api
  */
 olx.View.fitGeometryOptions.prototype.nearest;
 
@@ -5074,6 +5778,7 @@ olx.View.fitGeometryOptions.prototype.nearest;
 /**
  * Minimum resolution that we zoom to. Default is `0`.
  * @type {number|undefined}
+ * @api
  */
 olx.View.fitGeometryOptions.prototype.minResolution;
 
@@ -5082,6 +5787,7 @@ olx.View.fitGeometryOptions.prototype.minResolution;
  * Maximum zoom level that we zoom to. If `minResolution` is given,
  * this property is ignored.
  * @type {number|undefined}
+ * @api
  */
 olx.View.fitGeometryOptions.prototype.maxZoom;
 
@@ -5103,7 +5809,7 @@ olx.View.fitGeometryOptions.prototype.maxZoom;
  *     pixelToCoordinateMatrix: goog.vec.Mat4.Number,
  *     postRenderFunctions: Array.<ol.PostRenderFunction>,
  *     size: ol.Size,
- *     skippedFeatureUids_: Object.<string, boolean>,
+ *     skippedFeatureUids: Object.<string, boolean>,
  *     tileQueue: ol.TileQueue,
  *     time: number,
  *     usedTiles: Object.<string, Object.<string, ol.TileRange>>,
@@ -5115,15 +5821,24 @@ olx.View.fitGeometryOptions.prototype.maxZoom;
 olx.FrameState;
 
 
-/** @type {number} */
+/**
+ * @type {number}
+ * @api
+ */
 olx.FrameState.prototype.pixelRatio;
 
 
-/** @type {number} */
+/**
+ * @type {number}
+ * @api
+ */
 olx.FrameState.prototype.time;
 
 
-/** @type {olx.ViewState} */
+/**
+ * @type {olx.ViewState}
+ * @api
+ */
 olx.FrameState.prototype.viewState;
 
 
@@ -5137,13 +5852,22 @@ olx.FrameState.prototype.viewState;
 olx.ViewState;
 
 
-/** @type {ol.Coordinate} */
+/**
+ * @type {ol.Coordinate}
+ * @api
+ */
 olx.ViewState.prototype.center;
 
 
-/** @type {number} */
+/**
+ * @type {number}
+ * @api
+ */
 olx.ViewState.prototype.resolution;
 
 
-/** @type {number} */
+/**
+ * @type {number}
+ * @api
+ */
 olx.ViewState.prototype.rotation;

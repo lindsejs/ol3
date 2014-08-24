@@ -14,23 +14,20 @@ goog.require('ol.tilegrid.XYZ');
  * @constructor
  * @extends {ol.source.TileImage}
  * @param {olx.source.XYZOptions} options XYZ options.
- * @api
+ * @api stable
  */
 ol.source.XYZ = function(options) {
-
   var projection = goog.isDef(options.projection) ?
       options.projection : 'EPSG:3857';
 
-  var maxZoom = goog.isDef(options.maxZoom) ? options.maxZoom : 18;
-
   var tileGrid = new ol.tilegrid.XYZ({
-    maxZoom: maxZoom
+    extent: ol.tilegrid.extentFromProjection(projection),
+    maxZoom: options.maxZoom
   });
 
   goog.base(this, {
     attributions: options.attributions,
     crossOrigin: options.crossOrigin,
-    extent: options.extent,
     logo: options.logo,
     projection: projection,
     tileGrid: tileGrid,
@@ -44,7 +41,6 @@ ol.source.XYZ = function(options) {
    * @type {ol.TileCoordTransformType}
    */
   this.tileCoordTransform_ = tileGrid.createTileCoordTransform({
-    extent: options.extent,
     wrapX: options.wrapX
   });
 
@@ -73,7 +69,7 @@ ol.source.XYZ.prototype.setTileUrlFunction = function(tileUrlFunction) {
 
 /**
  * @param {string} url URL.
- * @api
+ * @api stable
  */
 ol.source.XYZ.prototype.setUrl = function(url) {
   this.setTileUrlFunction(ol.TileUrlFunction.createFromTemplates(
