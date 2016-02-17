@@ -6,8 +6,21 @@ goog.require('goog.object');
 goog.require('goog.string');
 goog.require('goog.uri.utils');
 goog.require('ol');
+goog.require('ol.TileCoord');
+goog.require('ol.extent');
+goog.require('ol.proj');
+goog.require('ol.size');
+goog.require('ol.source.TileImage');
+goog.require('ol.source.wms');
+goog.require('ol.source.wms.ServerType');
+goog.require('ol.tilecoord');
 goog.require('ol.source.TileWMS');
-
+goog.require('ol.ImageTile');
+goog.require('ol.TileCache');
+goog.require('ol.TileState');
+goog.require('ol.proj');
+goog.require('ol.reproj.Tile');
+goog.require('ol.source.UrlTile');
 
 /**
  * @classdesc
@@ -15,15 +28,13 @@ goog.require('ol.source.TileWMS');
  *
  * @constructor
  * @extends {ol.source.TileWMS}
- * @param {olx.source.TileWMSOptions=} opt_options Tile WMS options.
  * @api stable
  */
 ol.source.TileWMSTSource = function(opt_options) {
-
   var options = opt_options || {};
+  var params = options.params !== undefined ? options.params : {};
   goog.base(this, options);
-  this.times_ = options.times;
-
+  this.times_ = options["times"];
 };
 goog.inherits(ol.source.TileWMSTSource, ol.source.TileWMS);
 
