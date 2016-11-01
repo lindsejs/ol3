@@ -15,6 +15,7 @@ goog.require('ol.events.condition');
 goog.require('ol.extent');
 goog.require('ol.geom.GeometryType');
 goog.require('ol.geom.Point');
+goog.require('ol.geom.MultiPoint');
 goog.require('ol.interaction.Pointer');
 goog.require('ol.layer.Vector');
 goog.require('ol.source.Vector');
@@ -183,6 +184,13 @@ ol.interaction.Modify = function(options) {
    * @private
    */
   this.lastPointerEvent_ = null;
+
+  /**
+   * Map mouse cursor before setting map cursor to 'move' over point features
+   * @type {string|undefined}
+   * @private
+   */
+  this.prevMapCursor_;
 
 };
 ol.inherits(ol.interaction.Modify, ol.interaction.Pointer);
@@ -695,7 +703,20 @@ ol.interaction.Modify.prototype.handlePointerMove_ = function(evt) {
  */
 ol.interaction.Modify.prototype.handlePointerAtPixel_ = function(pixel, map) {
   var pixelCoordinate = map.getCoordinateFromPixel(pixel);
+  var mapCursor = map.getTargetElement().style.cursor;
   var sortByDistance = function(a, b) {
+    //for easier to select points on lines always consider point or multipoint
+    //to be closer then other geometry types
+    var ag = a.geometry;
+    var bg = b.geometry;
+    if(ag && (ag instanceof ol.geom.Point || ag instanceof ol.geom.MultiPoint) &&
+    (!bg || ( !(bg instanceof ol.geom.Point) && !(bg instanceof ol.geom.MultiPoint) ))){
+      return -1;
+    }
+    if(bg && (bg instanceof ol.geom.Point || bg instanceof ol.geom.MultiPoint) &&
+    (!ag || ( !(ag instanceof ol.geom.Point) && !(ag instanceof ol.geom.MultiPoint) ))){
+      return 1;
+    }
     return ol.coordinate.squaredDistanceToSegment(pixelCoordinate, a.segment) -
         ol.coordinate.squaredDistanceToSegment(pixelCoordinate, b.segment);
   };
@@ -727,6 +748,12 @@ ol.interaction.Modify.prototype.handlePointerAtPixel_ = function(pixel, map) {
         vertex = squaredDist1 > squaredDist2 ?
             closestSegment[1] : closestSegment[0];
       }
+      //set 'move' cursor on point features
+      if (mapCursor !== 'move' && node.geometry &&
+         (node.geometry instanceof ol.geom.Point || node.geometry instanceof ol.geom.MultiPoint)) {
+          this.prevMapCursor_ = mapCursor;
+          map.getTargetElement().style.cursor = 'move';
+      }
       this.createOrUpdateVertexFeature_(vertex);
       var vertexSegments = {};
       vertexSegments[ol.getUid(closestSegment)] = true;
@@ -747,6 +774,11 @@ ol.interaction.Modify.prototype.handlePointerAtPixel_ = function(pixel, map) {
     }
   }
   if (this.vertexFeature_) {
+    //unset map cursor
+    //set 'move' cursor on point features
+    if (this.prevMapCursor_ != null && mapCursor === 'move') {
+        map.getTargetElement().style.cursor = this.prevMapCursor_;
+    }
     this.overlay_.getSource().removeFeature(this.vertexFeature_);
     this.vertexFeature_ = null;
   }
