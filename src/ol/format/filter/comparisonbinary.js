@@ -14,13 +14,14 @@ goog.require('ol.format.filter.Comparison');
  * @param {!string} propertyName Name of the context property to compare.
  * @param {!(string|number)} expression The value to compare.
  * @param {boolean=} opt_matchCase Case-sensitive?
+ * @param {ol.format.filter.Function=} opt_filterFunction filter function to use instead of propertyName.
  * @extends {ol.format.filter.Comparison}
  * @api
  */
 ol.format.filter.ComparisonBinary = function(
-    tagName, propertyName, expression, opt_matchCase) {
+    tagName, propertyName, expression, opt_matchCase, opt_filterFunction) {
 
-  ol.format.filter.Comparison.call(this, tagName, propertyName);
+  ol.format.filter.Comparison.call(this, tagName, propertyName, opt_filterFunction);
 
   /**
    * @public

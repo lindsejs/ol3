@@ -449,6 +449,34 @@ describe('ol.format.WFS', function() {
       expect(serialized.firstElementChild).to.xmleql(ol.xml.parse(text));
     });
 
+    it('creates Function "In"  filter', function() {
+      var text =
+          '<wfs:Query xmlns:wfs="http://www.opengis.net/wfs" ' +
+          '    typeName="topp:states" srsName="urn:ogc:def:crs:EPSG::4326" ' +
+          '    xmlns:topp="http://www.openplans.org/topp">' +
+          '  <ogc:Filter xmlns:ogc="http://www.opengis.net/ogc">' +
+          '     <ogc:PropertyIsEqualTo>' +
+          '       <ogc:Function name="in">' +
+          '         <ogc:PropertyName>name</ogc:PropertyName>' +
+          '         <ogc:Literal>New York</ogc:Literal>' +
+          '         <ogc:Literal>Florida</ogc:Literal>' +
+          '       </ogc:Function>' +
+          '       <ogc:Literal>true</ogc:Literal>' +
+          '     </ogc:PropertyIsEqualTo>' +
+          '  </ogc:Filter>' +
+          '</wfs:Query>';
+      var serialized = new ol.format.WFS().writeGetFeature({
+        srsName: 'urn:ogc:def:crs:EPSG::4326',
+        featureNS: 'http://www.openplans.org/topp',
+        featurePrefix: 'topp',
+        featureTypes: ['states'],
+        filter: ol.format.filter.equalTo('', true, undefined, ol.format.filter.in('name', ['New York', 'Florida']))
+      });
+      var serializer = new XMLSerializer();
+      console.log(serializer.serializeToString(serialized));
+      expect(serialized.firstElementChild).to.xmleql(ol.xml.parse(text));
+    });
+
     it('creates a Not filter', function() {
       var text =
           '<wfs:Query xmlns:wfs="http://www.opengis.net/wfs" ' +

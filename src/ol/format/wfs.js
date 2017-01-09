@@ -658,7 +658,17 @@ ol.format.WFS.writeComparisonFilter_ = function(node, filter, objectStack) {
   if (filter.matchCase !== undefined) {
     node.setAttribute('matchCase', filter.matchCase.toString());
   }
-  ol.format.WFS.writeOgcPropertyName_(node, filter.propertyName);
+  //instead of property write function
+  if (filter.filterFunction !=null) {
+    var filterFunction = filter.filterFunction;
+    var item = {node: node};
+    ol.xml.pushSerializeAndPop(item,
+        ol.format.WFS.GETFEATURE_SERIALIZERS_,
+        ol.xml.makeSimpleNodeFactory(filterFunction.getTagName()),
+        [filterFunction], objectStack);
+  } else {
+    ol.format.WFS.writeOgcPropertyName_(node, filter.propertyName);
+  }
   ol.format.WFS.writeOgcLiteral_(node, '' + filter.expression);
 };
 
@@ -710,6 +720,21 @@ ol.format.WFS.writeIsLikeFilter_ = function(node, filter, objectStack) {
   ol.format.WFS.writeOgcLiteral_(node, '' + filter.pattern);
 };
 
+/**
+ * @param {Node} node Node.
+ * @param {ol.format.filter.Function} filter Filter.
+ * @param {Array.<*>} objectStack Node stack.
+ * @private
+ */
+ol.format.WFS.writeFunctionFilter_ = function(node, filter, objectStack) {
+  node.setAttribute('name', filter.functionName);
+  if(filter instanceof ol.format.filter.FunctionIn){
+    ol.format.WFS.writeOgcPropertyName_(node, filter.propertyName);
+    filter.values.forEach(function(literal){
+      ol.format.WFS.writeOgcLiteral_(node, '' + literal);
+    });
+  }
+};
 
 /**
  * @param {string} tagName Tag name.
@@ -767,7 +792,8 @@ ol.format.WFS.GETFEATURE_SERIALIZERS_ = {
     'PropertyIsGreaterThanOrEqualTo': ol.xml.makeChildAppender(ol.format.WFS.writeComparisonFilter_),
     'PropertyIsNull': ol.xml.makeChildAppender(ol.format.WFS.writeIsNullFilter_),
     'PropertyIsBetween': ol.xml.makeChildAppender(ol.format.WFS.writeIsBetweenFilter_),
-    'PropertyIsLike': ol.xml.makeChildAppender(ol.format.WFS.writeIsLikeFilter_)
+    'PropertyIsLike': ol.xml.makeChildAppender(ol.format.WFS.writeIsLikeFilter_),
+    'Function': ol.xml.makeChildAppender(ol.format.WFS.writeFunctionFilter_)
   }
 };
 

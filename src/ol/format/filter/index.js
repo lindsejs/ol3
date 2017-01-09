@@ -16,6 +16,7 @@ goog.require('ol.format.filter.Not');
 goog.require('ol.format.filter.NotEqualTo');
 goog.require('ol.format.filter.Or');
 goog.require('ol.format.filter.Within');
+goog.require('ol.format.filter.FunctionIn');
 
 
 /**
@@ -108,11 +109,12 @@ ol.format.filter.within = function(geometryName, geometry, opt_srsName) {
  * @param {!string} propertyName Name of the context property to compare.
  * @param {!(string|number)} expression The value to compare.
  * @param {boolean=} opt_matchCase Case-sensitive?
+ * @param {ol.format.filter.Function=} opt_filterFunction filter function to use instead of propertyName.
  * @returns {!ol.format.filter.EqualTo} `<PropertyIsEqualTo>` operator.
  * @api
  */
-ol.format.filter.equalTo = function(propertyName, expression, opt_matchCase) {
-  return new ol.format.filter.EqualTo(propertyName, expression, opt_matchCase);
+ol.format.filter.equalTo = function(propertyName, expression, opt_matchCase, opt_filterFunction) {
+  return new ol.format.filter.EqualTo(propertyName, expression, opt_matchCase, opt_filterFunction);
 };
 
 
@@ -122,11 +124,12 @@ ol.format.filter.equalTo = function(propertyName, expression, opt_matchCase) {
  * @param {!string} propertyName Name of the context property to compare.
  * @param {!(string|number)} expression The value to compare.
  * @param {boolean=} opt_matchCase Case-sensitive?
+ * @param {ol.format.filter.Function=} opt_filterFunction filter function to use instead of propertyName.
  * @returns {!ol.format.filter.NotEqualTo} `<PropertyIsNotEqualTo>` operator.
  * @api
  */
-ol.format.filter.notEqualTo = function(propertyName, expression, opt_matchCase) {
-  return new ol.format.filter.NotEqualTo(propertyName, expression, opt_matchCase);
+ol.format.filter.notEqualTo = function(propertyName, expression, opt_matchCase, opt_filterFunction) {
+  return new ol.format.filter.NotEqualTo(propertyName, expression, opt_matchCase, opt_filterFunction);
 };
 
 
@@ -230,4 +233,17 @@ ol.format.filter.like = function(propertyName, pattern,
     opt_wildCard, opt_singleChar, opt_escapeChar, opt_matchCase) {
   return new ol.format.filter.IsLike(propertyName, pattern,
     opt_wildCard, opt_singleChar, opt_escapeChar, opt_matchCase);
+};
+
+/**
+ * Represents a `<Function name="in">` filter function. Returns true if
+ * propertyName value is equal to one of the values.
+ *
+ * @param {!string} propertyName Name of the context property to compare.
+ * @param {!Array.<string>} values Array of opssbile property values.
+ * @returns {!ol.format.filter.FunctionIn} `<Function name="in">` operator.
+ * @api
+ */
+ol.format.filter.in = function(propertyName, values) {
+  return new ol.format.filter.FunctionIn(propertyName, values);
 };
