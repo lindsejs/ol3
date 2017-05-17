@@ -545,6 +545,17 @@ ol.format.WFS.writeQuery_ = function(node, featureType, objectStack) {
     node.appendChild(child);
     ol.format.WFS.writeFilterCondition_(child, filter, objectStack);
   }
+  var sortBy = context['sortBy'];
+  if (sortBy) {
+    var sortByTag = ol.xml.createElementNS(ol.format.WFS.OGCNS, 'SortBy');
+    node.appendChild(sortByTag);
+    var sortPropertyTag = ol.xml.createElementNS(ol.format.WFS.OGCNS, 'SortProperty');
+    sortByTag.appendChild(sortPropertyTag);
+    ol.format.WFS.writeOgcPropertyName_(sortPropertyTag, sortBy.propertyName);
+    var sortOrderTag = ol.xml.createElementNS(ol.format.WFS.OGCNS, 'SortOrder');
+    ol.format.XSD.writeStringTextNode(sortOrderTag, sortBy.order);
+    sortPropertyTag.appendChild(sortOrderTag);
+  }
 };
 
 
@@ -870,6 +881,7 @@ ol.format.WFS.prototype.writeGetFeature = function(options) {
     'featurePrefix': options.featurePrefix,
     'geometryName': options.geometryName,
     'filter': filter,
+    'sortBy': options.sortBy,
     'propertyNames': options.propertyNames ? options.propertyNames : []
   };
   ol.asserts.assert(Array.isArray(options.featureTypes),

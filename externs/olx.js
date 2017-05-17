@@ -2025,6 +2025,7 @@ olx.format.WFSOptions.prototype.schemaLocation;
  *     count: (number|undefined),
  *     bbox: (ol.Extent|undefined),
  *     filter: (ol.format.filter.Filter|undefined),
+ *     sortBy: (ol.format.WfsSort|undefined),
  *     resultType: (string|undefined)}}
  */
 olx.format.WFSWriteGetFeatureOptions;
@@ -2136,6 +2137,14 @@ olx.format.WFSWriteGetFeatureOptions.prototype.bbox;
  * @api
  */
 olx.format.WFSWriteGetFeatureOptions.prototype.filter;
+
+
+/**
+ * SortBy condition.
+ * @type {ol.format.WfsSort|undefined}
+ * @api
+ */
+olx.format.WFSWriteGetFeatureOptions.prototype.sortBy;
 
 
 /**

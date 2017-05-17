@@ -4,6 +4,7 @@ goog.require('ol.Feature');
 goog.require('ol.format.GML2');
 goog.require('ol.format.WFS');
 goog.require('ol.format.filter');
+goog.require('ol.format.WfsSort');
 goog.require('ol.geom.MultiLineString');
 goog.require('ol.geom.MultiPoint');
 goog.require('ol.geom.MultiPolygon');
@@ -607,6 +608,30 @@ describe('ol.format.WFS', function() {
             ]])
         )
       });
+      expect(serialized.firstElementChild).to.xmleql(ol.xml.parse(text));
+    });
+
+    it('adds sortBy options', function() {
+      var text =
+          '<wfs:Query xmlns:wfs="http://www.opengis.net/wfs" ' +
+          '    typeName="topp:states" srsName="urn:ogc:def:crs:EPSG::4326" ' +
+          '    xmlns:topp="http://www.openplans.org/topp">' +
+          '  <ogc:SortBy xmlns:ogc="http://www.opengis.net/ogc">' +
+          '    <ogc:SortProperty>' +
+          '      <ogc:PropertyName>area</ogc:PropertyName>' +
+          '      <ogc:SortOrder>ASC</ogc:SortOrder>' +
+          '    </ogc:SortProperty>' +
+          '  </ogc:SortBy>' +
+          '</wfs:Query>';
+      var serialized = new ol.format.WFS().writeGetFeature({
+        srsName: 'urn:ogc:def:crs:EPSG::4326',
+        featureNS: 'http://www.openplans.org/topp',
+        featurePrefix: 'topp',
+        featureTypes: ['states'],
+        sortBy: new ol.format.WfsSort('area', 'ASC')
+      });
+      var serializer = new XMLSerializer();
+      console.log(serializer.serializeToString(serialized));
       expect(serialized.firstElementChild).to.xmleql(ol.xml.parse(text));
     });
 
